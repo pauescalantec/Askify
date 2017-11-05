@@ -1,0 +1,59 @@
+.navbar-brand {
+    padding: 0px;
+  }
+  .navbar-brand>img {
+    height: 100%;
+    padding: 10px;
+  }
+
+#navbarItemHome,
+#navbarItemNotifications,
+#navbarItemDropdown,
+#navbarItemQuestions,
+#navbarItemLogout,
+#navbarItemProfile,
+#navbarItemAnswers {
+    color: black;
+}
+
+#navbarItemHome:hover,
+#navbarItemNotifications:hover,
+#navbarItemDropdown:hover,
+#navbarItemQuestions:hover,
+#navbarItemLogout:hover,
+#navbarItemProfile:hover,
+#navbarItemAnswers:hover {
+    font-weight: bold;
+}
+
+ .navbar-default .navbar-nav > .active > a, 
+ .navbar-default .navbar-nav > .active > a:hover, 
+ .navbar-default .navbar-nav > .active > a:focus {
+    background:none;
+    border-bottom: 2px solid black;
+    font-weight: bold;
+ }
+
+ .navbar-default .navbar-nav>.open>a,
+ .navbar-default .navbar-nav>.open>a:focus,
+ .navbar-default .navbar-nav>.open>a:hover {
+    background:none;
+    border-bottom: 2px solid black;
+    font-weight: bold;
+}
+
+ #askifyLogoNameImg {
+     padding-right: 5px; 
+ }
+
+ .selectedSection {
+    display: block;
+  }
+  
+  .notSelectedSection {
+    display: none;
+  }
+
+  .card {
+      
+  }
