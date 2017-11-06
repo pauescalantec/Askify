@@ -6,13 +6,13 @@ $(window).on('resize', function() {
     if($(window).width() < 768){
         $("#analyticsFeed").remove();
         $("#analyticsGrid").html("");
-        $("#analyticsGrid").append('<div class="well" id="analyticsFeedAlt" width="100%;" style=""> </div>');
+        $("#analyticsGrid").append('<div class="well" id="analyticsFeedAlt" style="width: 100%;"> </div>');
         loadAnalyticsField("#analyticsFeedAlt");
-        
     }
 
     else {
         $("#analyticsFeedAlt").remove();
+
         if (!($("#analyticsFeed").length)) {
             // Add analytics feed again
             $("#analyticsGrid").html("");
@@ -24,13 +24,8 @@ $(window).on('resize', function() {
                 }
             });
         }
-        $('#analyticsFeed').on('affix.bs.affix', function () {
-            var $affixElement = $('div[data-spy="affix"]');
-            if(currentWidthAnalytics == 0) {
-                currentWidthAnalytics = $("#analyticsFeed").width();
-            }
-            $affixElement.width(currentWidthAnalytics);
-        });
+
+        activateAffixListener("#analyticsFeed");
         currentWidthAnalytics = $("#analyticsFeed").width();
     }
 
@@ -59,13 +54,7 @@ $(document).ready(function(){
         loadAnalyticsField("#analyticsFeed");
     });
 
-    $('#analyticsFeed').on('affix.bs.affix', function () {
-        var $affixElement = $('div[data-spy="affix"]');
-        if(currentWidthAnalytics == 0) {
-            currentWidthAnalytics = $("#analyticsFeed").width();
-        }
-        $affixElement.width(currentWidthAnalytics);
-   });
+    activateAffixListener("#analyticsFeed");
     
     // Load topics
     loadTopicCards();
@@ -88,6 +77,16 @@ function loadAnalyticsField(analyticsSelector){
     $(analyticsSelector).append(visitedHTML).hide().fadeIn(300);
     $(analyticsSelector).append(favoriteHTML).hide().fadeIn(300);
     $(analyticsSelector).append(highestHTML).hide().fadeIn(300);
+}
+
+function activateAffixListener(selectorId){
+    $(selectorId).on('affix.bs.affix', function () {
+        var $affixElement = $('div[data-spy="affix"]');
+        if(currentWidthAnalytics == 0) {
+            currentWidthAnalytics = $("#analyticsFeed").width();
+        }
+        $affixElement.width(currentWidthAnalytics);
+   });
 }
 
 function loadUserFullName(){
@@ -114,29 +113,61 @@ function getCurrentUser(){
 
 function getTopicCards(){
     return [{
-        topicName: "UX/UI",
-        topicDescription:"UX & UI have always been a power couple. UX design is an analytical and technical skill that co-relates to the UI graphic design to increase of effectiveness in the use of the applications developed.",
-        topicImage:"Media/cardImage1.jpg"
-    }];
+                topicName: "Python",
+                topicDescription:"An interpreted, object-oriented programming language similar to PERL, that has gained popularity because of its clear syntax and readability, it features a dynamic type system.",
+                topicImage:"Media/cardImage6.jpg"},
+            {
+                topicName: "Web Development",
+                topicDescription:"HTML + Javascript + CSS: These technologies are responsible for designing, coding and modifying websites, from layout to function and according to a client's specifications and needs.",
+                topicImage:"Media/cardImage2.jpg"},
+            {
+                topicName: "C#",
+                topicDescription:"Object-oriented programming language that aims to combine the computing power of C++ with the programming ease of Visual Basic. C# is based on C++ and contains features like Java.",
+                topicImage:"Media/cardImage3.jpg"},
+            {
+                topicName: "PHP",
+                topicDescription:"A server-side scripting language designed primarily for web development but also used as a general-purpose programming language, stands for Hypertext Preprocessor.",
+                topicImage:"Media/cardImage7.jpg"},
+            {
+                topicName: "C++",
+                topicDescription:"C++ is a general-purpose object-oriented programming (OOP) language and is an extension of the C language. It encapsulates both high- and low-level language features.",
+                topicImage:"Media/cardImage4.jpg"},
+            {
+                topicName: "Java",
+                topicDescription:"A general-purpose computer programming language that is concurrent, class-based, object-oriented, and specifically designed to have as few implementation dependencies as possible.",
+                topicImage:"Media/cardImage5.jpg"},
+            {
+                topicName: "UX/UI",
+                topicDescription:"UX & UI have always been a power couple. UX design is an analytical and technical skill that co-relates to the UI graphic design to increase of effectiveness in the use of the applications developed.",
+                topicImage:"Media/cardImage1.jpg"},
+            {
+                topicName: "SQL",
+                topicDescription:"Structured Query Language (SQL) is a standard computer language for relational database management and manipulation. SQL is used to query, insert, update and modify data.",
+                topicImage:"Media/cardImage8.jpg"}, 
+            {
+                topicName: "React",
+                topicDescription:"JavaScript library for building user interfaces. React dynamically allows developers to create large web-applications that use data and can change over time without reloading the page.",
+                topicImage:"Media/cardImage9.jpg"}
+          ];
 }
 
 function loadTopicCards(){
     listTopics = getTopicCards();
 
-    for (i = 1; i < 10; i++) { 
+    for (i = 0; i < (listTopics.length); i++) { 
         // Instead of 0 iterate through index
-        var topicCardHTML = helperCreateCardHTML(listTopics[0], i);
-        var topicCounterId = "#topic" + i;
+        var topicCardHTML = helperCreateCardHTML(listTopics[i], (i+1));
+        var topicCounterId = "#topic" + (i+1);
 
         $(topicCounterId).html("");
-        $(topicCounterId).append(topicCardHTML).hide().fadeIn(i*400);
+        $(topicCounterId).prepend(topicCardHTML).hide().fadeIn((i+1)*400);
     }
 
     $("[name='askQuestionButton']").on("click", function() {
         var identifierTopicName = "#" + this.id + "TopicName";
         currentTopic = $(identifierTopicName).text();
         $("#askModalTitle").html("");
-        $("#askModalTitle").prepend("<p class='introQuestion'>" + currentUser + " asks about " + currentTopic + "</p>");
+        $("#askModalTitle").prepend("<p class='introQuestion'>" + currentUser + " asks about <strong>" + currentTopic + "</strong></p>");
         $("#questionText").val("");
         $("#questionText").height('auto');
     });

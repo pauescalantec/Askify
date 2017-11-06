@@ -210,3 +210,28 @@
     top: 20px;
     z-index: 9999 !important;
   }
+
+  .row.equal {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .cards {
+    display: -webkit-flex;
+    display: flex;
+    -webkit-justify-content: center;
+    justify-content: center;
+    -webkit-flex-wrap: wrap;
+    flex-wrap: wrap;
+    margin-top: 15px;
+    padding: 1.5%;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+  }
+
+  @media screen and (max-width: 768px) {
+    #analyticsGrid{
+      width: 100%;
+    }
+  }
