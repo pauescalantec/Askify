@@ -3,24 +3,41 @@ var currentUser = "";
 var currentWidthAnalytics = 0;
 
 $(window).on('resize', function() {
-    currentWidthAnalytics = $("#analyticsFeed").width();
-
     if($(window).width() < 768){
         $("#analyticsFeed").remove();
+        $("#analyticsGrid").html("");
+        $("#analyticsGrid").append('<div class="well" id="analyticsFeedAlt" width="100%;" style=""> </div>');
+        loadAnalyticsField("#analyticsFeedAlt");
+        
     }
 
     else {
+        $("#analyticsFeedAlt").remove();
         if (!($("#analyticsFeed").length)) {
             // Add analytics feed again
             $("#analyticsGrid").html("");
             $("#analyticsGrid").append('<div class="well" id="analyticsFeed" data-spy="affix" data-offset-top="65"> </div>');
-            loadAnalyticsField();
+            loadAnalyticsField("#analyticsFeed");
+            $("#analyticsFeed").affix({
+                offset: { 
+                    top: 65 
+                }
+            });
         }
+        $('#analyticsFeed').on('affix.bs.affix', function () {
+            var $affixElement = $('div[data-spy="affix"]');
+            if(currentWidthAnalytics == 0) {
+                currentWidthAnalytics = $("#analyticsFeed").width();
+            }
+            $affixElement.width(currentWidthAnalytics);
+        });
+        currentWidthAnalytics = $("#analyticsFeed").width();
     }
 
 });
 
 $(document).ready(function(){
+    $(window).resize();
     // Menu control
     $("#navbarHome li").on("click", function(){
 		$(".active").removeClass("active");
@@ -39,7 +56,7 @@ $(document).ready(function(){
     $('#homeSection').on('classChange', function() {
         // Load topics
         loadTopicCards();
-        loadAnalyticsField();
+        loadAnalyticsField("#analyticsFeed");
     });
 
     $('#analyticsFeed').on('affix.bs.affix', function () {
@@ -54,23 +71,23 @@ $(document).ready(function(){
     loadTopicCards();
 
     // Load Analytics feed
-    loadAnalyticsField();
+    loadAnalyticsField("#analyticsFeed");
 
     // Load topics
     loadUserFullName();
 });
 
-function loadAnalyticsField(){
+function loadAnalyticsField(analyticsSelector){
     var visitedHTML = helperCreateAnalytics("visitedPanelHeading", "Most Visited Topic", getVisitedTopic());
 
     var favoriteHTML = helperCreateAnalytics("favoritePanelHeading", "Your Favorite Topic", getFavoriteTopic()); 
 
     var highestHTML = helperCreateAnalytics("highestPanelHeading", "Highest Ranked Tutor", getHighestTutor());   
     
-    $("#analyticsFeed").html("");
-    $("#analyticsFeed").append(visitedHTML).hide().fadeIn(300);
-    $("#analyticsFeed").append(favoriteHTML).hide().fadeIn(300);
-    $("#analyticsFeed").append(highestHTML).hide().fadeIn(300);
+    $(analyticsSelector).html("");
+    $(analyticsSelector).append(visitedHTML).hide().fadeIn(300);
+    $(analyticsSelector).append(favoriteHTML).hide().fadeIn(300);
+    $(analyticsSelector).append(highestHTML).hide().fadeIn(300);
 }
 
 function loadUserFullName(){
