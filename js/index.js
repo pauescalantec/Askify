@@ -191,6 +191,6 @@ function AutoGrowTextArea(textField){
 }
 
 function helperCreateAnalytics(idField, titleField, dataField){
-    var analyticsHTML = '<div id="' + idField + '" class="well"> <h4>' + titleField + '</h4><p>' + dataField + '</p> </div>';
+    var analyticsHTML = '<div id="' + idField + '" class="well" name="analyticsWells"> <h4>' + titleField + '</h4><p>' + dataField + '</p> </div>';
     return analyticsHTML;
 }
