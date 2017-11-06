@@ -176,3 +176,37 @@
   .introQuestion {
       margin-bottom: 0px;
   }
+
+  #visitedPanelHeading {
+    text-align: center;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    border: none;
+    background: #BDC3C7;
+    margin: 15px 8px;
+  }
+
+  #favoritePanelHeading {
+    text-align: center;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    border: none;
+    background: #BDC3C7;
+    margin: 15px 8px;
+    margin-top: 35px;
+    margin-bottom: 35px;
+  }
+
+  #highestPanelHeading {
+    text-align: center;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    border: none;
+    background: #BDC3C7;
+    margin: 15px 8px;
+  }
+
+  .affix {
+    top: 20px;
+    z-index: 9999 !important;
+  }
