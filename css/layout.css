@@ -54,6 +54,125 @@
     display: none;
   }
 
-  .card {
-      
+  .card-img-top {
+      width:100%;
+      max-width: 250px;
+  }
+
+  #analyticsGrid,
+  #cardGrid {
+    padding-top: 20px;
+    padding-bottom: 20px;
+  }
+
+  .flat-butt {
+    width: 100%;
+    display: block;
+    margin: 0 5px;
+    margin-left:0px;
+    border-radius: 6px;
+    text-align: center;
+    font-size: 15px;
+    padding: 12px 20px;
+    border: 0;
+    background: #34495E;
+    color: #FFF;
+    cursor: pointer;
+    outline: 0;
+  }
+  .flat-butt:hover {
+    background: #005580;
+  }
+
+  .flat-info-butt {
+    background: #3498db;
+  }
+  .flat-info-butt:hover {
+    background: #5dade2;
+  }
+  .flat-inner-butt {
+    padding: 9px 0px;
+    box-shadow: inset #2C3E50 -3px -3px 0px;
+  }
+  .flat-info-inner-butt {
+    box-shadow: inset #2980B9 -3px -3px 0px;
+  }
+
+  .flat-primary-butt {
+    background: #1abc9c;
+  }
+  .flat-primary-butt:hover {
+    background: #2fe2bf;
+  }
+  .flat-primary-inner-butt {
+    background: #1ABC9C;
+    box-shadow: inset #16A085 -3px -3px 0px;
+  }
+
+  .modal {
+    text-align: center;
+    padding: 0!important;
+ }
+  .modal:before {
+    content: '';
+    display: inline-block;
+    height: 100%;
+    vertical-align: middle;
+    margin-right: -4px;
+  }
+  
+  .modal-dialog {
+    display: inline-block;
+    text-align: left;
+    vertical-align: middle;
+  }
+
+  #askModalTitle {
+      color: grey;
+      width: 90%;
+      margin: 12px 8px;
+      margin-bottom: 0px;
+  }
+
+  #cancelQuestion {
+    color: grey;
+    margin: 12px 8px;
+  }
+
+  #helpQuestion {
+    color: rgb(145, 143, 143);
+    font-size: 12.5px;
+  }
+
+  #cancelQuestion:hover {
+    font-weight: bold;
+    text-decoration: none;
+  }
+
+  #questionTextArea {
+    width: 90%;
+    margin: 12px 8px;
+  }
+
+  .form-control {
+    outline: none;
+    font-size: 25px;
+    resize: none;
+    border-style: none; 
+    border-color: Transparent; 
+    border-bottom: 2px solid black;
+    overflow: auto;   
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    box-shadow: none !important;
+    border-radius: 0;
+  }
+
+  #sendQuestion {
+      display: inline-block;
+      width: 25%;
+  }
+
+  .introQuestion {
+      margin-bottom: 0px;
   }
