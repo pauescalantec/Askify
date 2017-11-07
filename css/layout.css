@@ -228,7 +228,6 @@
 
   .affix {
     top: 20px;
-    z-index: 9999 !important;
   }
 
   .row.equal {
@@ -253,5 +252,12 @@
   @media screen and (max-width: 768px) {
     #analyticsGrid{
       width: 100%;
+    }
+
+    #analyticsGrid,
+    #cardGrid {
+      padding-top: 20px;
+      padding-bottom: 20px;
+      text-align: center;
     }
   }

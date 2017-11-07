@@ -9,6 +9,30 @@
   <link rel="stylesheet" href="css/layout.css" type="text/css">
 </head>
     <body>
+         <!-- Modal -->
+         <div id="askQuestionModal" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <div class="container" id="askModalTitle"></div>
+                        <div class="container" id="questionTextArea">
+                            <div class="form-group">
+                                <textarea onkeyup="AutoGrowTextArea(this)" class="form-control" rows="1" id="questionText" placeholder="What is your question?"></textarea>
+                            </div>
+                            <p id="helpQuestion">Make your question as clear and thorough as possible.</p>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <a id="cancelQuestion" data-dismiss="modal">Cancel</a>
+                        <button id="sendQuestion" class="flat-butt flat-primary-butt flat-inner-butt
+                        flat-primary-inner-butt" href=""> Ask Question</button>
+                    </div>
+                </div>
+            
+            </div>
+        </div>
 
         <nav class="navbar navbar-default">
             <div class="container-fluid">
@@ -107,31 +131,6 @@
         <div id ="profileSection" class="notSelectedSection"> 
             <div class="container">
                 Profile
-            </div>
-        </div>
-
-        <!-- Modal -->
-        <div id="askQuestionModal" class="modal fade" role="dialog">
-            <div class="modal-dialog">
-                <!-- Modal content-->
-                <div class="modal-content">
-                    <div class="modal-body">
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        <div class="container" id="askModalTitle"></div>
-                        <div class="container" id="questionTextArea">
-                            <div class="form-group">
-                                <textarea onkeyup="AutoGrowTextArea(this)" class="form-control" rows="1" id="questionText" placeholder="What is your question?"></textarea>
-                            </div>
-                            <p id="helpQuestion">Make your question as clear and thorough as possible.</p>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <a id="cancelQuestion" data-dismiss="modal">Cancel</a>
-                        <button id="sendQuestion" class="flat-butt flat-primary-butt flat-inner-butt
-                        flat-primary-inner-butt" href=""> Ask Question</button>
-                    </div>
-                </div>
-            
             </div>
         </div>
 
