@@ -14,6 +14,7 @@
 #navbarItemProfile,
 #navbarItemAnswers {
     color: black;
+    font-size: 16px;
 }
 
 #navbarItemHome:hover,
@@ -29,19 +30,25 @@
  .navbar-default .navbar-nav > .active > a, 
  .navbar-default .navbar-nav > .active > a:hover, 
  .navbar-default .navbar-nav > .active > a:focus {
-    background: #BDC3C7;
+    background: rgb(202, 205, 207);
     border-radius: 6px;
     padding: 10px;
+    padding-left: 15px;
+    padding-right: 15px;
     margin: 5px 5px;
-    font-weight: bold;
+    font-weight: normal;
  }
 
  .navbar-default .navbar-nav>.open>a,
  .navbar-default .navbar-nav>.open>a:focus,
  .navbar-default .navbar-nav>.open>a:hover {
-    background:none;
-    border-bottom: 2px solid black;
-    font-weight: bold;
+    background: rgb(202, 205, 207);
+    border-radius: 6px;
+    padding: 10px;
+    padding-left: 15px;
+    padding-right: 15px;
+    margin: 5px 5px;
+    font-weight: normal;
 }
 
  #askifyLogoNameImg {
@@ -192,7 +199,7 @@
     padding-top: 20px;
     padding-bottom: 20px;
     border: none;
-    background: #BDC3C7;
+    background: rgb(202, 205, 207);
     margin: 15px 8px;
     box-shadow: 5px 5px grey;
     }
@@ -202,7 +209,7 @@
     padding-top: 20px;
     padding-bottom: 20px;
     border: none;
-    background: #BDC3C7;
+    background: rgb(202, 205, 207);
     margin: 15px 8px;
     margin-top: 35px;
     margin-bottom: 35px;
@@ -214,7 +221,7 @@
     padding-top: 20px;
     padding-bottom: 20px;
     border: none;
-    background: #BDC3C7;
+    background: rgb(202, 205, 207);
     margin: 15px 8px;
     box-shadow: 5px 5px grey;
     }
