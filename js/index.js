@@ -1,5 +1,6 @@
 var currentTopic = "";
 var currentUser = "";
+var selectedTutor = "";
 var currentWidthAnalytics = 0;
 
 $(window).on('resize', function() {
@@ -54,6 +55,18 @@ $(document).ready(function(){
         loadAnalyticsField("#analyticsFeed");
     });
 
+    $("#questionTextArea").hide();
+
+    $("#chosenTutorButton").on("click", function(){
+        chosenTutorButtonClicked();
+    });
+
+    $('#chooseTutorModal').on('hidden.bs.modal', function () {
+        var selectedTutor = "";
+        $("#questionTextArea").hide();
+        $("#chooseTutorArea").show();
+    });
+
     activateAffixListener("#analyticsFeed");
     
     // Load topics
@@ -65,6 +78,32 @@ $(document).ready(function(){
     // Load topics
     loadUserFullName();
 });
+
+function chosenTutorButtonClicked(){
+    $(".alert").alert('close');
+
+    if (selectedTutor == "") {
+        setTimeout(function() {
+            createDangerAlert("#chooseTutorGrid", "Choose tutor first", "tutorNotSelectedAlert");
+            $('#chooseTutorGrid').scrollTop(0); 
+        }, 300);  
+    }
+
+    else {
+
+        setTimeout(function() {
+            $("#chooseTutorArea").fadeOut( "slow", function() {
+                $("#modalInstruction").html(currentUser + " asks " + selectedTutor + " about <strong>" + currentTopic + " </strong>");
+                $("#questionTextArea").hide().fadeIn(200);
+                $(this).hide();
+              });
+        }, 200);  
+    }
+}
+
+function createDangerAlert(selectorId, alertMessage, alertId){
+    $(selectorId).prepend('<div class="alert alert-danger alert-dismissable fade in" id=" ' + alertId + '"> <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>' + alertMessage +'</div>');
+}
 
 function loadAnalyticsField(analyticsSelector){
     var visitedHTML = helperCreateAnalytics("visitedPanelHeading", "Most Visited Topic", getVisitedTopic());
@@ -151,6 +190,51 @@ function getTopicCards(){
           ];
 }
 
+function getListTutorsByTopic(topicName){
+    // use topicName for query
+    return [{
+                firstName: "Paulina",
+                lastName:"Escalante",
+                username: "paupau",
+                userImage:"Media/userImage.jpg",
+                userCareer: "Computer Science",
+                userGraduationDate: "December 2018",
+                userRating: "4.0"},
+            {
+                firstName: "Patricio",
+                lastName:"Sanchez",
+                username: "patpat",
+                userImage:"Media/userImage.jpg",
+                userCareer: "Computer Science",
+                userGraduationDate: "May 2018",
+                userRating: "4.3"},
+            {
+                firstName: "Juan",
+                lastName:"Medellin",
+                username: "juajua",
+                userImage:"Media/userImage.jpg",
+                userCareer: "Robotics",
+                userGraduationDate: "May 2014",
+                userRating: "2.7"},
+            {
+                firstName: "Javier",
+                lastName:"Guajardo",
+                username: "javjav",
+                userImage:"Media/userImage.jpg",
+                userCareer: "Computer Science",
+                userGraduationDate: "May 2016",
+                userRating: "4.7"},
+            {
+                firstName: "Monica",
+                lastName:"Perez",
+                username: "monmon",
+                userImage:"Media/userImage.jpg",
+                userCareer: "Information Technology",
+                userGraduationDate: "May 2019",
+                userRating: "3.7"}
+            ];
+}
+
 function loadTopicCards(){
     listTopics = getTopicCards();
 
@@ -166,16 +250,133 @@ function loadTopicCards(){
     $("[name='askQuestionButton']").on("click", function() {
         var identifierTopicName = "#" + this.id + "TopicName";
         currentTopic = $(identifierTopicName).text();
-        $("#askModalTitle").html("");
-        $("#askModalTitle").prepend("<p class='introQuestion'>" + currentUser + " asks about <strong>" + currentTopic + "</strong></p>");
-        $("#questionText").val("");
-        $("#questionText").height('auto');
+        triggerAskQuestionModal(currentTopic);
     });
 }
 
+function createStarRating(userRating){
+    var star1 = (userRating >= 1 ? " checked": "");
+    var star2 = (userRating >= 2 ? " checked": "");
+    var star3 = (userRating >= 3 ? " checked": "");
+    var star4 = (userRating >= 4 ? " checked": "");
+    var star5 = (userRating >= 5 ? " checked": "");
+
+    var buildStarHTML = '<span class="fa fa-star' + star1 + '"></span> <span class="fa fa-star' + star2 + '"></span> <span class="fa fa-star' + star3 + '"></span> <span class="fa fa-star' + star4 + '"></span> <span class="fa fa-star' + star5 + '"></span>';
+    return buildStarHTML;
+}
+
+function triggerAskQuestionModal(currentTopic){
+    // Create title instruction
+    $("#chooseModalTitle").html("");
+    $("#chooseModalTitle").prepend("<p class='introQuestion' id='modalInstruction'>Choose a tutor to ask about <strong>" + currentTopic + " </strong></p>");
+    $("#questionText").val("");
+    $("#questionText").height('auto');
+    selectedTutor = "";
+
+    createTutorList();
+
+    $("[name='tutorCard']").on("click", function() {
+        $(".alert").alert('close');
+        var identifierUsername = this.id;
+        if (selectedTutor != ""){
+            $("#" + selectedTutor).css("background", "none");
+        }
+
+        if (selectedTutor == identifierUsername){
+            $("#" + identifierUsername).css("background", "none");
+            selectedTutor = "";
+        }
+
+        else {
+            setTimeout(function () {
+                $("#" + identifierUsername).css("background-color", "rgba(52, 152, 219, 0.937)");
+                selectedTutor = identifierUsername;
+            }, 100);
+        }  
+    });
+}
+
+function createTutorList(){
+    // Create tutor list by topic
+    var listTutors = getListTutorsByTopic(currentTopic);
+    var numberTutors = listTutors.length;
+    var tutorCounter = 0;
+    
+    // 3 tutors per line
+    var numberRowsTutors = Math.ceil(numberTutors/3);
+    var lastRowNumberTutors = numberTutors%3;
+
+    // Fill in all rows except last one
+    for (i = 0; i < (numberRowsTutors-1); i++) { 
+        var rowId = "tutorRow" + i;
+        var rowHTML = createTutorRow(rowId);
+
+        // Append row to container
+        $('#chooseTutorGrid').html("");
+        $("#chooseTutorGrid").append(rowHTML);
+
+        // Create columns - should be 3
+        var rowCol1Id = rowId + "tutorCol1";
+        var rowCol2Id = rowId + "tutorCol2";
+        var rowCol3Id = rowId + "tutorCol3";
+    
+        var columnsJson = {
+            column1HTML: '<div class="col-sm-4" id="' + rowCol1Id + '"></div>',
+            column2HTML: '<div class="col-sm-4" id="' + rowCol2Id + '"></div>',
+            column3HTML: '<div class="col-sm-4" id="' + rowCol3Id + '"></div>'
+        };
+
+        // Append columns to row
+        $("#" + rowId).append(columnsJson.column1HTML);
+        $("#" + rowId).append(columnsJson.column2HTML);
+        $("#" + rowId).append(columnsJson.column3HTML);
+
+        // Fill columns with information for tutors
+        $("#" + rowCol1Id).html(helperCreateTutorCardHTML(listTutors[tutorCounter]));
+        tutorCounter++;
+        $("#" + rowCol2Id).html(helperCreateTutorCardHTML(listTutors[tutorCounter]));
+        tutorCounter++;
+        $("#" + rowCol3Id).html(helperCreateTutorCardHTML(listTutors[tutorCounter]));
+        tutorCounter++;
+    }
+
+    setTimeout(function () {
+        $('#chooseTutorGrid').scrollTop(0); 
+    }, 200);
+
+    // FIll in last row
+    if((lastRowNumberTutors != 0) || (numberTutors == 3)) {
+        var lastRowId = "tutorRow" + (numberRowsTutors+1);
+        var lastRowHTML = createTutorRow(lastRowId);
+        
+        // Append row to container
+        $("#chooseTutorGrid").append(lastRowHTML);
+
+        for (i = 1; i <= (lastRowNumberTutors == 0 ? numberTutors : lastRowNumberTutors); i++) {
+            var rowColId = lastRowId + "tutorCol" + i;
+            var columnHTML = '<div class="col-sm-4" id="' + rowColId + '" name="tutorColumn"></div>';
+
+            // Append columns to row
+            $("#" + lastRowId).append(columnHTML);
+            $("#" + rowColId).html(helperCreateTutorCardHTML(listTutors[tutorCounter]));
+            tutorCounter++;
+        }
+    }
+}
+
+function helperCreateTutorCardHTML(tutorDataJson){
+    var tutorCardHTML = '<div class="card" name="tutorCard" id="' + tutorDataJson.username + '"> <div class="card-body"> <img class="card-img-top" name="tutorImage" src="' + tutorDataJson.userImage + '" alt=""> <h5 class="card-title" name="tutorNameHeading"> '+ tutorDataJson.firstName + " " + tutorDataJson.lastName + '</h5> <p name="starRating">' + createStarRating(tutorDataJson.userRating) + '</p>  <p name="numberRating">(' + tutorDataJson.userRating + '/5.0)</p><p class="card-text" name="tutorCardDescription">' + tutorDataJson.userCareer  + '</p></div></div>';
+    return tutorCardHTML;
+}
+
+function createTutorRow(rowId){
+    var buildRowHTML = '<div class="row equal" id="' + rowId + '" name="tutorRow">';
+    return buildRowHTML;
+}
+
 function helperCreateCardHTML(topicData, idNumber){
-        var buildHTML = '<div class="well"> <div class="card"> <div class="card-body"> <img class="card-img-top" src="' + topicData.topicImage + '" alt=""> <h4 class="card-title" id="askTopic'+ idNumber +'TopicName">' + topicData.topicName + '</h4> <p class="card-text">' + topicData.topicDescription + '</p> <button id="askTopic' + idNumber + '"class="flat-butt flat-info-butt flat-inner-butt flat-info-inner-butt" data-toggle="modal" name="askQuestionButton" data-target="#askQuestionModal">Ask Question</button> </div> </div> </div>';
-        return buildHTML;
+    var buildHTML = '<div class="well"> <div class="card"> <div class="card-body"> <img class="card-img-top" src="' + topicData.topicImage + '" alt=""> <h4 class="card-title" id="askTopic'+ idNumber +'TopicName">' + topicData.topicName + '</h4> <p class="card-text">' + topicData.topicDescription + '</p> <button id="askTopic' + idNumber + '"class="flat-butt flat-info-butt flat-inner-butt flat-info-inner-butt" data-toggle="modal" name="askQuestionButton" data-target="#chooseTutorModal">Ask Question</button> </div> </div> </div>';
+    return buildHTML;
 }
 
 function AutoGrowTextArea(textField){

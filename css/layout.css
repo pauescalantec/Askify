@@ -6,6 +6,11 @@
     padding: 10px;
   }
 
+.container-fluid {
+  padding: 6px;
+  margin-left: 6px;
+}
+
 #navbarItemHome,
 #navbarItemNotifications,
 #navbarItemDropdown,
@@ -14,7 +19,7 @@
 #navbarItemProfile,
 #navbarItemAnswers {
     color: black;
-    font-size: 16px;
+    font-size: 15px;
 }
 
 #navbarItemHome:hover,
@@ -51,6 +56,44 @@
     font-weight: normal;
 }
 
+#custom-search-input{
+  margin-bottom: 3px;
+  padding: 3px;
+  border: solid 1px #E4E4E4;
+  border-radius: 6px;
+  background-color: #fff;
+}
+
+#custom-search-input input{
+  border: 0;
+  box-shadow: none;
+  
+}
+
+#custom-search-input button{
+  margin: 2px 0 0 0;
+  background: none;
+  box-shadow: none;
+  border: 0;
+  color: #666666;
+  padding: 0 8px 0 10px;
+  border-left: solid 1px #ccc;
+}
+
+#custom-search-input button:hover{
+  border: 0;
+  box-shadow: none;
+  border-left: solid 1px #ccc;
+}
+
+#custom-search-input .glyphicon-search{
+  font-size: 12px;
+}
+
+#searchField {
+  font-size: 13px;
+}
+
  #askifyLogoNameImg {
      padding-right: 5px; 
  }
@@ -64,12 +107,12 @@
   }
 
   .card-img-top {
-      width:100%;
-      max-width: 250px;
-      margin-bottom: 10px;
-      border-radius: 6px;
-      box-shadow: 6px 6px grey; 
-     }
+    width:100%;
+    max-width: 250px;
+    margin-bottom: 10px;
+    border-radius: 6px;
+    box-shadow: 6px 6px grey; 
+    }
 
   #analyticsGrid,
   #cardGrid {
@@ -134,14 +177,21 @@
   }
   
   .modal-dialog {
+    margin-top: 8%;
     display: inline-block;
     text-align: left;
-    vertical-align: middle;
+    vertical-align: top;
     box-shadow: 12px 12px;
     -moz-box-shadow: 12px 12px;
     -webkit-box-shadow: 12px 12px ;
     -o-box-shadow: 12px 12px;
     border-radius:10px;
+  }
+
+  .alert{
+    padding-top:5px;
+    padding-bottom:5px;
+    margin-bottom:5px;
   }
 
   #askModalTitle {
@@ -150,6 +200,13 @@
       margin: 12px 8px;
       margin-bottom: 0px;
   }
+
+  #chooseModalTitle {
+    color: #7F8C8D;
+    width: 90%;
+    margin: 12px 8px;
+    margin-bottom: 0px;
+}
 
   #cancelQuestion {
     color: grey;
@@ -169,6 +226,7 @@
   #questionTextArea {
     width: 90%;
     margin: 12px 8px;
+    transition: visibility 0s, opacity 0.5s linear;
   }
 
   .form-control {
@@ -184,14 +242,16 @@
     box-shadow: none !important;
     border-radius: 0;
   }
-
+  #chosenTutorButton,
   #sendQuestion {
       display: inline-block;
       width: 25%;
   }
 
   .introQuestion {
-      margin-bottom: 0px;
+    color:black;
+    font-size: 15px;
+    margin-bottom: 0px;
   }
 
   #visitedPanelHeading {
@@ -247,6 +307,64 @@
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     box-sizing: border-box;
+  }
+
+  #chooseTutorGrid {
+    max-height: 320px;
+    overflow: scroll; 
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+
+  #chooseTutorArea {
+    width: 95%;
+    margin: 15px 15px;
+    margin-top: 20px;
+    text-align: center;
+    transition: visibility 0s, opacity 0.5s linear;
+  }
+
+  p[name=tutorCardDescription] {
+    font-size: 11.5px;
+  }
+
+  p[name=numberRating] {
+    font-size: 10px;
+    margin-bottom: 3px;
+    color: rgb(92, 97, 97);
+  }
+
+  div[name=tutorRow] {
+    margin-top: 5px;
+  }
+
+  h5[name=tutorNameHeading],
+  p[name=starRating] {
+    margin-top: 3px;
+    margin-bottom: 1px;
+  }
+
+  div[name=tutorCard]{
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 4px;
+    padding-right: 4px;
+    border-radius: 5px;
+  }
+
+  div[name=tutorCard]:hover{
+    background: rgb(202, 205, 207);
+  }
+
+  img[name=tutorImage]{
+    width:90%;
+    margin-bottom: 5px;
+    border-radius: 50%;
+    box-shadow: 0px 0px; 
+  }
+
+  .checked {
+      color: orange;
   }
 
   @media screen and (max-width: 768px) {
