@@ -199,6 +199,15 @@
     margin-bottom:5px;
   }
 
+  .alert-success {
+    padding-top: 15px;
+    padding-bottom: 15px;
+  }
+
+  #searchFieldTutors {
+    font-size: 15px;
+  }
+
   #askModalTitle {
       color: grey;
       width: 90%;

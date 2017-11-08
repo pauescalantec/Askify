@@ -90,7 +90,7 @@ $(document).ready(function(){
         $("#chosenTutorButton").show();
     });
 
-    $('#resizer').on( 'change keyup keydown paste cut', 'textarea', function (){
+    $('#resizer').on( 'change keyup keydown paste cut', 'textarea', function (event){
         $(".alert").alert('close');
         $(this).height(0).height(this.scrollHeight-12);
     }).find( 'textarea' ).change();
@@ -118,7 +118,18 @@ function sendQuestionButtonClicked(){
 
     // Question and topic validated
     else {
-        postQuestionToTutor();
+        var postSuccessful = true;
+
+        if(postSuccessful){
+            postQuestionToTutor();
+        }
+
+        else {
+            setTimeout(function() {
+                createDangerAlert("#questionTextArea", "Error connecting to server. Try again later.", "questionNotPostedAlert");
+            }, 300);  
+        }
+
     }
 }
 
