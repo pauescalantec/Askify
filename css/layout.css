@@ -135,15 +135,8 @@
     cursor: pointer;
     outline: 0;
   }
-  .flat-butt:hover {
-    background: #005580;
-  }
-
   .flat-info-butt {
     background: #3498db;
-  }
-  .flat-info-butt:hover {
-    background: #5dade2;
   }
   .flat-inner-butt {
     padding: 9px 0px;
@@ -152,18 +145,30 @@
   .flat-info-inner-butt {
     box-shadow: inset #2980B9 -3px -3px 0px;
   }
-
   .flat-primary-butt {
     background: #1abc9c;
   }
-  .flat-primary-butt:hover {
-    background: #2fe2bf;
+  .flat-primary-butt:disabled {
+    background: #176e5d;
+    color: grey;
+    box-shadow: inset rgb(10, 68, 56) -3px -3px 0px;
   }
   .flat-primary-inner-butt {
     background: #1ABC9C;
     box-shadow: inset #16A085 -3px -3px 0px;
   }
-
+  .flat-previous-butt {
+    background: #8e9997;
+  }
+  .flat-previous-butt:disabled {
+    background: #4d5251;
+    color: grey;
+    box-shadow: inset #353837 -3px -3px 0px;
+  }
+  .flat-previous-inner-butt {
+    background: #8e9997;
+    box-shadow: inset #5d6362 -3px -3px 0px;
+  }
   .modal {
     text-align: center;
     padding: 0!important;
@@ -189,8 +194,8 @@
   }
 
   .alert{
-    padding-top:5px;
-    padding-bottom:5px;
+    padding-top: 7px;
+    padding-bottom:7px;
     margin-bottom:5px;
   }
 
@@ -249,7 +254,7 @@
   }
 
   .introQuestion {
-    color:black;
+    color:rgb(88, 88, 88);
     font-size: 15px;
     margin-bottom: 0px;
   }
@@ -356,6 +361,10 @@
     background: rgb(202, 205, 207);
   }
 
+  div.unselected:hover {
+    background: rgb(202, 205, 207) !important;
+  }
+
   img[name=tutorImage]{
     width:90%;
     margin-bottom: 5px;
@@ -365,6 +374,16 @@
 
   .checked {
       color: orange;
+  }
+
+  .analyticsDataField {
+    margin-top: 15px;
+  }
+  #sendQuestionButton,
+  #backToTutors {
+    transition: visibility 0s, opacity 0.5s linear;
+    display: inline-block;
+    width: 25%;
   }
 
   @media screen and (max-width: 768px) {

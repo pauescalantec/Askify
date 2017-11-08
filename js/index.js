@@ -56,16 +56,44 @@ $(document).ready(function(){
     });
 
     $("#questionTextArea").hide();
+    $("#backToTutors").hide();
+    $("#sendQuestionButton").hide();
+    $("#chosenTutorButton").show();
+    $('#cancelQuestion').prop('disabled', false);
+    $('#sendQuestionButton').prop('disabled', false);
+    $('#backToTutors').prop('disabled', false);
+    $("#sendQuestionButton").text("Send Question");
 
     $("#chosenTutorButton").on("click", function(){
         chosenTutorButtonClicked();
     });
 
+    $("#backToTutors").on("click", function(){
+        backToTutorsButtonClicked();
+    });
+
+    $("#sendQuestionButton").on("click", function(){
+        sendQuestionButtonClicked();
+    });
+
     $('#chooseTutorModal').on('hidden.bs.modal', function () {
         var selectedTutor = "";
+        $('#sendQuestionButton').prop('disabled', false);
+        $('#backToTutors').prop('disabled', false);
+        $('#cancelQuestion').prop('disabled', false);
+        $("#sendQuestionButton").text("Send Question");
+        $("#questionText").val("");
         $("#questionTextArea").hide();
+        $("#backToTutors").hide();
+        $("#sendQuestionButton").hide();
         $("#chooseTutorArea").show();
+        $("#chosenTutorButton").show();
     });
+
+    $('#resizer').on( 'change keyup keydown paste cut', 'textarea', function (){
+        $(".alert").alert('close');
+        $(this).height(0).height(this.scrollHeight-12);
+    }).find( 'textarea' ).change();
 
     activateAffixListener("#analyticsFeed");
     
@@ -79,6 +107,65 @@ $(document).ready(function(){
     loadUserFullName();
 });
 
+function sendQuestionButtonClicked(){
+    $(".alert").alert('close');
+    
+    if(!$("#questionText").val()){
+        setTimeout(function() {
+            createDangerAlert("#questionTextArea", "Type your question below", "questionNotTypedAlert");
+        }, 300);  
+    }
+
+    // Question and topic validated
+    else {
+        postQuestionToTutor();
+    }
+}
+
+function postQuestionToTutor(){
+    var questionTextPost = $("#questionText").val();
+    var selectedTutorPost = selectedTutor;
+    var selectedTopicPost = currentTopic;
+
+    // Post question here
+
+    // After successful posting
+    currentTopic = "";
+    selectedTutor = "";
+
+    // Goodbye modal
+    $('#sendQuestionButton').prop('disabled', true);
+    $('#backToTutors').prop('disabled', true);
+    $('#cancelQuestion').prop('disabled', true);
+    $("#sendQuestionButton").text("Sending...");
+    $(".alert").alert('close');
+
+    setTimeout(function() {
+        $('#chooseTutorModal').modal('toggle');
+        $('html, body').stop().animate({
+            scrollTop: $("#top").offset().top
+        }, 600);
+        //$(window).scrollTop(0);
+
+        // Create success alert
+        createSuccessAlert("#homeAlertContainer", "You asked a question about <strong>" +  selectedTopicPost + "</strong> to <strong>" + getFullNameFromUsername(selectedTutorPost) + "</strong>", "questionPostedAlert");
+    }, 1300);  
+
+}
+
+function backToTutorsButtonClicked(){
+    var selectedTutor = "";
+    $('#cancelQuestion').prop('disabled', false);
+    $('#sendQuestionButton').prop('disabled', false);
+    $('#backToTutors').prop('disabled', false);
+    $("#sendQuestionButton").text("Send Question");
+    $("#questionTextArea").hide();
+    $("#backToTutors").hide();
+    $("#sendQuestionButton").hide();
+    $("#chooseTutorArea").show();
+    $("#chosenTutorButton").show();
+}
+
 function chosenTutorButtonClicked(){
     $(".alert").alert('close');
 
@@ -89,20 +176,31 @@ function chosenTutorButtonClicked(){
         }, 300);  
     }
 
+    // Tutor is chosen show next modal
     else {
-
         setTimeout(function() {
-            $("#chooseTutorArea").fadeOut( "slow", function() {
-                $("#modalInstruction").html(currentUser + " asks " + selectedTutor + " about <strong>" + currentTopic + " </strong>");
-                $("#questionTextArea").hide().fadeIn(200);
+            // Fade out from tutor list
+            $("#chooseTutorArea").fadeOut( 30, function() {
+                $("#chosenTutorButton").fadeOut( 5, function() {
+                    $("#sendQuestionButton").hide().fadeIn(100);
+                });
+
+                $("#modalInstruction").html(currentUser + " asks " + getFullNameFromUsername(selectedTutor) + " about <strong>" + currentTopic + " </strong>");
+                $("#questionTextArea").hide().fadeIn(120);
+                $("#backToTutors").hide().fadeIn(100);
                 $(this).hide();
               });
-        }, 200);  
+
+        }, 100);   
     }
 }
 
 function createDangerAlert(selectorId, alertMessage, alertId){
     $(selectorId).prepend('<div class="alert alert-danger alert-dismissable fade in" id=" ' + alertId + '"> <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>' + alertMessage +'</div>');
+}
+
+function createSuccessAlert(selectorId, alertMessage, alertId){
+    $(selectorId).prepend('<div class="alert alert-success alert-dismissable fade in" id=" ' + alertId + '"> <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>' + alertMessage +'</div>');
 }
 
 function loadAnalyticsField(analyticsSelector){
@@ -140,6 +238,18 @@ function getFavoriteTopic(){
 
 function getHighestTutor(){
     return "Cristina Jimenez";
+}
+
+function getFullNameFromUsername(username){
+    var userFullName = {
+        "paupau" : "Paulina Escalante",
+        "patpat" : "Patricio Sanchez",
+        "juajua" : "Juan Medellin",
+        "javjav" : "Javier Guajardo",
+        "monmon" : "Monica Perez"
+    };
+
+    return userFullName[username];
 }
 
 function getVisitedTopic(){
@@ -248,6 +358,7 @@ function loadTopicCards(){
     }
 
     $("[name='askQuestionButton']").on("click", function() {
+        $(".alert").alert('close');
         var identifierTopicName = "#" + this.id + "TopicName";
         currentTopic = $(identifierTopicName).text();
         triggerAskQuestionModal(currentTopic);
@@ -278,20 +389,31 @@ function triggerAskQuestionModal(currentTopic){
     $("[name='tutorCard']").on("click", function() {
         $(".alert").alert('close');
         var identifierUsername = this.id;
+
+        // Another tutor was selected
         if (selectedTutor != ""){
-            $("#" + selectedTutor).css("background", "none");
+            //Remove previous tutor selection
+            $("#" + selectedTutor).removeClass("selected");
+            $("#" + selectedTutor).addClass("unselected");
+            $("#" + selectedTutor).css("background-color", "transparent");
         }
 
         if (selectedTutor == identifierUsername){
-            $("#" + identifierUsername).css("background", "none");
+            $("#" + identifierUsername).css("background-color", "transparent");
+            $("#" + identifierUsername).removeClass("selected");
+            $("#" + identifierUsername).addClass("unselected");
             selectedTutor = "";
         }
 
         else {
             setTimeout(function () {
                 $("#" + identifierUsername).css("background-color", "rgba(52, 152, 219, 0.937)");
+
+                // new tutor
+                $("#" + identifierUsername).removeClass("unselected");
+                $("#" + identifierUsername).addClass("selected");
                 selectedTutor = identifierUsername;
-            }, 100);
+            }, 50);
         }  
     });
 }
@@ -379,19 +501,7 @@ function helperCreateCardHTML(topicData, idNumber){
     return buildHTML;
 }
 
-function AutoGrowTextArea(textField){
-  if (textField.clientHeight < textField.scrollHeight)
-  {
-    textField.style.height = textField.scrollHeight + "px";
-    if (textField.clientHeight < textField.scrollHeight)
-    {
-      textField.style.height = 
-        (textField.scrollHeight * 2 - textField.clientHeight) + "px";
-    }
-  }
-}
-
 function helperCreateAnalytics(idField, titleField, dataField){
-    var analyticsHTML = '<div id="' + idField + '" class="well" name="analyticsWells"> <h4>' + titleField + '</h4><p>' + dataField + '</p> </div>';
+    var analyticsHTML = '<div id="' + idField + '" class="well" name="analyticsWells"> <h4>' + titleField + '</h4><p class="analyticsDataField">' + dataField + '</p> </div>';
     return analyticsHTML;
 }

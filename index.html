@@ -10,25 +10,7 @@
   <link rel="stylesheet" href="css/layout.css" type="text/css">
 </head>
     <body>
-         <!-- Question Modal -->
-         <div id="askQuestionModal" class="modal fade" role="dialog">
-            <div class="modal-dialog">
-                <!-- Modal content-->
-                <div class="modal-content">
-                    <div class="modal-body">
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        <div class="container" id="askModalTitle"></div>
-                    </div>
-                    <div class="modal-footer">
-                        <a id="cancelQuestion" data-dismiss="modal">Cancel</a>
-                        <button id="sendQuestion" class="flat-butt flat-primary-butt flat-inner-butt
-                        flat-primary-inner-butt" href="" > Ask Question</button>
-                    </div>
-                </div>
-            
-            </div>
-        </div>
-
+        <div id="top"></div>
          <!-- Question Modal -->
          <div id="chooseTutorModal" class="modal fade" role="dialog">
                 <div class="modal-dialog">
@@ -52,16 +34,20 @@
                                 </div>
                             </div>
                             <div class="container" id="questionTextArea">
-                                <div class="form-group">
-                                    <textarea onkeyup="AutoGrowTextArea(this)" class="form-control" rows="1" id="questionText" placeholder="What is your question?"></textarea>
+                                <div class="form-group" id="resizer">
+                                    <textarea class="form-control" rows="1" id="questionText" placeholder="What is your question?"></textarea>
                                 </div>
                                 <p id="helpQuestion">Make your question as clear and thorough as possible.</p>
                             </div>
                         </div>
                         <div class="modal-footer">
                             <a id="cancelQuestion" data-dismiss="modal">Cancel</a>
+                            <button id="backToTutors" class="flat-butt flat-previous-butt flat-inner-butt
+                            flat-previous-inner-butt" href=""> Back to Tutors</button>
                             <button id="chosenTutorButton" class="flat-butt flat-primary-butt flat-inner-butt
                             flat-primary-inner-butt" href="">Ask Question</button>
+                            <button id="sendQuestionButton" class="flat-butt flat-primary-butt flat-inner-butt
+                            flat-primary-inner-butt" href=""> Send Question</button>
                         </div>
                     </div>
                 
@@ -107,7 +93,7 @@
         </nav>
 
         <div id ="homeSection" class="selectedSection"> 
-            <div class="container">
+            <div class="container" id="homeAlertContainer">
                 <div class="row equal">
                     <div class="col-sm-9" id="cardGrid">
                         <div class="row equal" id="row1">
