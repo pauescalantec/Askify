@@ -22,6 +22,10 @@
     font-size: 15px;
 }
 
+.answers {
+  margin-left: 10px;
+}
+
 #navbarItemHome:hover,
 #navbarItemNotifications:hover,
 #navbarItemDropdown:hover,
@@ -30,6 +34,11 @@
 #navbarItemProfile:hover,
 #navbarItemAnswers:hover {
     font-weight: bold;
+}
+
+.nav-pills>li.active>a, .nav-pills>li.active>a:focus, .nav-pills>li.active>a:hover {
+  color: #fff !important; 
+  background-color: #337ab7 !important;
 }
 
  .navbar-default .navbar-nav > .active > a, 
@@ -303,12 +312,6 @@
   .affix {
     top: 20px;
   }
-
-  .row.equal {
-    display: flex;
-    flex-wrap: wrap;
-  }
-
   .cards {
     display: -webkit-flex;
     display: flex;
@@ -395,6 +398,63 @@
     width: 25%;
   }
 
+  .sidenav {
+    height: 100%;
+    padding-top: 0px;    
+  }
+
+  .row.content {
+    height: 1500px
+  }
+
+  .answerSidebar{
+    padding: 10px;
+    border-radius: 4px;
+  }
+
+  .answerSidebar:hover{
+    color: #3498db;
+    padding: 10px;
+    border-radius: 4px;
+  }
+
+  li[name=answerRequest] {
+    padding:20px;
+    overflow: auto;
+  }
+
+  p[name=answerRequestSubjectHeader] {
+    display: inline-block;
+    color: grey;
+  }
+
+  p[name=answerRequestUserHeader] {
+    display: inline-block;
+    color: grey;
+  }
+
+  h4[name=answerRequestQuestion] {
+    padding-top: 0px;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    font-size: 21px;
+  }
+
+  #answerRequestsHeader {
+    font-size: 17px;
+    font-weight: bold;
+  }
+
+  button[name=answerQuestionRequestButton] {
+    width: 120px;
+    float: right; 
+  }
+
+  .previousAnswerLink,
+  .previousAnswerLink:hover {
+    color: black;
+  }
+
   @media screen and (max-width: 768px) {
     #analyticsGrid{
       width: 100%;
@@ -406,4 +466,14 @@
       padding-bottom: 20px;
       text-align: center;
     }
+
+    .sidenav {
+      height: auto;
+      padding: 15px;
+      padding-top: 0px;
+    }
+    .row.content{
+      height: auto;
+    } 
   }
+

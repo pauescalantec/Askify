@@ -7,40 +7,41 @@
   <link rel="icon" href="media/browserIcon.ico">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="media/font-awesome/css/font-awesome.min.css">
   <link rel="stylesheet" href="css/layout.css" type="text/css">
 </head>
     <body>
         <div id="top"></div>
          <!-- Question Modal -->
          <div id="chooseTutorModal" class="modal fade" role="dialog">
-                <div class="modal-dialog">
-                    <!-- Modal content-->
-                    <div class="modal-content">
-                        <div class="modal-body" id="modalBodyContainer">
-                            <button type="button" class="close" data-dismiss="modal">&times;</button>
-                            <div class="container" id="chooseModalTitle"></div>
-                            <div class="container" id="chooseTutorArea">
-                                <div id="custom-search-input">
-                                    <div class="input-group col-md-12">
-                                        <input id="searchFieldTutors" type="text" class="form-control" placeholder="Find tutors" />
-                                        <span class="input-group-btn">
-                                            <button id="startSearch" class="btn btn-info btn-lg" type="button">
-                                                <i class="glyphicon glyphicon-search"></i>
-                                            </button>
-                                        </span>
-                                    </div>
-                                </div>
-                                <div class="well" id="chooseTutorGrid">
+            <div class="modal-dialog">
+                 <div class="modal-content">
+                    <div class="modal-body" id="modalBodyContainer">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <div class="container" id="chooseModalTitle">
+                        </div>
+                        <div class="container" id="chooseTutorArea">
+                            <div id="custom-search-input">
+                                <div class="input-group col-md-12">
+                                    <input id="searchFieldTutors" type="text" class="form-control" placeholder="Find tutors" />
+                                    <span class="input-group-btn">
+                                        <button id="startSearch" class="btn btn-info btn-lg" type="button">
+                                            <i class="glyphicon glyphicon-search"></i>
+                                        </button>
+                                    </span>
                                 </div>
                             </div>
-                            <div class="container" id="questionTextArea">
-                                <div class="form-group" id="resizer">
-                                    <textarea class="form-control" rows="1" id="questionText" placeholder="What is your question?"></textarea>
-                                </div>
-                                <p id="helpQuestion">Make your question as clear and thorough as possible.</p>
+                            <div class="well" id="chooseTutorGrid">
                             </div>
                         </div>
-                        <div class="modal-footer">
+                        <div class="container" id="questionTextArea">
+                            <div class="form-group" id="resizer">
+                                <textarea class="form-control" rows="1" id="questionText" placeholder="What is your question?"></textarea>
+                            </div>
+                            <p id="helpQuestion">Make your question as clear and thorough as possible.</p>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
                             <a id="cancelQuestion" data-dismiss="modal">Cancel</a>
                             <button id="backToTutors" class="flat-butt flat-previous-butt flat-inner-butt
                             flat-previous-inner-butt" href=""> Back to Tutors</button>
@@ -48,11 +49,10 @@
                             flat-primary-inner-butt" href="">Ask Question</button>
                             <button id="sendQuestionButton" class="flat-butt flat-primary-butt flat-inner-butt
                             flat-primary-inner-butt" href=""> Send Question</button>
-                        </div>
                     </div>
-                
-                </div>
+                </div>  
             </div>
+        </div>
 
         <nav class="navbar navbar-default">
             <div class="container-fluid">
@@ -70,12 +70,10 @@
                     <ul class="nav navbar-nav" >
                         <li class="active home"><a href="#" id="navbarItemHome" class="home">
                             <span class="glyphicon glyphicon-th"></span> Home</a></li>
-                        <li class="questions"><a href="#" id="navbarItemQuestions">
-                            <span class="glyphicon glyphicon-list-alt"></span> Questions</a></li>
                         <li class="answers"><a href="#" id="navbarItemAnswers">
-                            <span class="glyphicon glyphicon-pencil"></span> Answers</a></li>
+                            <span class="fa fa-pencil-square-o fa-lg"></span> Answer <span id="requestsCount" class="label label-danger"></span></a></li>
                         <li class="notifications"><a href="#" id="navbarItemNotifications">
-                            <span class="glyphicon glyphicon-bell"></span> Notifications</a></li>
+                            <span class="fa fa-bell-o fa-lg"></span> Notifications</a></li>
                     </ul>
                     <ul id="rightMenu" class="nav navbar-nav navbar-right">
                         <li class="dropdown">
@@ -83,8 +81,9 @@
                                 <span id="navbarItemProfile" class="glyphicon glyphicon-user"></span> Profile
                             </a>
                             <ul class="dropdown-menu">
-                                <li class="options"><a id="viewProfileButton">View Profile</a></li>
-                                <li class="options"><a id="logoutButton">Log Out</a></li>
+                                <li class="profile"><a id="viewProfileButton">View Profile</a></li>
+                                <li class="questions"><a id="viewProfileButton">My Questions</a></li>
+                                <li><a id="logoutButton">Log Out</a></li>
                             </ul>
                         </li>
                     </ul>
@@ -94,9 +93,9 @@
 
         <div id ="homeSection" class="selectedSection"> 
             <div class="container" id="homeAlertContainer">
-                <div class="row equal">
+                <div class="row">
                     <div class="col-sm-9" id="cardGrid">
-                        <div class="row equal" id="row1">
+                        <div class="row" id="row1">
                             <div class="col-sm-4" id="topic1">
                             </div>
                             <div class="col-sm-4" id="topic2">
@@ -104,7 +103,7 @@
                             <div class="col-sm-4" id="topic3">
                             </div>
                         </div> 
-                        <div class="row equal" id="row2">
+                        <div class="row" id="row2">
                             <div class="col-sm-4" id="topic4">
                             </div>
                             <div class="col-sm-4" id="topic5">
@@ -112,7 +111,7 @@
                             <div class="col-sm-4" id="topic6">
                             </div>
                         </div> 
-                        <div class="row equal" id="row1">
+                        <div class="row" id="row1">
                             <div class="col-sm-4" id="topic7">
                             </div>
                             <div class="col-sm-4" id="topic8">
@@ -130,15 +129,26 @@
             </div>
         </div>
 
-        <div id ="questionsSection" class="notSelectedSection"> 
-            <div class="container">
-                Questions
-            </div>
-        </div>
-
         <div id ="answersSection" class="notSelectedSection"> 
             <div class="container">
-                Answers
+                <div class="row content">
+                    <div class="col-sm-3 sidenav">
+                        <h4>Answers</h4>
+                        <ul class="nav nav-pills nav-stacked">
+                        <li class="nav-divider"></li>
+                        <li class="answerSidebar" id="answerRequestsSidebarButton">Answer Requests
+                            <span id="requestsCountSidebar" class="label label-danger">
+                        </li>
+                        <li class="answerSidebar" id="previousAnswersSidebarButton">Previous Answers</li>
+                        </ul>
+                    </div>
+                    <div class="col-sm-9">
+                        <div class="well">
+                            <ul class="list-group" id="answersList">
+                            </ul>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -151,6 +161,12 @@
         <div id ="profileSection" class="notSelectedSection"> 
             <div class="container">
                 Profile
+            </div>
+        </div>
+
+        <div id ="questionsSection" class="notSelectedSection"> 
+            <div class="container">
+                Questions
             </div>
         </div>
 
