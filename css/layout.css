@@ -22,10 +22,6 @@
     font-size: 15px;
 }
 
-.answers {
-  margin-left: 10px;
-}
-
 #navbarItemHome:hover,
 #navbarItemNotifications:hover,
 #navbarItemDropdown:hover,
@@ -448,6 +444,7 @@
   button[name=answerQuestionRequestButton] {
     width: 120px;
     float: right; 
+    margin-top: 10px;
   }
 
   .previousAnswerLink,

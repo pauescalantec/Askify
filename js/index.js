@@ -50,8 +50,19 @@ $(document).ready(function(){
     });
 
     $('#answersSection').on('classChange', function() {
+        $('#answersContent').load('answers.html');
         // Load topics
-        loadAnswerRequests();
+        setTimeout(function() {
+            loadAnswerRequests();
+        }, 100);  
+    });
+
+    $('#questionsSection').on('classChange', function() {
+        $('#questionsContent').load('questions.html');
+    });
+
+    $('#profileSection').on('classChange', function() {
+        $('#profileContent').load('profile.html');
     });
 
     $('#homeSection').on('classChange', function() {
@@ -101,14 +112,6 @@ $(document).ready(function(){
         $(this).height(0).height(this.scrollHeight-12);
     }).find( 'textarea' ).change();
 
-    $("#answerRequestsSidebarButton").on("click", function(){
-        loadAnswerRequests();
-    });
-
-    $("#previousAnswersSidebarButton").on("click", function(){
-        loadPreviousAnswers();
-    });
-
     activateAffixListener("#analyticsFeed");
     
     // Load topics
@@ -125,6 +128,14 @@ $(document).ready(function(){
 });
 
 function loadAnswerRequests(){
+    $("#answerRequestsSidebarButton").on("click", function(){
+        loadAnswerRequests();
+    });
+
+    $("#previousAnswersSidebarButton").on("click", function(){
+        loadPreviousAnswers();
+    });
+
     var listRequests = getAnswerRequests();
     var numberRequests = listRequests.length;
 

@@ -72,8 +72,8 @@
                             <span class="glyphicon glyphicon-th"></span> Home</a></li>
                         <li class="answers"><a href="#" id="navbarItemAnswers">
                             <span class="fa fa-pencil-square-o fa-lg"></span> Answer <span id="requestsCount" class="label label-danger"></span></a></li>
-                        <li class="notifications"><a href="#" id="navbarItemNotifications">
-                            <span class="fa fa-bell-o fa-lg"></span> Notifications</a></li>
+                        <li class="questions"><a href="#" id="navbarItemQuestions">
+                            <span class="fa fa-list fa-lg"></span> </span> Questions</a></li>
                     </ul>
                     <ul id="rightMenu" class="nav navbar-nav navbar-right">
                         <li class="dropdown">
@@ -82,7 +82,6 @@
                             </a>
                             <ul class="dropdown-menu">
                                 <li class="profile"><a id="viewProfileButton">View Profile</a></li>
-                                <li class="questions"><a id="viewProfileButton">My Questions</a></li>
                                 <li><a id="logoutButton">Log Out</a></li>
                             </ul>
                         </li>
@@ -130,43 +129,17 @@
         </div>
 
         <div id ="answersSection" class="notSelectedSection"> 
-            <div class="container">
-                <div class="row content">
-                    <div class="col-sm-3 sidenav">
-                        <h4>Answers</h4>
-                        <ul class="nav nav-pills nav-stacked">
-                        <li class="nav-divider"></li>
-                        <li class="answerSidebar" id="answerRequestsSidebarButton">Answer Requests
-                            <span id="requestsCountSidebar" class="label label-danger">
-                        </li>
-                        <li class="answerSidebar" id="previousAnswersSidebarButton">Previous Answers</li>
-                        </ul>
-                    </div>
-                    <div class="col-sm-9">
-                        <div class="well">
-                            <ul class="list-group" id="answersList">
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div id ="notificationsSection" class="notSelectedSection"> 
-            <div class="container">
-                Notifications
+            <div id="answersContent">
             </div>
         </div>
 
         <div id ="profileSection" class="notSelectedSection"> 
-            <div class="container">
-                Profile
+            <div id="profileContent">
             </div>
         </div>
 
         <div id ="questionsSection" class="notSelectedSection"> 
-            <div class="container">
-                Questions
+            <div id="questionsContent">
             </div>
         </div>
 
