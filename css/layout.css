@@ -11,6 +11,10 @@
   margin-left: 6px;
 }
 
+.container {
+    height: 500px;
+}
+
 #navbarItemHome,
 #navbarItemNotifications,
 #navbarItemDropdown,
@@ -32,13 +36,18 @@
     font-weight: bold;
 }
 
+#inicio{
+    background-color: #40B976 !important;
+    height: 500px;
+}
+
 .nav-pills>li.active>a, .nav-pills>li.active>a:focus, .nav-pills>li.active>a:hover {
-  color: #fff !important; 
+  color: #fff !important;
   background-color: #337ab7 !important;
 }
 
- .navbar-default .navbar-nav > .active > a, 
- .navbar-default .navbar-nav > .active > a:hover, 
+ .navbar-default .navbar-nav > .active > a,
+ .navbar-default .navbar-nav > .active > a:hover,
  .navbar-default .navbar-nav > .active > a:focus {
     background: rgb(202, 205, 207);
     border-radius: 6px;
@@ -99,13 +108,13 @@
 }
 
  #askifyLogoNameImg {
-     padding-right: 5px; 
+     padding-right: 5px;
  }
 
  .selectedSection {
     display: block;
   }
-  
+
   .notSelectedSection {
     display: none;
   }
@@ -115,7 +124,7 @@
     max-width: 250px;
     margin-bottom: 10px;
     border-radius: 6px;
-    box-shadow: 6px 6px grey; 
+    box-shadow: 6px 6px grey;
     }
 
   #analyticsGrid,
@@ -186,7 +195,7 @@
     vertical-align: middle;
     margin-right: -4px;
   }
-  
+
   .modal-dialog {
     margin-top: 8%;
     display: inline-block;
@@ -257,10 +266,10 @@
     outline: none;
     font-size: 25px;
     resize: none;
-    border-style: none; 
-    border-color: Transparent; 
+    border-style: none;
+    border-color: Transparent;
     border-bottom: 2px solid black;
-    overflow: auto;   
+    overflow: auto;
     -webkit-border-radius: 0;
     -moz-border-radius: 0;
     box-shadow: none !important;
@@ -337,7 +346,7 @@
 
   #chooseTutorGrid {
     max-height: 320px;
-    overflow: scroll; 
+    overflow: scroll;
     padding-top: 10px;
     padding-bottom: 10px;
   }
@@ -390,7 +399,7 @@
     width:90%;
     margin-bottom: 5px;
     border-radius: 50%;
-    box-shadow: 0px 0px; 
+    box-shadow: 0px 0px;
   }
 
   .checked {
@@ -423,7 +432,7 @@
 
   .sidenav {
     height: 100%;
-    padding-top: 0px;    
+    padding-top: 0px;
   }
 
   .row.content {
@@ -481,7 +490,7 @@
 
   button[name=answerQuestionRequestButton] {
     width: 120px;
-    float: right; 
+    float: right;
     margin-top: 10px;
   }
   .answeredQuestionLink,
@@ -532,6 +541,5 @@
     }
     .row.content{
       height: auto;
-    } 
+    }
   }
-
