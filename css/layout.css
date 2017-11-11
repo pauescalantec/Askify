@@ -72,7 +72,6 @@
 #custom-search-input input{
   border: 0;
   box-shadow: none;
-  
 }
 
 #custom-search-input button{
@@ -457,10 +456,29 @@
     float: right; 
     margin-top: 10px;
   }
-
+  .answeredQuestionLink,
+  .answeredQuestionLink:hover,
+  .unansweredQuestionLink,
+  .unansweredQuestionLink:hover,
   .previousAnswerLink,
   .previousAnswerLink:hover {
     color: black;
+  }
+
+  .well.answer {
+    margin: 20px 10px;
+  }
+
+  .well.unanswer {
+    margin: 20px 10px;
+    color: grey;
+  }
+
+  .well.addComment {
+    margin: 20px 10px;
+    color: grey;
+    border: 0;
+    box-shadow: none;
   }
 
   @media screen and (max-width: 768px) {

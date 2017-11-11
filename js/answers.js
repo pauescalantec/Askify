@@ -102,11 +102,11 @@ function getPreviousAnswers(){
 }
 
 function helperCreateListElementRequest(answerRequest){
-    var buildHTML = '<li class="list-group-item" name="answerRequest"> <p name="answerRequestUserHeader">' + answerRequest.firstName + answerRequest.lastName + '</p> <p name="answerRequestSubjectHeader">&bull;</p> <p name="answerRequestSubjectHeader">' + answerRequest.topic + '</p> <h4 name="answerRequestQuestion">' + answerRequest.question + '</h4> <button name="answerQuestionRequestButton" class="flat-butt flat-info-butt flat-inner-butt flat-info-inner-butt" ' + answerRequest.questionId + 'href="">Answer</button></li>';
+    var buildHTML = '<li class="list-group-item" name="answerRequest"> <p name="answerRequestUserHeader">Question by ' + answerRequest.firstName + " " + answerRequest.lastName + '</p> <p name="answerRequestSubjectHeader">&bull;</p> <p name="answerRequestSubjectHeader">' + answerRequest.topic + '</p> <h4 name="answerRequestQuestion">' + answerRequest.question + '</h4> <button name="answerQuestionRequestButton" class="flat-butt flat-info-butt flat-inner-butt flat-info-inner-butt" ' + answerRequest.questionId + 'href="">Answer</button></li>';
     return buildHTML;
 }
 
 function helperCreateListElementPrevious(answerRequest){
-    var buildHTML = '<li class="list-group-item" name="answerRequest"> <p name="answerRequestUserHeader">' + answerRequest.firstName + answerRequest.lastName + '</p> <p name="answerRequestSubjectHeader">&bull;</p> <p name="answerRequestSubjectHeader">' + answerRequest.topic + '</p> <h4 name="answerRequestQuestion"><a class="previousAnswerLink">' + answerRequest.question + '</a></h4></li>';
+    var buildHTML = '<li class="list-group-item" name="answerRequest"> <p name="answerRequestUserHeader">Question by ' + answerRequest.firstName + " " + answerRequest.lastName + '</p> <p name="answerRequestSubjectHeader">&bull;</p> <p name="answerRequestSubjectHeader">' + answerRequest.topic + '</p> <h4 name="answerRequestQuestion"><a class="previousAnswerLink">' + answerRequest.question + '</a></h4></li>';
     return buildHTML;
 }
