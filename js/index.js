@@ -216,7 +216,7 @@ function chosenTutorButtonClicked(){
                     $("#sendQuestionButton").hide().fadeIn(100);
                 });
 
-                $("#modalInstruction").html(currentUser + " asks " + getFullNameFromUsername(selectedTutor) + " about <strong>" + currentTopic + " </strong>");
+                $("#modalInstruction").html(currentUser + " asks " + getFullNameFromUsername(selectedTutor) + " about <strong>" + currentTopic + " </strong><hr />");
                 $("#questionTextArea").hide().fadeIn(120);
                 $("#backToTutors").hide().fadeIn(100);
                 $(this).hide();
