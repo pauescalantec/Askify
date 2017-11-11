@@ -107,6 +107,7 @@ function helperCreateListElementRequest(answerRequest){
 }
 
 function helperCreateListElementPrevious(answerRequest){
-    var buildHTML = '<li class="list-group-item" name="answerRequest"> <p name="answerRequestUserHeader">Question by ' + answerRequest.firstName + " " + answerRequest.lastName + '</p> <p name="answerRequestSubjectHeader">&bull;</p> <p name="answerRequestSubjectHeader">' + answerRequest.topic + '</p> <h4 name="answerRequestQuestion"><a class="previousAnswerLink">' + answerRequest.question + '</a></h4></li>';
+    var buildHTML = '<li class="list-group-item" name="answerRequest"> <p name="answerRequestUserHeader">Question by ' + answerRequest.firstName + " " + answerRequest.lastName + '</p> <p name="answerRequestSubjectHeader">&bull;</p> <p name="answerRequestSubjectHeader">' + answerRequest.topic + '</p> <h4 name="answerRequestQuestion"><a class="previousAnswerLink">' + answerRequest.question + '</a></h4>';
+    buildHTML = buildHTML + '<div class="well previousAnswer">' + answerRequest.answer + '</div>';
     return buildHTML;
 }

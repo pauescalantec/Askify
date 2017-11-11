@@ -474,6 +474,10 @@
     color: grey;
   }
 
+  .well.previousAnswer {
+    margin: 20px 10px;
+  }
+
   .well.addComment {
     margin: 20px 10px;
     color: grey;
