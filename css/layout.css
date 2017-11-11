@@ -173,10 +173,12 @@
     background: #8e9997;
     box-shadow: inset #5d6362 -3px -3px 0px;
   }
+
   .modal {
     text-align: center;
     padding: 0!important;
  }
+
   .modal:before {
     content: '';
     display: inline-block;
@@ -219,6 +221,7 @@
       margin-bottom: 0px;
   }
 
+  #answerModalTitle,
   #chooseModalTitle {
     color: #7F8C8D;
     width: 90%;
@@ -226,11 +229,13 @@
     margin-bottom: 0px;
 }
 
+  #cancelAnswer,
   #cancelQuestion {
     color: grey;
     margin: 12px 8px;
   }
 
+  #helpAnswer,
   #helpQuestion {
     color: rgb(145, 143, 143);
     font-size: 12.5px;
@@ -241,6 +246,7 @@
     text-decoration: none;
   }
 
+  #answerTextArea,
   #questionTextArea {
     width: 90%;
     margin: 12px 8px;
@@ -270,6 +276,14 @@
     color:rgb(88, 88, 88);
     font-size: 15px;
     margin-bottom: 0px;
+  }
+
+  .introAnswer {
+    color:rgb(88, 88, 88);
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 0px;
+    display: inline-block;
   }
 
   #visitedPanelHeading {
@@ -386,6 +400,20 @@
   .analyticsDataField {
     margin-top: 15px;
   }
+
+  .answerTopic{
+    color: black;
+    display: block;
+    font-size: 20px;
+    font-weight: normal;
+  }
+
+  hr {
+    margin-top: 12px;
+    margin-bottom: 12px;
+  }
+
+  #sendAnswerButton,
   #sendQuestionButton,
   #backToTutors {
     transition: visibility 0s, opacity 0.5s linear;

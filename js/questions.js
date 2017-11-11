@@ -24,7 +24,7 @@ function loadAnsweredQuestions(){
     var numberRequests = listQuestions.length;
 
     $("#questionsList").html("");
-    $("#questionsList").append('<li class="list-group-item" id="answerRequestsHeader">Questions made by you</li>');
+    $("#questionsList").append('<li class="list-group-item" id="answerRequestsHeader">Answered Questions made by you</li>');
 
     // Fill in all rows except last one
     for (i = 0; i < numberRequests; i++) {    
@@ -38,7 +38,7 @@ function loadUnansweredQuestions(){
     var numberRequests = listUnansweredQuestions.length;
 
     $("#questionsList").html("");
-    $("#questionsList").append('<li class="list-group-item" id="answerRequestsHeader">Questions made by you</li>');
+    $("#questionsList").append('<li class="list-group-item" id="answerRequestsHeader">Unanswered Questions made by you</li>');
 
     // Fill in all rows except last one
     for (i = 0; i < numberRequests; i++) {    

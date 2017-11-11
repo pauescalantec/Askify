@@ -125,6 +125,7 @@ $(document).ready(function(){
 
 function loadRequestCount(){
     $("#requestsCount").text(getRequestNumber() == 0 ? "" : getRequestNumber()); 
+    $("#questionsCount").text(getQuestionsNumber() == 0 ? "" : getQuestionsNumber()); 
 }
 
 function sendQuestionButtonClicked(){
@@ -158,7 +159,6 @@ function postQuestionToTutor(){
     var selectedTutorPost = selectedTutor;
     var selectedTopicPost = currentTopic;
 
-    // Post question here
 
     // After successful posting
     currentTopic = "";
@@ -333,6 +333,10 @@ function getTopicCards(){
 
 function getRequestNumber(){
     return 3;
+}
+
+function getQuestionsNumber(){
+    return 2;
 }
 
 function getListTutorsByTopic(topicName){

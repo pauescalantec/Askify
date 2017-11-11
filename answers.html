@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container" id="answerAlertContainer">
     <div class="row content">
         <div class="col-sm-3 sidenav">
             <h4>Answers</h4>
@@ -18,4 +18,28 @@
         </div>
     </div>
 </div>
+
+<div id="answerQuestionModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+            <div class="modal-content">
+            <div class="modal-body" id="modalBodyAnswerQuestionContainer">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <div class="container" id="answerModalTitle">
+                </div>
+                <div class="container" id="answerTextArea">
+                    <div class="form-group" id="resizerAnswer">
+                        <textarea class="form-control" rows="1" id="answerText" placeholder="Type answer"></textarea>
+                    </div>
+                    <p id="helpAnswer">Make your answer as clear and thorough as possible.</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                    <a id="cancelAnswer" data-dismiss="modal">Cancel</a>
+                    <button id="sendAnswerButton" class="flat-butt flat-primary-butt flat-inner-butt
+                    flat-primary-inner-butt" href=""> Send Answer</button>
+            </div>
+        </div>  
+    </div>
+</div>
+
 <script type="text/javascript" src="js/answers.js"></script>
