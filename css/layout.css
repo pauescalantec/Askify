@@ -222,6 +222,7 @@
       margin-bottom: 0px;
   }
 
+  #modifyQuestionModalTitle,
   #modifyAnswerModalTitle,
   #answerModalTitle,
   #chooseModalTitle {
@@ -231,6 +232,7 @@
     margin-bottom: 0px;
 }
 
+  #cancelModifyQuestion,
   #cancelModifyAnswer,
   #cancelAnswer,
   #cancelQuestion {
@@ -238,6 +240,7 @@
     margin: 12px 8px;
   }
 
+  #helpModifyQuestion,
   #helpModify,
   #helpAnswer,
   #helpQuestion {
@@ -250,6 +253,7 @@
     text-decoration: none;
   }
 
+  #modifyQuestionTextArea,
   #modifyAnswerTextArea,
   #answerTextArea,
   #questionTextArea {
@@ -258,6 +262,7 @@
     transition: visibility 0s, opacity 0.5s linear;
   }
 
+  #modifyQuestionText,
   #modifyAnswerText {
     color: #3498db;
   }
@@ -422,6 +427,7 @@
     margin-bottom: 12px;
   }
 
+  #saveModifyQuestionButton,
   #saveModifyAnswerButton,
   #sendAnswerButton,
   #sendQuestionButton,
