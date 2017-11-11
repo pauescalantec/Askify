@@ -326,7 +326,7 @@ function helperCreateListElementRequest(answerRequest){
 }
 
 function helperCreateListElementPrevious(answerRequest){
-    var buildHTML = '<li class="list-group-item" name="answerRequest"> <p name="answerRequestUserHeader">Question by ' + answerRequest.firstName + " " + answerRequest.lastName + '</p> <p name="answerRequestSubjectHeader">&bull;</p> <p name="answerRequestSubjectHeader">' + answerRequest.topic + '</p> <h4 name="answerRequestQuestion"> <span data-placement="top" data-toggle="tooltip" title="Click to modify"><a class="previousAnswerLink" id="' + answerRequest.questionId + '"data-toggle="modal" data-target="#modifyAnswerModal">' + answerRequest.question + '</a></span></h4>';
-    buildHTML = buildHTML + '<div class="well previousAnswer">' + answerRequest.answer + '</div>';
+    var buildHTML = '<li class="list-group-item" name="answerRequest"> <p name="answerRequestUserHeader">Question by ' + answerRequest.firstName + " " + answerRequest.lastName + '</p> <p name="answerRequestSubjectHeader">&bull;</p> <p name="answerRequestSubjectHeader">' + answerRequest.topic + '</p> <h4 name="answerRequestQuestion">' + answerRequest.question + '</h4>';
+    buildHTML = buildHTML + '<div class="well previousAnswer"><span data-placement="bottom" data-toggle="tooltip" title="Click to modify"><a class="previousAnswerLink" id="' + answerRequest.questionId + '"data-toggle="modal" data-target="#modifyAnswerModal">' + answerRequest.answer + '</a></span></div>';
     return buildHTML;
 }
