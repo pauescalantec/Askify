@@ -11,8 +11,16 @@
   margin-left: 6px;
 }
 
-.container {
-    height: 500px;
+.container-inicio {
+    text-align: center;
+}
+#containerLogo{
+    margin-top: 50px;
+}
+.mainLogo{
+    display: block;
+    max-width: 250px;
+    margin: auto;
 }
 
 #navbarItemHome,
@@ -40,7 +48,27 @@
     background-color: #40B976 !important;
     height: 500px;
 }
+#idWhiteButtLogin{
+    margin-top: 50px;
+    font-weight: bold;
+    font-size: 20px;
+    padding-top: 15px;
+    padding-bottom: 15px;
+}
+#idWhiteButtRegister{
+    margin-top: 20px;
+    font-weight: bold;
+    font-size: 20px;
+    padding-top: 15px;
+    padding-bottom: 15px;
 
+}
+#idWhiteButtRegister:hover{
+    color: #40B976;
+}
+#idWhiteButtLogin:hover{
+    color: #40B976;
+}
 .nav-pills>li.active>a, .nav-pills>li.active>a:focus, .nav-pills>li.active>a:hover {
   color: #fff !important;
   background-color: #337ab7 !important;
@@ -181,6 +209,19 @@
   .flat-previous-inner-butt {
     background: #8e9997;
     box-shadow: inset #5d6362 -3px -3px 0px;
+  }
+  .flat-white-inner-butt {
+    background: white;
+    color: black;
+    width: 15%;
+    margin: 0 auto;
+    box-shadow: inset grey -3px -3px 0px;
+  }
+  .flat-white-butt {
+    background: white;
+    width: 15%;
+    margin: 0 auto;
+    color: black;
   }
 
   .modal {
