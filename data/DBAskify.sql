@@ -1,6 +1,6 @@
 Create database baeAskify;
 
-Create Table User(
+Create Table UserTable(
     uName VARCHAR(30) NOT NULL PRIMARY KEY,
     uPass VARCHAR(300) NOT NULL,
     fName VARCHAR(30) NOT NULL,

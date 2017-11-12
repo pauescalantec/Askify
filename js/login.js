@@ -1,5 +1,4 @@
-$("#idWhiteButtLogin").on('click', function(log){
-  log.preventDefault();
+$("#idWhiteButtLogin").on('click', function(){
   validateLog();
 });
 
@@ -11,11 +10,13 @@ function validateLog(){
   if( usernameInput != "" && passwordInput != ""){
 
     var jsonSend = {
-      "uName" : uName ,
-      "uPassword" : uPassword,
+      "uName" : valUsername ,
+      "uPassword" : valPassword,
       "rememberMe" : $("#rememberMe").is(":checked"),
       "action": "login"
     };
+
+    alert("THIS IS IN");
     $.ajax({
       url: "./PHP/AppLayer.php",
       type: "POST",
@@ -23,7 +24,7 @@ function validateLog(){
       ContentType : "application/json",
       dataType: "json",
       success: function(response){
-        window.location.href = "index.php";
+        window.location.href = "index.html";
       },
       error: function (errorMS){
         alert("Please make sure your credentials are correct " + errorMS.statusText);

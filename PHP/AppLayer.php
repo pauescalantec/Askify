@@ -1,7 +1,7 @@
 <?php
 session_start();
 header('Content-type: application/json');
-require_once __DIR__ . '/dataLayer.php';
+require_once __DIR__ . '/DataLayer.php';
 $action = $_POST["action"];
 
 switch ($action) {
@@ -14,16 +14,36 @@ switch ($action) {
 }
 
 function Register(){
+    $uName = $_POST["uName"];
+    $uPass = $_POST["uPass"];
     $fName = $_POST["fName"];
     $lName = $_POST["lName"];
-    $username = $_POST["uName"];
-    $uPassword = $_POST["uPassword"];
     $uEmail = $_POST["uEmail"];
-    $uGenero = $_POST["uGenero"];
-    $uCountry = $_POST["uCountry"];
-    $do = doEncryptRegister($username,$uPassword,$fName,$lName,$uEmail,$uGenero,$uCountry);
+    $uMajor = $_POST["uMajor"];
+    $uGradYear = $_POST["uGradYear"];
+    $do = doRegister($uName,$uPass,$fName,$lName,$uEmail,$uMajor,$uGradYear);
     if($do["status"] == "Work"){
         $result = array("message" => "Thank you! Your registration was sucessfull");
+        echo json_encode($result);
+    }else{
+        header('HTTP/1.1 500' . $do["status"]);
+        die($do["status"]);
+    }
+}
+
+function Login(){
+
+    $username = $_POST["uName"];
+    $pass = $_POST["uPassword"];
+    $rememberMe = $_POST["rememberMe"];
+
+    $do = doLogin($username,$pass);
+
+    if($do["status"] == "Work"){
+        if($rememberMe){
+            setcookie("cookieuName", $username,time() + (86400 * 30), "/","",0);
+        }
+        $result = array("message" => "Login Sucessfull");
         echo json_encode($result);
     }else{
         header('HTTP/1.1 500' . $do["status"]);
