@@ -11,6 +11,8 @@
   margin-left: 6px;
 }
 
+<<<<<<< HEAD
+=======
 .container-inicio {
     text-align: center;
     margin: auto;
@@ -29,6 +31,7 @@ fieldset{
     margin: auto;
 }
 
+>>>>>>> 20a84861b7c33034d22fffc1c5b242d52db9d49d
 #navbarItemHome,
 #navbarItemNotifications,
 #navbarItemDropdown,
@@ -52,7 +55,6 @@ fieldset{
 
 #inicio,#login,#register{
     background-color: #40B976 !important;
-    height: 500px;
 }
 #idWhiteButtLogin,#idWhiteButtRegister{
     margin-top: 50px;
@@ -550,12 +552,13 @@ fieldset{
     float: right;
     margin-top: 10px;
   }
+  
+  .answersLink,
+  .answersLink:hover,
   .answeredQuestionLink,
   .answeredQuestionLink:hover,
   .unansweredQuestionLink,
-  .unansweredQuestionLink:hover,
-  .previousAnswerLink,
-  .previousAnswerLink:hover {
+  .unansweredQuestionLink:hover{
     color: black;
   }
 
@@ -596,6 +599,15 @@ fieldset{
   }
 
 
+  .label.label-success.edit {
+    float: right;
+    padding: 5px;
+  }
+
+  .showAnswer {
+    margin-bottom: 0px;
+  }
+
   @media screen and (max-width: 768px) {
     #analyticsGrid{
       width: 100%;
@@ -616,4 +628,5 @@ fieldset{
     .row.content{
       height: auto;
     }
+
   }
