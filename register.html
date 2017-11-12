@@ -13,16 +13,24 @@
 <body id="register">
     <img id = "containerLogo" class = "mainLogo" src="media/LogoWhite.png" title="Logo" alt="This is the logo"/>
     <div id="registerContainer">
-        <input id="usernameInput" type="text" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="sizing-addon1">
-        <input id="passwordInput" type="password" class="form-control" placeholder="Password" aria-label="Password" aria-describedby="sizing-addon1">
-        <input id="fNameInput" type="text" class="form-control" placeholder="First Name" aria-label="First Name" aria-describedby="sizing-addon1">
-        <input id="lNameInput" type="text" class="form-control" placeholder="Last Name" aria-label="Last Name" aria-describedby="sizing-addon1">
-        <input id="uEmailInput" type="email" class="form-control" placeholder="Email" aria-label="Email" aria-describedby="sizing-addon1">
-        <input id="uMajorInput" type="text" class="form-control" placeholder="Major" aria-label="Major" aria-describedby="sizing-addon1">
-        <input id="uGradYearInput" type="number" class="form-control" placeholder="Graduation year" aria-label="Graduation year" aria-describedby="sizing-addon1">
+        <input id="usernameInput" type="text" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="sizing-addon1"
+        required>
+        <input id="passwordInput" type="password" class="form-control" placeholder="Password" aria-label="Password" aria-describedby="sizing-addon1"
+        required>
+        <input id="fNameInput" type="text" class="form-control" placeholder="First Name" aria-label="First Name" aria-describedby="sizing-addon1"
+        required>
+        <input id="lNameInput" type="text" class="form-control" placeholder="Last Name" aria-label="Last Name" aria-describedby="sizing-addon1"
+        required>
+        <input id="uEmailInput" type="email" class="form-control" placeholder="Email" aria-label="Email" aria-describedby="sizing-addon1" required>
+        <input id="uMajorInput" type="text" class="form-control" placeholder="Major" aria-label="Major" aria-describedby="sizing-addon1" required>
+        <input id="uGradYearInput" type="number" class="form-control" placeholder="Graduation year" aria-label="Graduation year" aria-describedby="sizing-addon1"
+        required>
         <button id ="idWhiteButtRegister" class="flat-butt flat-white-butt flat-inner-butt flat-white-inner-butt" type="button">Register
         </button>
     </div>
-
+    <script src="js/jquery.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="js/register.js"></script>
 </body>
 </html>

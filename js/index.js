@@ -20,8 +20,8 @@ $(window).on('resize', function() {
             $("#analyticsGrid").append('<div class="well" id="analyticsFeed" data-spy="affix" data-offset-top="65"> </div>');
             loadAnalyticsField("#analyticsFeed");
             $("#analyticsFeed").affix({
-                offset: { 
-                    top: 65 
+                offset: {
+                    top: 65
                 }
             });
         }
@@ -42,9 +42,9 @@ $(document).ready(function(){
         // Options is just a dropdown menu
         if (currentClass != "dropdown" && currentClass != "options" && currentClass != "dropdown open") {
             $(this).addClass("active");
-            
+
             $(".selectedSection").removeClass("selectedSection").addClass("notSelectedSection");
-    
+
             $("#" + currentClass + "Section").addClass("selectedSection").removeClass("notSelectedSection").trigger('classChange');
         }
     });
@@ -109,7 +109,7 @@ $(document).ready(function(){
     }).find( 'textarea' ).change();
 
     activateAffixListener("#analyticsFeed");
-    
+
     // Load topics
     loadTopicCards();
 
@@ -124,17 +124,17 @@ $(document).ready(function(){
 });
 
 function loadRequestCount(){
-    $("#requestsCount").text(getRequestNumber() == 0 ? "" : getRequestNumber()); 
-    $("#questionsCount").text(getQuestionsNumber() == 0 ? "" : getQuestionsNumber()); 
+    $("#requestsCount").text(getRequestNumber() == 0 ? "" : getRequestNumber());
+    $("#questionsCount").text(getQuestionsNumber() == 0 ? "" : getQuestionsNumber());
 }
 
 function sendQuestionButtonClicked(){
     $(".alert").alert('close');
-    
+
     if(!$("#questionText").val()){
         setTimeout(function() {
             createDangerAlert("#questionTextArea", "Type your question below", "questionNotTypedAlert");
-        }, 300);  
+        }, 300);
     }
 
     // Question and topic validated
@@ -148,7 +148,7 @@ function sendQuestionButtonClicked(){
         else {
             setTimeout(function() {
                 createDangerAlert("#questionTextArea", "Error connecting to server. Try again later.", "questionNotPostedAlert");
-            }, 300);  
+            }, 300);
         }
 
     }
@@ -180,7 +180,7 @@ function postQuestionToTutor(){
 
         // Create success alert
         createSuccessAlert("#homeAlertContainer", "You asked a question about <strong>" +  selectedTopicPost + "</strong> to <strong>" + getFullNameFromUsername(selectedTutorPost) + "</strong>", "questionPostedAlert");
-    }, 1300);  
+    }, 1300);
 
 }
 
@@ -203,8 +203,8 @@ function chosenTutorButtonClicked(){
     if (selectedTutor == "") {
         setTimeout(function() {
             createDangerAlert("#chooseTutorGrid", "Choose tutor first", "tutorNotSelectedAlert");
-            $('#chooseTutorGrid').scrollTop(0); 
-        }, 300);  
+            $('#chooseTutorGrid').scrollTop(0);
+        }, 300);
     }
 
     // Tutor is chosen show next modal
@@ -222,7 +222,7 @@ function chosenTutorButtonClicked(){
                 $(this).hide();
               });
 
-        }, 100);   
+        }, 100);
     }
 }
 
@@ -237,10 +237,10 @@ function createSuccessAlert(selectorId, alertMessage, alertId){
 function loadAnalyticsField(analyticsSelector){
     var visitedHTML = helperCreateAnalytics("visitedPanelHeading", "Most Visited Topic", getVisitedTopic());
 
-    var favoriteHTML = helperCreateAnalytics("favoritePanelHeading", "Your Favorite Topic", getFavoriteTopic()); 
+    var favoriteHTML = helperCreateAnalytics("favoritePanelHeading", "Your Favorite Topic", getFavoriteTopic());
 
-    var highestHTML = helperCreateAnalytics("highestPanelHeading", "Highest Ranked Tutor", getHighestTutor());   
-    
+    var highestHTML = helperCreateAnalytics("highestPanelHeading", "Highest Ranked Tutor", getHighestTutor());
+
     $(analyticsSelector).html("");
     $(analyticsSelector).append(visitedHTML).hide().fadeIn(300);
     $(analyticsSelector).append(favoriteHTML).hide().fadeIn(300);
@@ -323,7 +323,7 @@ function getTopicCards(){
             {
                 topicName: "SQL",
                 topicDescription:"Structured Query Language (SQL) is a standard computer language for relational database management and manipulation. SQL is used to query, insert, update and modify data.",
-                topicImage:"Media/cardImage8.jpg"}, 
+                topicImage:"Media/cardImage8.jpg"},
             {
                 topicName: "React",
                 topicDescription:"JavaScript library for building user interfaces. React dynamically allows developers to create large web-applications that use data and can change over time without reloading the page.",
@@ -387,7 +387,7 @@ function getListTutorsByTopic(topicName){
 function loadTopicCards(){
     listTopics = getTopicCards();
 
-    for (i = 0; i < (listTopics.length); i++) { 
+    for (i = 0; i < (listTopics.length); i++) {
         // Instead of 0 iterate through index
         var topicCardHTML = helperCreateCardHTML(listTopics[i], (i+1));
         var topicCounterId = "#topic" + (i+1);
@@ -453,7 +453,7 @@ function triggerAskQuestionModal(currentTopic){
                 $("#" + identifierUsername).addClass("selected");
                 selectedTutor = identifierUsername;
             }, 50);
-        }  
+        }
     });
 }
 
@@ -462,13 +462,13 @@ function createTutorList(){
     var listTutors = getListTutorsByTopic(currentTopic);
     var numberTutors = listTutors.length;
     var tutorCounter = 0;
-    
+
     // 3 tutors per line
     var numberRowsTutors = Math.ceil(numberTutors/3);
     var lastRowNumberTutors = numberTutors%3;
 
     // Fill in all rows except last one
-    for (i = 0; i < (numberRowsTutors-1); i++) { 
+    for (i = 0; i < (numberRowsTutors-1); i++) {
         var rowId = "tutorRow" + i;
         var rowHTML = createTutorRow(rowId);
 
@@ -480,7 +480,7 @@ function createTutorList(){
         var rowCol1Id = rowId + "tutorCol1";
         var rowCol2Id = rowId + "tutorCol2";
         var rowCol3Id = rowId + "tutorCol3";
-    
+
         var columnsJson = {
             column1HTML: '<div class="col-sm-4" id="' + rowCol1Id + '"></div>',
             column2HTML: '<div class="col-sm-4" id="' + rowCol2Id + '"></div>',
@@ -502,14 +502,14 @@ function createTutorList(){
     }
 
     setTimeout(function () {
-        $('#chooseTutorGrid').scrollTop(0); 
+        $('#chooseTutorGrid').scrollTop(0);
     }, 200);
 
     // FIll in last row
     if((lastRowNumberTutors != 0) || (numberTutors == 3)) {
         var lastRowId = "tutorRow" + (numberRowsTutors+1);
         var lastRowHTML = createTutorRow(lastRowId);
-        
+
         // Append row to container
         $("#chooseTutorGrid").append(lastRowHTML);
 
