@@ -2,6 +2,8 @@ var currentQuestionToModify = "";
 var currentUserToModifyQuestionTo = "";
 var currentTopicToModifyQuestionTo = "";
 var currentAnswerToView = "";
+var currentAnswerRating = 0;
+var ratingInstance;
 
 $(document).ready(function(){
     // Load topics
@@ -17,7 +19,48 @@ $(document).ready(function(){
     $("#saveModifyQuestionButton").on("click", function(){
         saveModifyQuestionButtonClicked();
     });
+
+    $('#viewNewAnswerModal').on('hide.bs.modal', function (event) {
+        $(".alert").alert('close');
+
+        var canClose = (currentAnswerRating > 0 ? true: false);
+
+        if(!canClose){
+            setTimeout(function() {
+                createDangerAlert("#viewNewAnswerTextArea", "Rate answer to continue", "answerNotRatedAlert");
+            }, 300);  
+            return false;
+        }
+
+        else {
+            setTimeout(function() {
+                $(".container-rating").html("");
+                currentAnswerRating = 0;
+                loadAnsweredQuestions();
+                return true;
+            }, 500);  
+        }
+    });
+
+    $("#doneViewNewButton").on("click", function(){
+        $(".alert").alert('close');
+        
+        var canClose = (currentAnswerRating > 0 ? true: false );
+
+        if(!canClose){
+            setTimeout(function() {
+                createDangerAlert("#viewNewAnswerTextArea", "Rate answer to continue", "answerNotRatedAlert");
+            }, 300);  
+        }
+
+        else {
+            setTimeout(function() {
+                $('#viewNewAnswerModal').modal('toggle');
+            }, 500);  
+        }
+    });
 });
+
 
 function saveModifyQuestionButtonClicked() {
     $(".alert").alert('close');
@@ -106,6 +149,10 @@ function loadAnsweredQuestions(){
     $(".answeredQuestionLink").on("click", function(){
         triggerViewAnswerModal(this.id);
     });
+
+    $(".newAnsweredQuestionLink").on("click", function(){
+        triggerViewNewAnswerModal(this.id);
+    });
 }
 
 function loadUnansweredQuestions(){
@@ -136,6 +183,33 @@ function triggerViewAnswerModal(questionId){
     setTimeout(function() {
         $("#viewAnswerTextArea").html("");
         $("#viewAnswerTextArea").append('<h4 name="answerRequestQuestion">' + getQQuestionFromId(questionId) + '</h4>');
+        $("#viewAnswerTextArea").append('<div class="well answerModal">' + getQAnswerFromId(questionId) + '</div>');
+    }, 200);  
+
+    currentAnswerToView = questionId;
+}
+
+function triggerViewNewAnswerModal(questionId){
+    $(".container-rating").append('<span class="rating golden" id="starsRating"></span>');
+    $(".alert").alert('close');
+    $("#viewNewAnswerModalTitle").html("");
+    $("#viewNewAnswerModalTitle").prepend('<p name="answerRequestUserHeader">Question made to ' + getQUserFromId(questionId) + '</p> <p name="answerRequestSubjectHeader">&bull;</p> <p name="answerRequestSubjectHeader">' + getQTopicFromId(questionId) + '</p>');
+
+    setTimeout(function() {
+        var ratings = document.getElementsByClassName('rating');
+        
+        for (var i = 0; i < ratings.length; i++) {
+            var r = new SimpleStarRating(ratings[i]);
+    
+            ratings[i].addEventListener('rate', function(e) {
+                $(".alert").alert('close');
+                currentAnswerRating = e.detail;
+            });
+        }
+
+        $("#viewNewAnswerTextArea").html("");
+        $("#viewNewAnswerTextArea").append('<h4 name="answerRateRequestQuestion">' + getQQuestionFromId(questionId) + '</h4>');
+        $("#viewNewAnswerTextArea").append('<div class="well answerModal">' + getQAnswerFromId(questionId) + '</div>');
     }, 200);  
 
     currentAnswerToView = questionId;
@@ -271,8 +345,8 @@ function getUnansweredQuestions(){
 function helperCreateListElementRequest(answerRequest){
     var buildHTML;
     if (answerRequest.status == "A") {
-        buildHTML = '<li class="list-group-item" name="answerRequest"> <p name="answerRequestUserHeader"> <span class="label label-primary">New</span> Question made to ' + answerRequest.firstName + " " +  answerRequest.lastName + '</p> <p name="answerRequestSubjectHeader">&bull;</p> <p name="answerRequestSubjectHeader">' + answerRequest.topic + '</p> <h4 name="answerRequestQuestion"><a class="answeredQuestionLink" id="' + answerRequest.questionId + '"data-toggle="modal" data-target="#viewAnswerModal">' + answerRequest.question + '</a></h4>';
-        buildHTML = buildHTML + '<div class="well answer">' + answerRequest.answer + '</div>';
+        buildHTML = '<li class="list-group-item" name="answerRequest"> <p name="answerRequestUserHeader"> <span class="label label-primary">New</span> Question made to ' + answerRequest.firstName + " " +  answerRequest.lastName + '</p> <p name="answerRequestSubjectHeader">&bull;</p> <p name="answerRequestSubjectHeader">' + answerRequest.topic + '</p> <h4 name="answerRequestQuestion"><a class="newAnsweredQuestionLink" id="' + answerRequest.questionId + '"data-toggle="modal" data-target="#viewNewAnswerModal">' + answerRequest.question + '</a></h4>';
+        //buildHTML = buildHTML + '<div class="well answer">' + answerRequest.answer + '</div>';
     }
 
     else if (answerRequest.status == "R")  {

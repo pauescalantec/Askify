@@ -1,3 +1,5 @@
+<link rel="stylesheet" href="css/SimpleStarRating.css">
+
 <div class="container" id="questionAlertContainer">
     <div class="row content">
         <div class="col-sm-3 sidenav">
@@ -48,12 +50,12 @@
             <div class="modal-body" id="modalBodyViewAnswerContainer">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
                 <div class="container" id="viewAnswerModalTitle">
-                    
                 </div>
+                <hr />
                 <div class="container" id="viewAnswerTextArea">
                 </div>
             </div>
-            <div class="modal-footer">
+            <div class="modal-footer">                 
                 <button id="doneViewButton" class="flat-butt flat-primary-butt flat-inner-butt
                 flat-primary-inner-butt" data-dismiss="modal">Done</button>
             </div>
@@ -61,4 +63,26 @@
     </div>
 </div>
 
+<div id="viewNewAnswerModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+                <div class="modal-content">
+                <div class="modal-body" id="modalBodyViewNewAnswerContainer">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <div class="container" id="viewNewAnswerModalTitle">
+                    </div>
+                    <hr />
+                    <div class="container" id="viewNewAnswerTextArea">
+                    </div>
+                </div>
+                <div class="container-rating">
+                </div>
+                <div class="modal-footer">
+                    <button id="doneViewNewButton" class="flat-butt flat-primary-butt flat-inner-butt
+                    flat-primary-inner-butt">Done</button>
+                </div>
+            </div>  
+        </div>
+    </div>
+
+<script src="js/SimpleStarRating.js"></script>
 <script type="text/javascript" src="js/questions.js"></script>

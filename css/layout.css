@@ -279,6 +279,16 @@ fieldset{
       margin-bottom: 0px;
   }
 
+  .container-rating {
+    display: inline-block;
+    margin: 0 auto;
+    width: 100%;
+    height: auto;
+    text-align: center;
+    margin-bottom: 15px;
+  }
+
+  #viewNewAnswerModalTitle,
   #viewAnswerModalTitle,
   #modifyQuestionModalTitle,
   #modifyAnswerModalTitle,
@@ -290,6 +300,11 @@ fieldset{
     margin-bottom: 0px;
 }
 
+#viewNewAnswerModalTitle {
+    width: 100%;
+}
+
+  #viewNewAnswerModalTitle,
   #viewAnswerModalTitle,
   #cancelModifyQuestion,
   #cancelModifyAnswer,
@@ -312,6 +327,7 @@ fieldset{
     text-decoration: none;
   }
 
+  #viewNewAnswerModalTitle,
   #viewAnswerTextArea,
   #modifyQuestionTextArea,
   #modifyAnswerTextArea,
@@ -320,6 +336,10 @@ fieldset{
     width: 90%;
     margin: 12px 8px;
     transition: visibility 0s, opacity 0.5s linear;
+  }
+
+  #viewNewAnswerTextArea {
+    width: 97%;
   }
 
   #modifyQuestionText,
@@ -497,6 +517,11 @@ fieldset{
     width: 25%;
   }
 
+  #doneViewNewButton {
+    display: inline-block;
+    width: 25%;
+  }
+
   .sidenav {
     height: 100%;
     padding-top: 0px;
@@ -550,6 +575,13 @@ fieldset{
     font-size: 21px;
   }
 
+  h4[name=answerRateRequestQuestion] {
+    padding-top: 0px;
+    margin-top: 15px;
+    margin-bottom: 0px;
+    font-size: 21px;
+  }
+
   #answerRequestsHeader {
     font-size: 17px;
     font-weight: bold;
@@ -563,6 +595,8 @@ fieldset{
 
   .answersLink,
   .answersLink:hover,
+  .newAnsweredQuestionLink,
+  .newAnsweredQuestionLink:hover,
   .answeredQuestionLink,
   .answeredQuestionLink:hover,
   .unansweredQuestionLink,
@@ -572,6 +606,10 @@ fieldset{
 
   .well.answer {
     margin: 20px 10px;
+  }
+
+  .well.answerModal {
+    margin: 20px 0px 0px 0px;
   }
 
   .well.unanswer {
@@ -635,15 +673,12 @@ fieldset{
   }
 
   .blur {
-    -webkit-filter: blur(5px);
-    -moz-filter: blur(5px);
-    -o-filter: blur(5px);
-    -ms-filter: blur(5px);
-    filter: blur(5px);
-    width: 100px;
-    height: 100px;
+    -webkit-filter: blur(2px);
+    -moz-filter: blur(2px);
+    -o-filter: blur(2px);
+    -ms-filter: blur(2px);
+    filter: blur(2px);
     background-color: #ccc;
-  
   }
 
   @media screen and (max-width: 768px) {
