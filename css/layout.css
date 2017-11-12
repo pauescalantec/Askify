@@ -20,6 +20,7 @@
 #containerLogo{
     margin-top: 50px;
 }
+
 .mainLogo{
     display: block;
     max-width: 250px;
@@ -552,7 +553,7 @@ fieldset{
     float: right;
     margin-top: 10px;
   }
-  
+
   .answersLink,
   .answersLink:hover,
   .answeredQuestionLink,
@@ -581,7 +582,7 @@ fieldset{
     border: 0;
     box-shadow: none;
   }
-  #usernameInput, #passwordInput{
+  #usernameInput, #passwordInput, #fNameInput, #lNameInput, #uEmailInput, #uMajorInput, #uGradYearInput{
     width: 20%;
     margin: 0 auto;
     font-size: 17px;
@@ -594,6 +595,10 @@ fieldset{
     display: block;
   }
   #loginContainer{
+      text-overflow: ellipsis;
+      overflow: hidden;
+  }
+  #registerContainer{
       text-overflow: ellipsis;
       overflow: hidden;
   }
