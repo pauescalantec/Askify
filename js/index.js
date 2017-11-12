@@ -545,3 +545,23 @@ function helperCreateAnalytics(idField, titleField, dataField){
     var analyticsHTML = '<div id="' + idField + '" class="well" name="analyticsWells"> <h4>' + titleField + '</h4><p class="analyticsDataField">' + dataField + '</p> </div>';
     return analyticsHTML;
 }
+
+function checkSession(urlPHP){
+    var jsonData = {
+        "action" : "SESSION"
+    };
+    $.ajax({
+        url: urlPHP,
+        type: "POST",
+        data: jsonData,
+        dataType: "json",
+        success: function(jsonResponse) {
+            //$('#profileText').html('<span class="glyphicon glyphicon-user"></span> ' + jsonResponse.fName + " " + jsonResponse.lName);
+            currentUser = jsonResponse.currentUser;
+        },
+        error: function() {
+            currentUser = "";
+            window.location.replace("inicio.html");
+        }
+    });
+}

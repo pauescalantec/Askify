@@ -18,7 +18,7 @@ function doLogin($uName,$uPass){
     $conn = doDBconnection();
 
     if($conn != NULL){
-        $sqlLogin = "SELECT uName
+        $sqlLogin = "SELECT *
         FROM UserTable
         WHERE uName = '$uName'
         AND   uPass = '$uPass'";
@@ -30,6 +30,8 @@ function doLogin($uName,$uPass){
             }
             $_SESSION['is_open'] = "TRUE";
             $_SESSION['uName'] = $uName;
+            $_SESSION['fName'] = $fName;
+            $_SESSION['lName'] = $lName;
             $conn->close();
             return array("status" => "Work");
         }else{
@@ -76,11 +78,11 @@ function doRegister($uName,$uPass,$fName,$lName,$uEmail,$uMajor,$uGradYear){
 
 function dataLoadProfile($uName){
     $conn = doDBconnection();
-    
+
     if ($conn != null){
-        
-        $sql = "SELECT * FROM UserTable WHERE uName = '$uName'";		
-        
+
+        $sql = "SELECT * FROM UserTable WHERE uName = '$uName'";
+
         $result = $conn->query($sql);
 
         if ($result->num_rows > 0)
@@ -106,11 +108,11 @@ function dataLoadProfile($uName){
 
 function dataLoadTopics($uName){
     $conn = doDBconnection();
-    
+
     if ($conn != null){
-        
-        $sql = "SELECT * FROM Topics WHERE tID IN (SELECT tID FROM HasExpertise WHERE uName = '$uName')";		
-        
+
+        $sql = "SELECT * FROM Topics WHERE tID IN (SELECT tID FROM HasExpertise WHERE uName = '$uName')";
+
         $result = $conn->query($sql);
 
         if ($result->num_rows > 0)

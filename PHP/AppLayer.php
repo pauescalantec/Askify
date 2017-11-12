@@ -16,12 +16,25 @@ switch ($action) {
     break;
     case "loadTopics":
         loadTopics();
-break;
+    break;
+    case "session"
+}
+
+function sessionFunction() {
+	session_start();
+	if( isset($_SESSION["currentUser"]) && isset($_SESSION["fName"]) && isset($_SESSION["lName"])){
+	    echo json_encode(array("currentUser" => $_SESSION["currentUser"],
+                                "fName" => $_SESSION["fName"],
+                                "lName" => $_SESSION["lName"]));
+	}
+	else {
+		genericErrorFunction("400");
+	}
 }
 
 function getSessionUser(){
     session_start();
-    
+
     if(isset($_SESSION["uName"])) {
         $uName = $_SESSION["uName"];
     }
@@ -84,12 +97,12 @@ function loadProfile(){
         }
 
         else {
-            genericErrorFunction($loadProfileResponse["MESSAGE"]);	
+            genericErrorFunction($loadProfileResponse["MESSAGE"]);
         }
     }
 
     else {
-        genericErrorFunction("406");	
+        genericErrorFunction("406");
     }
 }
 
@@ -107,12 +120,12 @@ function loadTopics(){
         }
 
         else {
-            genericErrorFunction($loadTopicsResponse["MESSAGE"]);	
+            genericErrorFunction($loadTopicsResponse["MESSAGE"]);
         }
     }
 
     else {
-        genericErrorFunction("406");	
+        genericErrorFunction("406");
     }
 }
 
