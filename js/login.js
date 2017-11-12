@@ -16,7 +16,6 @@ function validateLog(){
       "action": "login"
     };
 
-    alert("THIS IS IN");
     $.ajax({
       url: "./PHP/AppLayer.php",
       type: "POST",
