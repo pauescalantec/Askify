@@ -34,6 +34,7 @@ $(window).on('resize', function() {
 
 $(document).ready(function(){
     $(window).resize();
+
     // Menu control
     $("#navbarHome li").on("click", function(){
 		$(".active").removeClass("active");

@@ -1,4 +1,76 @@
-<div class="container">
-   Profile Test
+<div class="container" id="profileAlertContainer">
+    <div class="jumbotron">
+        <div class="media">
+        <div class="media-body">
+            <h1 id="profileName" class="media-heading">
+                First Name <br> Last Name
+            </h1>
+        </div>
+        <div id="userImage" class="media-right media-middle">
+            <img src="media/userImage.jpg" class="media-object profile" name="profileImage">
+        </div>
+        </div>
+    </div>
+    <div class="container-flex" id="profileDetailsContainer"> 
+        <div class="row">
+            <div class="col-sm-7">
+                <legend>Username </legend>
+                <div id="username" class="well"></div>
+                <legend>Email </legend>
+                <div id="email" class="well"></div>
+                <legend>Major </legend>
+                <div id="major" class="well"></div>
+                <legend>Graduation Year </legend>
+                <div id="gradYear" class="well"></div>
+            </div>
+            <div class="col-sm-5">
+                <legend id="topicsLegend">Topics of expertise 
+                    <span class="label label-success edit" id="addTopicsButton">Add Topic</span>
+                </legend>
+                <div class="well">
+                    <ul class="list-group" id="topicsList">
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+    </div>
 </div>
+
+<div id="addTopicModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+             <div class="modal-content">
+                <div class="modal-body" id="modalBodyContainer">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <div class="container" id="chooseModalTitle">
+                    </div>
+                    <div class="container" id="chooseTopicArea">
+                        <p class='answerTopic'>
+                           Choose topics to add to profile 
+                        </p><hr />
+                        <div id="custom-search-input">
+                            <div class="input-group col-md-12">
+                                <input id="searchFieldTopics" type="text" class="form-control" placeholder="Find topics" />
+                                <span class="input-group-btn">
+                                    <button id="startSearch" class="btn btn-info btn-lg" type="button">
+                                        <i class="glyphicon glyphicon-search"></i>
+                                    </button>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="well" id="chooseTopicGrid">
+                            <ul class="list-group" id="topicsGridList">
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                        <a id="cancelQuestion" data-dismiss="modal">Cancel</a>
+                        <button id="sendTopicsButton" class="flat-butt flat-primary-butt flat-inner-butt
+                        flat-primary-inner-butt" href=""> Add Topics</button>
+                </div>
+            </div>  
+        </div>
+    </div>
+
 <script type="text/javascript" src="js/profile.js"></script>
