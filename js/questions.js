@@ -61,7 +61,6 @@ $(document).ready(function(){
     });
 });
 
-
 function saveModifyQuestionButtonClicked() {
     $(".alert").alert('close');
     
@@ -138,13 +137,33 @@ function loadAnsweredQuestions(){
     var numberRequests = listQuestions.length;
 
     $("#questionsList").html("");
-    $("#questionsList").append('<li class="list-group-item" id="answerRequestsHeader">Questions made by you with answers</li>');
+    $("#questionsList").append('<li class="list-group-item" id="answerRequestsHeader">Questions made by you with answers <span class="label label-warning edit" id="manageAnsweredQuestions">Manage</span></li>');
 
     // Fill in all rows except last one
     for (i = 0; i < numberRequests; i++) {    
         var requestHTML = helperCreateListElementRequest(listQuestions[i]);
         $("#questionsList").append(requestHTML);
     } 
+
+    $("#manageAnsweredQuestions").on("click", function(){
+        if ($("#manageAnsweredQuestions").text() == "Manage") {
+            $(".close.answered").show();
+            $("#manageAnsweredQuestions").text("Done");
+        }
+
+        else {
+            $(".close.answered").hide();
+            $("#manageAnsweredQuestions").text("Manage");
+        }
+    });
+
+    $(".close.answered").on("click", function(){
+        var listId = $(this).parent().find("a[name=answerListItem]").attr('id');
+
+        //Delete query here
+
+        loadAnsweredQuestions();
+    });
 
     $(".answeredQuestionLink").on("click", function(){
         triggerViewAnswerModal(this.id);
@@ -160,7 +179,7 @@ function loadUnansweredQuestions(){
     var numberRequests = listUnansweredQuestions.length;
 
     $("#questionsList").html("");
-    $("#questionsList").append('<li class="list-group-item" id="answerRequestsHeader">Questions made by you not yet answered</li>');
+    $("#questionsList").append('<li class="list-group-item" id="answerRequestsHeader">Questions made by you not yet answered <span class="label label-warning edit" id="manageUnansweredQuestions">Manage</span></li>');
 
     // Fill in all rows except last one
     for (i = 0; i < numberRequests; i++) {    
@@ -170,6 +189,26 @@ function loadUnansweredQuestions(){
 
     $("span[name=unansweredQuestionLink]").on("click", function(){
         triggerModifyQuestionModal(this.id);
+    });
+
+    $(".close.unanswered").on("click", function(){
+        var listId = $(this).parent().find("span[name=unansweredQuestionLink]").attr('id');
+
+        //Delete query here
+        
+        loadUnansweredQuestions();
+    });
+
+    $("#manageUnansweredQuestions").on("click", function(){
+        if ($("#manageUnansweredQuestions").text() == "Manage") {
+            $(".close.unanswered").show();
+            $("#manageUnansweredQuestions").text("Done");
+        }
+
+        else {
+            $(".close.unanswered").hide();
+            $("#manageUnansweredQuestions").text("Manage");
+        }
     });
 
     $('[data-toggle="tooltip"]').tooltip();  
@@ -345,17 +384,17 @@ function getUnansweredQuestions(){
 function helperCreateListElementRequest(answerRequest){
     var buildHTML;
     if (answerRequest.status == "A") {
-        buildHTML = '<li class="list-group-item" name="answerRequest"> <p name="answerRequestUserHeader"> <span class="label label-primary">New</span> Question made to ' + answerRequest.firstName + " " +  answerRequest.lastName + '</p> <p name="answerRequestSubjectHeader">&bull;</p> <p name="answerRequestSubjectHeader">' + answerRequest.topic + '</p> <h4 name="answerRequestQuestion"><a class="newAnsweredQuestionLink" id="' + answerRequest.questionId + '"data-toggle="modal" data-target="#viewNewAnswerModal">' + answerRequest.question + '</a></h4>';
+        buildHTML = '<li class="list-group-item" name="answerRequest"><button type="button" class="close answered">&times;</button> <p name="answerRequestUserHeader"> <span class="label label-primary">New</span> Question made to ' + answerRequest.firstName + " " +  answerRequest.lastName + '</p> <p name="answerRequestSubjectHeader">&bull;</p> <p name="answerRequestSubjectHeader">' + answerRequest.topic + '</p> <h4 name="answerRequestQuestion"><a class="newAnsweredQuestionLink" id="' + answerRequest.questionId + '"data-toggle="modal" data-target="#viewNewAnswerModal" name="answerListItem">' + answerRequest.question + '</a></h4>';
         //buildHTML = buildHTML + '<div class="well answer">' + answerRequest.answer + '</div>';
     }
 
     else if (answerRequest.status == "R")  {
-        buildHTML = '<li class="list-group-item" name="answerRequest"> <p name="answerRequestUserHeader">Question made to ' + answerRequest.firstName + " " + answerRequest.lastName + '</p> <p name="answerRequestSubjectHeader">&bull;</p> <p name="answerRequestSubjectHeader">' + answerRequest.topic + '</p> <h4 name="answerRequestQuestion"> <a class="answeredQuestionLink" id="' + answerRequest.questionId + '"data-toggle="modal" data-target="#viewAnswerModal">' + answerRequest.question + '</a></h4>';
+        buildHTML = '<li class="list-group-item" name="answerRequest"><button type="button" class="close answered">&times;</button>  <p name="answerRequestUserHeader">Question made to ' + answerRequest.firstName + " " + answerRequest.lastName + '</p> <p name="answerRequestSubjectHeader">&bull;</p> <p name="answerRequestSubjectHeader">' + answerRequest.topic + '</p> <h4 name="answerRequestQuestion"> <a class="answeredQuestionLink" id="' + answerRequest.questionId + '"data-toggle="modal" data-target="#viewAnswerModal" name="answerListItem">' + answerRequest.question + '</a></h4>';
         buildHTML = buildHTML + '<div class="well answer">' + answerRequest.answer + '</div>';
     }
 
     else {
-        buildHTML = '<li class="list-group-item" name="answerRequest">' + 
+        buildHTML = '<li class="list-group-item" name="answerRequest"><button type="button" class="close unanswered">&times;</button> ' + 
                     '<p name="answerRequestUserHeader">' + 
                     ' Question made to ' + answerRequest.firstName + " " + answerRequest.lastName + 
                     '</p>' + 

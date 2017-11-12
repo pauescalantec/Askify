@@ -517,6 +517,7 @@ fieldset{
     width: 25%;
   }
 
+  #doneViewButton,
   #doneViewNewButton {
     display: inline-block;
     width: 25%;
@@ -608,6 +609,16 @@ fieldset{
     margin: 20px 10px;
   }
 
+  .well.answer.blur {
+    margin: 20px 10px;
+    -webkit-filter: blur(2px);
+    -moz-filter: blur(2px);
+    -o-filter: blur(2px);
+    -ms-filter: blur(2px);
+    filter: blur(2px);
+    background-color: #ccc;
+  }
+
   .well.answerModal {
     margin: 20px 0px 0px 0px;
   }
@@ -654,6 +665,7 @@ fieldset{
     justify-content: center;
     align-items: center;
   }
+
   input[type='checkbox'] {
     -webkit-appearance:none;
     width:30px;
@@ -677,6 +689,20 @@ fieldset{
     font-size: 12px;
   }
 
+  .label.label-warning.edit {
+    float: right;
+    padding: 5px;
+    background-color: #7D56B8;
+    font-size: 12px;
+  }
+
+  .label.label-warning.edit:hover {
+    float: right;
+    padding: 5px;
+    background-color: rgb(92, 61, 141);
+    font-size: 12px;
+  }
+
   .label.label-success.edit:hover {
     float: right;
     padding: 5px;
@@ -694,6 +720,16 @@ fieldset{
     -ms-filter: blur(2px);
     filter: blur(2px);
     background-color: #ccc;
+  }
+
+  .close.unanswered{
+    margin-left: 10px;
+    display: none;
+  }
+
+  .close.answered{
+    margin-left: 10px;
+    display: none;
   }
 
   @media screen and (max-width: 768px) {
