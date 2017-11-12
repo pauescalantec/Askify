@@ -1,6 +1,7 @@
 var currentQuestionToModify = "";
 var currentUserToModifyQuestionTo = "";
 var currentTopicToModifyQuestionTo = "";
+var currentAnswerToView = "";
 
 $(document).ready(function(){
     // Load topics
@@ -101,6 +102,10 @@ function loadAnsweredQuestions(){
         var requestHTML = helperCreateListElementRequest(listQuestions[i]);
         $("#questionsList").append(requestHTML);
     } 
+
+    $(".answeredQuestionLink").on("click", function(){
+        triggerViewAnswerModal(this.id);
+    });
 }
 
 function loadUnansweredQuestions(){
@@ -121,6 +126,19 @@ function loadUnansweredQuestions(){
     });
 
     $('[data-toggle="tooltip"]').tooltip();  
+}
+
+function triggerViewAnswerModal(questionId){
+    $(".alert").alert('close');
+    $("#viewAnswerModalTitle").html("");
+    $("#viewAnswerModalTitle").prepend('<p name="answerRequestUserHeader">Question made to ' + getQUserFromId(questionId) + '</p> <p name="answerRequestSubjectHeader">&bull;</p> <p name="answerRequestSubjectHeader">' + getQTopicFromId(questionId) + '</p>');
+
+    setTimeout(function() {
+        $("#viewAnswerTextArea").html("");
+        $("#viewAnswerTextArea").append('<h4 name="answerRequestQuestion">' + getQQuestionFromId(questionId) + '</h4>');
+    }, 200);  
+
+    currentAnswerToView = questionId;
 }
 
 function triggerModifyQuestionModal(questionId){
@@ -253,12 +271,12 @@ function getUnansweredQuestions(){
 function helperCreateListElementRequest(answerRequest){
     var buildHTML;
     if (answerRequest.status == "A") {
-        buildHTML = '<li class="list-group-item" name="answerRequest"> <p name="answerRequestUserHeader"> <span class="label label-primary">New</span> Question made to ' + answerRequest.firstName + " " +  answerRequest.lastName + '</p> <p name="answerRequestSubjectHeader">&bull;</p> <p name="answerRequestSubjectHeader">' + answerRequest.topic + '</p> <h4 name="answerRequestQuestion"><a class="unansweredQuestionLink">' + answerRequest.question + '</a></h4>';
+        buildHTML = '<li class="list-group-item" name="answerRequest"> <p name="answerRequestUserHeader"> <span class="label label-primary">New</span> Question made to ' + answerRequest.firstName + " " +  answerRequest.lastName + '</p> <p name="answerRequestSubjectHeader">&bull;</p> <p name="answerRequestSubjectHeader">' + answerRequest.topic + '</p> <h4 name="answerRequestQuestion"><a class="answeredQuestionLink" id="' + answerRequest.questionId + '"data-toggle="modal" data-target="#viewAnswerModal">' + answerRequest.question + '</a></h4>';
         buildHTML = buildHTML + '<div class="well answer">' + answerRequest.answer + '</div>';
     }
 
     else if (answerRequest.status == "R")  {
-        buildHTML = '<li class="list-group-item" name="answerRequest"> <p name="answerRequestUserHeader">Question made to ' + answerRequest.firstName + " " + answerRequest.lastName + '</p> <p name="answerRequestSubjectHeader">&bull;</p> <p name="answerRequestSubjectHeader">' + answerRequest.topic + '</p> <h4 name="answerRequestQuestion"><a class="unansweredQuestionLink">' + answerRequest.question + '</a></h4>';
+        buildHTML = '<li class="list-group-item" name="answerRequest"> <p name="answerRequestUserHeader">Question made to ' + answerRequest.firstName + " " + answerRequest.lastName + '</p> <p name="answerRequestSubjectHeader">&bull;</p> <p name="answerRequestSubjectHeader">' + answerRequest.topic + '</p> <h4 name="answerRequestQuestion"> <a class="answeredQuestionLink" id="' + answerRequest.questionId + '"data-toggle="modal" data-target="#viewAnswerModal">' + answerRequest.question + '</a></h4>';
         buildHTML = buildHTML + '<div class="well answer">' + answerRequest.answer + '</div>';
     }
 

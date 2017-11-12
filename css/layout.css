@@ -11,8 +11,6 @@
   margin-left: 6px;
 }
 
-<<<<<<< HEAD
-=======
 .container-inicio {
     text-align: center;
     margin: auto;
@@ -32,7 +30,6 @@ fieldset{
     margin: auto;
 }
 
->>>>>>> 20a84861b7c33034d22fffc1c5b242d52db9d49d
 #navbarItemHome,
 #navbarItemNotifications,
 #navbarItemDropdown,
@@ -190,16 +187,16 @@ fieldset{
     box-shadow: inset #2980B9 -3px -3px 0px;
   }
   .flat-primary-butt {
-    background: #1abc9c;
+    background: #40B976;
   }
   .flat-primary-butt:disabled {
-    background: #176e5d;
+    background: rgb(41, 114, 72);
     color: grey;
-    box-shadow: inset rgb(10, 68, 56) -3px -3px 0px;
+    box-shadow: inset rgb(24, 77, 46) -3px -3px 0px;
   }
   .flat-primary-inner-butt {
-    background: #1ABC9C;
-    box-shadow: inset #16A085 -3px -3px 0px;
+    background: #40B976;
+    box-shadow: inset rgb(41, 114, 72) -3px -3px 0px;
   }
   .flat-previous-butt {
     background: #8e9997;
@@ -258,10 +255,17 @@ fieldset{
     margin-bottom:5px;
   }
 
+  .alert-danger {
+    background-color: #d9534f;
+    color: white;
+  }
+
   .alert-success {
     padding-top: 15px;
     padding-bottom: 15px;
     margin-bottom: 15px;
+    background-color: #40B976;
+    color: white;
   }
 
   #searchFieldTutors {
@@ -275,6 +279,7 @@ fieldset{
       margin-bottom: 0px;
   }
 
+  #viewAnswerModalTitle,
   #modifyQuestionModalTitle,
   #modifyAnswerModalTitle,
   #answerModalTitle,
@@ -285,6 +290,7 @@ fieldset{
     margin-bottom: 0px;
 }
 
+  #viewAnswerModalTitle,
   #cancelModifyQuestion,
   #cancelModifyAnswer,
   #cancelAnswer,
@@ -306,6 +312,7 @@ fieldset{
     text-decoration: none;
   }
 
+  #viewAnswerTextArea,
   #modifyQuestionTextArea,
   #modifyAnswerTextArea,
   #answerTextArea,
@@ -604,13 +611,39 @@ fieldset{
   }
 
 
+  .label.label-primary {
+    padding: 5px;
+    background-color: #3498db;
+    font-size: 12px;
+  }
+
   .label.label-success.edit {
     float: right;
     padding: 5px;
+    background-color: #40B976;
+    font-size: 12px;
+  }
+
+  .label.label-success.edit:hover {
+    float: right;
+    padding: 5px;
+    background-color: rgb(41, 114, 72);
   }
 
   .showAnswer {
     margin-bottom: 0px;
+  }
+
+  .blur {
+    -webkit-filter: blur(5px);
+    -moz-filter: blur(5px);
+    -o-filter: blur(5px);
+    -ms-filter: blur(5px);
+    filter: blur(5px);
+    width: 100px;
+    height: 100px;
+    background-color: #ccc;
+  
   }
 
   @media screen and (max-width: 768px) {
