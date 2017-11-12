@@ -13,13 +13,20 @@
 
 .container-inicio {
     text-align: center;
+    margin: auto;
 }
 #containerLogo{
     margin-top: 50px;
 }
+
 .mainLogo{
     display: block;
     max-width: 250px;
+    margin: auto;
+}
+fieldset{
+    text-align: center;
+    align-self:center;
     margin: auto;
 }
 
@@ -44,30 +51,24 @@
     font-weight: bold;
 }
 
-#inicio{
+#inicio,#login,#register{
     background-color: #40B976 !important;
 }
-#idWhiteButtLogin{
+#idWhiteButtLogin,#idWhiteButtRegister{
     margin-top: 50px;
     font-weight: bold;
     font-size: 20px;
     padding-top: 15px;
     padding-bottom: 15px;
 }
-#idWhiteButtRegister{
-    margin-top: 20px;
-    font-weight: bold;
-    font-size: 20px;
-    padding-top: 15px;
-    padding-bottom: 15px;
 
-}
 #idWhiteButtRegister:hover{
     color: #40B976;
 }
 #idWhiteButtLogin:hover{
     color: #40B976;
 }
+
 .nav-pills>li.active>a, .nav-pills>li.active>a:focus, .nav-pills>li.active>a:hover {
   color: #fff !important;
   background-color: #337ab7 !important;
@@ -559,7 +560,7 @@
     float: right;
     margin-top: 10px;
   }
-  
+
   .answersLink,
   .answersLink:hover,
   .answeredQuestionLink,
@@ -588,6 +589,27 @@
     border: 0;
     box-shadow: none;
   }
+  #usernameInput, #passwordInput, #fNameInput, #lNameInput, #uEmailInput, #uMajorInput, #uGradYearInput{
+    width: 20%;
+    margin: 0 auto;
+    font-size: 17px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    height: auto;
+    border-radius: 4px;
+    display: block;
+  }
+  #loginContainer{
+      text-overflow: ellipsis;
+      overflow: hidden;
+  }
+  #registerContainer{
+      text-overflow: ellipsis;
+      overflow: hidden;
+  }
+
 
   .label.label-primary {
     padding: 5px;

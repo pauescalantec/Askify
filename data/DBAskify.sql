@@ -9,7 +9,7 @@ Create Table User(
     uMajor VARCHAR(30) NOT NULL,
     uGradYear INT(4) NOT NULL,
     uRating FLOAT(2)
-    uURL VARCHAR(255) NOT NULL
+    uURL VARCHAR(255)
 );
 
 Create Table Topics(
