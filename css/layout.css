@@ -11,10 +11,6 @@
   margin-left: 6px;
 }
 
-.container {
-    height: 500px;
-}
-
 #navbarItemHome,
 #navbarItemNotifications,
 #navbarItemDropdown,
@@ -38,7 +34,6 @@
 
 #inicio{
     background-color: #40B976 !important;
-    height: 500px;
 }
 
 .nav-pills>li.active>a, .nav-pills>li.active>a:focus, .nav-pills>li.active>a:hover {
@@ -509,12 +504,13 @@
     float: right;
     margin-top: 10px;
   }
+  
+  .answersLink,
+  .answersLink:hover,
   .answeredQuestionLink,
   .answeredQuestionLink:hover,
   .unansweredQuestionLink,
-  .unansweredQuestionLink:hover,
-  .previousAnswerLink,
-  .previousAnswerLink:hover {
+  .unansweredQuestionLink:hover{
     color: black;
   }
 
@@ -538,6 +534,15 @@
     box-shadow: none;
   }
 
+  .label.label-success.edit {
+    float: right;
+    padding: 5px;
+  }
+
+  .showAnswer {
+    margin-bottom: 0px;
+  }
+
   @media screen and (max-width: 768px) {
     #analyticsGrid{
       width: 100%;
@@ -558,4 +563,5 @@
     .row.content{
       height: auto;
     }
+
   }

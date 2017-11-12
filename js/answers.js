@@ -216,7 +216,7 @@ function loadPreviousAnswers(){
         $("#answersList").append(requestHTML);
     } 
 
-    $(".previousAnswerLink").on("click", function(){
+    $("span[name=previousAnswerLink]").on("click", function(){
         triggerModifyAnswerModal(this.id);
     });
 
@@ -326,7 +326,11 @@ function helperCreateListElementRequest(answerRequest){
 }
 
 function helperCreateListElementPrevious(answerRequest){
-    var buildHTML = '<li class="list-group-item" name="answerRequest"> <p name="answerRequestUserHeader">Question by ' + answerRequest.firstName + " " + answerRequest.lastName + '</p> <p name="answerRequestSubjectHeader">&bull;</p> <p name="answerRequestSubjectHeader">' + answerRequest.topic + '</p> <h4 name="answerRequestQuestion">' + answerRequest.question + '</h4>';
-    buildHTML = buildHTML + '<div class="well previousAnswer"><span data-placement="bottom" data-toggle="tooltip" title="Click to modify"><a class="previousAnswerLink" id="' + answerRequest.questionId + '"data-toggle="modal" data-target="#modifyAnswerModal">' + answerRequest.answer + '</a></span></div>';
+    var buildHTML = '<li class="list-group-item" name="answerRequest"> <p name="answerRequestUserHeader">Question by ' + answerRequest.firstName + " " + answerRequest.lastName + '</p> <p name="answerRequestSubjectHeader">&bull;</p> <p name="answerRequestSubjectHeader">' + answerRequest.topic + '</p><a class="answersLink"> <h4 name="answerRequestQuestion">' + answerRequest.question + '</h4></a>';
+    buildHTML = buildHTML + '<div class="well previousAnswer">' + 
+                            '<p class="showAnswer">' + answerRequest.answer + 
+                            '<span class="label label-success edit" name="previousAnswerLink" id="' + answerRequest.questionId + '"data-toggle="modal" data-target="#modifyAnswerModal">Edit</span>' +
+                            '</p>' + 
+                            '</div>';
     return buildHTML;
 }

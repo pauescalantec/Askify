@@ -79,10 +79,12 @@ function loadSidebarQuestionsCount(){
 
 function loadAnsweredQuestions(){
     $("#newQuestionsSidebarButton").on("click", function(){
+        $(".alert").alert('close');
         loadAnsweredQuestions();
     });
 
     $("#unansweredQuestionsSidebarButton").on("click", function(){
+        $(".alert").alert('close');
         loadUnansweredQuestions();
     });
 
@@ -114,7 +116,7 @@ function loadUnansweredQuestions(){
         $("#questionsList").append(requestHTML);
     } 
 
-    $(".unansweredQuestionLink").on("click", function(){
+    $("span[name=unansweredQuestionLink]").on("click", function(){
         triggerModifyQuestionModal(this.id);
     });
 
@@ -261,7 +263,19 @@ function helperCreateListElementRequest(answerRequest){
     }
 
     else {
-        buildHTML = '<li class="list-group-item" name="answerRequest"> <p name="answerRequestUserHeader">Question made to ' + answerRequest.firstName + " " + answerRequest.lastName + '</p> <p name="answerRequestSubjectHeader">&bull;</p> <p name="answerRequestSubjectHeader">' + answerRequest.topic + '</p><h4 name="answerRequestQuestion"><span data-placement="bottom" data-toggle="tooltip" title="Click to modify"><a class="unansweredQuestionLink" id="' + answerRequest.questionId + '"data-toggle="modal" data-target="#modifyQuestionModal">' + answerRequest.question + '</a></span></h4>';
+        buildHTML = '<li class="list-group-item" name="answerRequest">' + 
+                    '<p name="answerRequestUserHeader">' + 
+                    ' Question made to ' + answerRequest.firstName + " " + answerRequest.lastName + 
+                    '</p>' + 
+                    '<p name="answerRequestSubjectHeader"> ' + '&bull;' + 
+                    '</p>' + 
+                    ' <p name="answerRequestSubjectHeader">' + answerRequest.topic + 
+                    '</p>' + 
+                    '<span class="label label-success edit" name="unansweredQuestionLink" id="' + answerRequest.questionId + '"data-toggle="modal" data-target="#modifyQuestionModal">Edit</span>' +
+                    '<h4 name="answerRequestQuestion">' + 
+                    '<p>' + answerRequest.question + '</p>' + 
+                    '</h4>';
+
         buildHTML = buildHTML + '<div class="well unanswer">' + "No answer yet" + '</div>';
     }
 
