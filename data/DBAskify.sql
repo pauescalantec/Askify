@@ -8,7 +8,7 @@ Create Table UserTable(
     uEmail VARCHAR(40) NOT NULL,
     uMajor VARCHAR(30) NOT NULL,
     uGradYear INT(4) NOT NULL,
-    uRating FLOAT(2)
+    uRating FLOAT(2),
     uURL VARCHAR(255)
 );
 
@@ -47,7 +47,7 @@ Create Table HasExpertise(
     PRIMARY KEY (uName, tID)
 );
 
-INSERT INTO User VALUES
+INSERT INTO UserTable VALUES
 ('Pecster', 'pec', 'Paulina','Escalante', 'pecster@gmail.com','ITC','2018','5','pec.jpg'),
 ('CrisTJ','babyt','Cristina','Jimenez','cristj@gmail.com','ITC','2019','4.3','cristj.jpg'),
 ('Carlitos','carlos','Carlos','Gaytan','cgaytan@gmail.com','ITC','2013','5','carlitos.jpg'),
