@@ -13,6 +13,7 @@ function doDBconnection(){
         return $conn;
     }
 }
+
 function doLogin($uName,$uPass){
     $conn = doDBconnection();
 
@@ -70,5 +71,68 @@ function doRegister($uName,$uPass,$fName,$lName,$uEmail,$uMajor,$uGradYear){
     }else{
         $conn->close();
         return array("status" => "Failed to connect to the database");
+    }
+}
+
+function dataLoadProfile($uName){
+    $conn = doDBconnection();
+    
+    if ($conn != null){
+        
+        $sql = "SELECT * FROM UserTable WHERE uName = '$uName'";		
+        
+        $result = $conn->query($sql);
+
+        if ($result->num_rows > 0)
+        {
+            while ($row = $result->fetch_assoc())
+            {
+                $response = array("firstname"=>$row["fName"], "lastname"=>$row["lName"], "email"=>$row["uEmail"], "major"=>$row["uMajor"], "gradYear"=>$row["uGradYear"], "username"=>$row["uName"], "uRating"=>$row["uRating"], "uURL"=>$row["uURL"]);
+            }
+            $conn->close();
+            return array("response"=>$response, "MESSAGE"=>"SUCCESS");
+        }
+
+        else
+        {
+            return array("MESSAGE"=>"406");
+        }
+
+    }
+    else{
+        return array("MESSAGE"=>"500");
+    }
+}
+
+function dataLoadTopics($uName){
+    $conn = doDBconnection();
+    
+    if ($conn != null){
+        
+        $sql = "SELECT * FROM Topics WHERE tID IN (SELECT tID FROM HasExpertise WHERE uName = '$uName')";		
+        
+        $result = $conn->query($sql);
+
+        if ($result->num_rows > 0)
+        {
+            $counter = 0;
+
+            while ($row = $result->fetch_assoc())
+            {
+                $response[$counter++] = array("topicId"=>$row["tID"], "topicURL"=>$row["tURL"], "topicName"=>$row["tName"]);
+            }
+
+            $conn->close();
+            return array("response"=>$response, "MESSAGE"=>"SUCCESS");
+        }
+
+        else
+        {
+            return array("MESSAGE"=>"406");
+        }
+
+    }
+    else{
+        return array("MESSAGE"=>"500");
     }
 }

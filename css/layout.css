@@ -791,6 +791,8 @@ input[type='checkbox'] {
 }
 
 #topicsList{
+  max-height: 500px;
+  overflow: scroll;
   margin-bottom: 0px;
 }
 

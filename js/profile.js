@@ -108,23 +108,65 @@ function loadRestOfTopics(){
 }
 
 function loadProfile(){
-    $("#topicsList").html("");
-    $("#userImage").html("");
-    getCurrentUserData();
+    var jsonSend = {
+        "username" : currentUserId,
+        "action": "loadProfile"
+      };
 
-    var name = currentUserData.fName + " <br> " + currentUserData.lName;
+    // Call to server to laod profile
+    $.ajax({
+        url: "./PHP/AppLayer.php",
+        type: "POST",
+        data : jsonSend,
+        ContentType : "application/json",
+        dataType: "json",
+        success: function(response){
+            // Load profile
+            currentUserData = response;
+            $("#userImage").html("");
+        
+            var name = response.firstname + " <br> " + response.lastname;
+        
+            $("#profileName").html(name);
+            $("#userImage").append('<img src="media/userImage.jpg" class="media-object">');
+            $("#username").text(response.username);
+            $("#email").text(response.email);
+            $("#major").text(response.major);
+            $("#gradYear").text(response.gradYear);
+        },
+        error: function (errorMS){
 
-    $("#profileName").html(name);
-    $("#userImage").append('<img src="media/userImage.jpg" class="media-object">');
-    $("#username").text(currentUserData.username);
-    $("#email").text(currentUserData.email);
-    $("#major").text(currentUserData.major);
-    $("#gradYear").text(currentUserData.gradYear);
+            // Error message
+            alert(errorMS.responseText);
+        }
+    });
 
-    // Load topics
-    for (i = 0; i < (currentUserData.topics.length); i++) {
-        $("#topicsList").append(helperCreateTopicHTML(currentUserData.topics[i].topicName, currentUserData.topics[i].topicURL, currentUserData.topics[i].topicId));
-    }
+    var jsonSendTopics = {
+        "username" : currentUserId,
+        "action": "loadTopics"
+      };
+
+    // Call to server to laod topics
+    $.ajax({
+        url: "./PHP/AppLayer.php",
+        type: "POST",
+        data : jsonSendTopics,
+        ContentType : "application/json",
+        dataType: "json",
+        success: function(response){
+            // Load profile
+            $("#topicsList").html("");
+
+            // Load topics
+            for (i = 0; i < (response.length); i++) {
+                $("#topicsList").append(helperCreateTopicHTML(response[i].topicName, "media/" + response[i].topicURL, response[i].topicId));
+            }
+        },
+        error: function (errorMS){
+            // Error message
+            alert(errorMS.responseText);
+        }
+    });
 }
 
 function helperCreateTopicHTML(topicName, topicURL, topicId){
@@ -135,21 +177,6 @@ function helperCreateTopicHTML(topicName, topicURL, topicId){
 function helperCreateAddTopicHTML(topicName, topicURL, topicId){
     var buildHTML = '<li class="list-group-item" name="addTopicItem" id="' + topicId + '"> <div class="media"> <div class="media-left media-middle"> <img src="' + topicURL + '" class="media-object topic" style="width:60px"> </div> <div class="media-body"> <h4 class="media-heading topic">' + topicName + '</h4> </div> </div> </li>';
     return buildHTML;
-}
-
-function getCurrentUserData(){
-    currentUserData = {
-        "fName" : "Paulina",
-        "lName" : "Escalante",
-        "username" : "pecster",
-        "email" : "pauescalante8@gmail.com",
-        "major" : "Computer Science",
-        "gradYear" : "2020",
-        "img" : "media/userImage.jpg",
-        "topics" : [{"topicName": "C++", "topicURL" : "Media/cardImage4.jpg"},
-                    {"topicName":"C#", "topicURL" : "Media/cardImage3.jpg"},
-                    {"topicName":"Python", "topicURL" : "Media/cardImage6.jpg"}]
-    };
 }
 
 function getTopicCards(){
