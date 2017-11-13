@@ -68,6 +68,21 @@ switch ($action) {
     case "loadCountAnswers":
         loadCountAnswers();
     break;
+    case "loadUnansweredQuestions":
+        loadUnansweredQuestions();
+    break;
+    case "loadAnsweredQuestions":
+        loadAnsweredQuestions();
+    break;
+    case "modifyQuestion":
+        modifyQuestion();
+    break;
+    case "deleteQuestion":
+        deleteQuestion();
+    break;
+    case "updateRanking":
+        updateRanking();
+    break;
 }
 
 function deleteSessionFunction() {
@@ -157,6 +172,50 @@ function loadProfile(){
 
         else {
             genericErrorFunction($loadProfileResponse["MESSAGE"]);
+        }
+    }
+
+    else {
+        genericErrorFunction("406");
+    }
+}
+
+function loadUnansweredQuestions(){
+    $uName = getSessionUser();
+
+    if (!is_null($uName)){
+
+        $loadUnansweredQuestionsResponse = dataLoadUnansweredQuestions($uName);
+
+        if ($loadUnansweredQuestionsResponse["MESSAGE"] == "SUCCESS") {
+            $response = $loadUnansweredQuestionsResponse["response"];
+            echo json_encode($response);
+        }
+
+        else {
+            genericErrorFunction($loadUnansweredQuestionsResponse["MESSAGE"]);
+        }
+    }
+
+    else {
+        genericErrorFunction("406");
+    }
+}
+
+function loadAnsweredQuestions(){
+    $uName = getSessionUser();
+
+    if (!is_null($uName)){
+
+        $loadAnsweredQuestionsResponse = dataLoadAnsweredQuestions($uName);
+
+        if ($loadAnsweredQuestionsResponse["MESSAGE"] == "SUCCESS") {
+            $response = $loadAnsweredQuestionsResponse["response"];
+            echo json_encode($response);
+        }
+
+        else {
+            genericErrorFunction($loadAnsweredQuestionsResponse["MESSAGE"]);
         }
     }
 
@@ -280,6 +339,74 @@ function addTopics(){
 
         else {
             genericErrorFunction($addTopicsResponse["MESSAGE"]);
+        }
+    }
+
+    else {
+        genericErrorFunction("406");
+    }
+}
+
+function modifyQuestion(){
+    $uName = getSessionUser();
+    $questionId = $_POST["questionId"];
+    $questionText = $_POST["questionText"];
+
+    if (!is_null($uName)){
+        $modifyQuestionResponse = dataModifyQuestion($questionId, $questionText);
+
+        if ($modifyQuestionResponse["MESSAGE"] == "SUCCESS") {
+            $response = "Successfully added";
+            echo json_encode($response);
+        }
+
+        else {
+            genericErrorFunction($modifyQuestionResponse["MESSAGE"]);
+        }
+    }
+
+    else {
+        genericErrorFunction("406");
+    }
+}
+
+function updateRanking(){
+    $uName = getSessionUser();
+    $questionId = $_POST["questionId"];
+    $rating = $_POST["rating"];
+
+    if (!is_null($uName)){
+        $updateRankingResponse = dataUpdateRanking($questionId, $rating);
+
+        if ($updateRankingResponse["MESSAGE"] == "SUCCESS") {
+            $response = "Successfully added";
+            echo json_encode($response);
+        }
+
+        else {
+            genericErrorFunction($updateRankingResponse["MESSAGE"]);
+        }
+    }
+
+    else {
+        genericErrorFunction("406");
+    }
+}
+
+function deleteQuestion(){
+    $uName = getSessionUser();
+    $questionId = $_POST["questionId"];
+
+    if (!is_null($uName)){
+        $deleteQuestionResponse = dataDeleteQuestion($questionId);
+
+        if ($deleteQuestionResponse["MESSAGE"] == "SUCCESS") {
+            $response = "Successfully added";
+            echo json_encode($response);
+        }
+
+        else {
+            genericErrorFunction($deleteQuestionResponse["MESSAGE"]);
         }
     }
 

@@ -73,14 +73,18 @@ INSERT INTO Questions VALUES
 ('CrisTJPecster2','web7','CrisTJ','What do I need to use ASP.NET?'),
 ('PecsterCarlitos3','csharp3','Pecster','Why is it better to use Object Oriented Programming?'),
 ('PecsterNats4','python5','Pecster','What can I use to run a Python server?'),
-('PecsterCrisTJ5','sql6','Pecster','What is the command for dropping tables?');
+('NatsPecster6','cpp1','Nats','What is a fat client?'),
+('PecsterCrisTJ5','sql6','Pecster','What is the command for dropping tables?'),
+('PecsterNats7','cpp1','Pecster','What is a struct?');
 
 INSERT INTO Answers VALUES
 ('PecsterCrisTJ1','Pecster','CrisTJPecster1','R','You can use several libraries for this on c++, I would do hashing','5'),
 ('PecsterCrisTJ2','Pecster','CrisTJPecster2','N','','-1'),
 ('CarlitosPecster3','Carlitos','PecsterCarlitos3','N','','-1'),
 ('NatsPecster4','Nats','PecsterNats4','A','You can use Flask to run a server','-1'),
-('CrisTJPecster5','CrisTJ','PecsterCrisTJ5','R','You can use the DROP TABLE tablename command','4');
+('PecsterNats6','Pecster','NatsPecster6','N','','-1'),
+('CrisTJPecster5','CrisTJ','PecsterCrisTJ5','R','You can use the DROP TABLE tablename command','4'),
+('NatsPecster7','Nats','PecsterNats7','N','','-1');
 
 INSERT INTO Comments values
 ('1','1','CrisTJ','Puede ser tu favorita, y no necesariamente la mejor...'),
