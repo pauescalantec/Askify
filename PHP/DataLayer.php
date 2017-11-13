@@ -517,12 +517,60 @@ function dataModifyQuestion($questionId, $questionText){
     }
 }
 
+function dataUpdateAnswer($questionId, $answerText){
+    $conn = doDBconnection();
+    
+    if ($conn != null){
+
+        $sql = "UPDATE Answers SET aText = '$answerText', aStatus = 'A', aRating = '-1' WHERE qID = '$questionId'";
+
+        if (mysqli_query($conn, $sql)) {
+            $response = array("MESSAGE"=>"SUCCESS");
+            $conn->close();
+            return $response;
+        }
+
+        else
+        {
+            $conn->close();
+            return array("MESSAGE"=>"406");
+        }
+    }
+    else{
+        return array("MESSAGE"=>"500");
+    }
+}
+
 function dataUpdateRanking($questionId, $rating){
     $conn = doDBconnection();
 
     if ($conn != null){
 
         $sql = "UPDATE Answers SET aRating = '$rating', aStatus = 'R' WHERE qID = '$questionId'";
+
+        if (mysqli_query($conn, $sql)) {
+            $response = array("MESSAGE"=>"SUCCESS");
+            $conn->close();
+            return $response;
+        }
+
+        else
+        {
+            $conn->close();
+            return array("MESSAGE"=>"406");
+        }
+    }
+    else{
+        return array("MESSAGE"=>"500");
+    }
+}
+
+
+function dataSendAnswer($questionId, $answerText){
+    $conn = doDBconnection();
+
+    if ($conn != null){
+        $sql = "UPDATE Answers SET aText = '$answerText', aStatus = 'A' WHERE qID = '$questionId'";
 
         if (mysqli_query($conn, $sql)) {
             $response = array("MESSAGE"=>"SUCCESS");
@@ -719,8 +767,8 @@ function doLoadAnswerRequest($uName){
 
                 while ($row = $result->fetch_assoc()){
                     $response[$counter++] =
-                    array("firstname"=>$row["firstName"],
-                    "lastname"=>$row["lastName"],
+                    array("firstName"=>$row["firstName"],
+                    "lastName"=>$row["lastName"],
                     "username"=>$row["userName"],
                     "userImage"=>$row["userURL"],
                     "questionId"=>$row["questionID"],
@@ -766,8 +814,8 @@ function doLoadPreviousAnswers($uName){
 
                 while ($row = $result->fetch_assoc()){
                     $response[$counter++] =
-                    array("firstname"=>$row["firstName"],
-                    "lastname"=>$row["lastName"],
+                    array("firstName"=>$row["firstName"],
+                    "lastName"=>$row["lastName"],
                     "username"=>$row["userName"],
                     "userImage"=>$row["userURL"],
                     "questionId"=>$row["questionID"],

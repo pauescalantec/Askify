@@ -5,6 +5,9 @@ var currentAnswerToModify = "";
 var currentUserToModifyAnswerTo = "";
 var currentTopicToModifyAnswerTo = "";
 
+var requestsResults = [];
+var previousResults = [];
+
 $(document).ready(function(){
     // Load topics
     setTimeout(function() {
@@ -46,17 +49,31 @@ function saveModifyAnswerButtonClicked() {
     }
 
     else {
-        var postSuccessful = true;
 
-        if(postSuccessful){
-            postModifiedAnswer();
-        }
+        // Ajax to update
 
-        else {
-            setTimeout(function() {
-                createDangerAlert("#modifyAnswerTextArea", "Error connecting to server. Try again later.", "answerNotPostModifiedAlert");
-            }, 300);
-        }
+        var jsonSend = {
+            "questionId" : currentAnswerToModify,
+            "answerText" : $("#modifyAnswerText").val(),
+            "action": "updateAnswer"
+        };
+        
+        $.ajax({
+            url: "./PHP/AppLayer.php",
+            type: "POST",
+            data : jsonSend,
+            ContentType : "application/json",
+            dataType: "json",
+            success: function(response){
+                postModifiedAnswer();
+            },
+            error: function (errorMS){
+                // Error message
+                setTimeout(function() {
+                    createDangerAlert("#modifyAnswerTextArea", "Error connecting to server. Try again later.", "answerNotPostModifiedAlert");
+                }, 300);
+            }
+        });
     }
 }
 
@@ -70,17 +87,29 @@ function sendAnswerButtonClicked() {
     }
 
     else {
-        var postSuccessful = true;
-
-        if(postSuccessful){
-            postAnswer();
-        }
-
-        else {
-            setTimeout(function() {
-                createDangerAlert("#answerTextArea", "Error connecting to server. Try again later.", "answerNotPostedAlert");
-            }, 300);
-        }
+        // ajax call to send answer
+        var jsonSend = {
+            "questionId" : currentQuestionToAnswer,
+            "answerText" : $("#answerText").val(),
+            "action": "sendAnswer"
+        };
+        
+        $.ajax({
+            url: "./PHP/AppLayer.php",
+            type: "POST",
+            data : jsonSend,
+            ContentType : "application/json",
+            dataType: "json",
+            success: function(response){
+                postAnswer();
+            },
+            error: function (errorMS){
+                // Error message
+                setTimeout(function() {
+                    createDangerAlert("#answerTextArea", "Error connecting to server. Try again later.", "answerNotPostedAlert");
+                }, 300);
+            }
+        });
     }
 }
 
@@ -159,7 +188,7 @@ function loadAnswerRequests(){
         data: jsonLoadAnswRequests,
         dataType: "json",
         success: function(jsonResponse){
-
+            requestsResults = jsonResponse;
             var listRequests = jsonResponse;
             var numberRequests = listRequests.length;
 
@@ -213,6 +242,7 @@ function triggerAnswerQuestionModal(questionId){
     $('#cancelAnswer').prop('disabled', false);
     $('#sendAnswerButton').prop('disabled', false);
     $("#sendAnswerButton").text("Send Answer");
+
     currentQuestionToAnswer = questionId;
     currentUserToAnswer = getUserFromId(questionId);
     currentTopicToAnswer = getTopicFromId(questionId) ;
@@ -220,15 +250,16 @@ function triggerAnswerQuestionModal(questionId){
 
 function loadPreviousAnswers(){
 
-    var jsonLoadPreviousAnswers = {"action" : "loadPreviousAnswers"}
+    var jsonLoadPreviousAnswers = {"action" : "loadPreviousAnswers"};
+
     $.ajax({
         url: "./PHP/AppLayer.php",
         type: "POST",
         data: jsonLoadPreviousAnswers,
         dataType: "json",
         success: function(jsonResponse){
-
             var listRequests = jsonResponse;
+            previousResults = jsonResponse;
             var numberRequests = listRequests.length;
 
             $("#answersList").html("");
@@ -255,47 +286,75 @@ function loadPreviousAnswers(){
 }
 
 function getQuestionFromId(questionId){
-    var questionsList = {
-        "1questionPatricioPaulina":"Why do I have to include files in the header like #include stdlib.h and stdio.h, if I don't have them, will my code not compile?",
-        "2questioMonicaPaulina" : "What nuget packages do you recommend to use for calculating the p-value of the gamma function?",
-        "3questionMonicaPaulina": "How can I make my python code into a REST API so that I can connect my web interface with my python code that I made for my compilers course?",
-        "4questionJuanPaulina":"What do I have to do to compile a .cpp file in terminal in Linux?",
-        "5questioMonicaPaulina":"What is the best functionality for scrollers, top to bottom or bottom to top?"};
+    // Look in unanswered questions
+    for (i = 0; i < previousResults.length; i++) {
+        if (previousResults[i].questionId == questionId){
+            return previousResults[i].question;
+        }
+    }
 
-    return questionsList[questionId];
+    //Look in answered questions
+    for (i = 0; i < requestsResults.length; i++) {
+        if (requestsResults[i].questionId == questionId){
+            return requestsResults[i].question;
+        }
+    }
+
+    return "";
 }
 
 function getTopicFromId(questionId){
-    var topicsList = {
-        "1questionPatricioPaulina": "C++",
-        "2questioMonicaPaulina" : "C#",
-        "3questionMonicaPaulina": "Python",
-        "4questionJuanPaulina":"C++",
-        "5questioMonicaPaulina":"UX/UI"};
+    // Look in unanswered questions
+    for (i = 0; i < previousResults.length; i++) {
+        if (previousResults[i].questionId == questionId){
+            return previousResults[i].topic;
+        }
+    }
 
-    return topicsList[questionId];
+    //Look in answered questions
+    for (i = 0; i < requestsResults.length; i++) {
+        if (requestsResults[i].questionId == questionId){
+            return requestsResults[i].topic;
+        }
+    }
+
+    return "";
 }
 
 function getUserFromId(questionId){
-    var topicsList = {
-        "1questionPatricioPaulina": "Patricio Sanchez",
-        "2questioMonicaPaulina" : "Monica Perez",
-        "3questionMonicaPaulina": "Monica Perez",
-        "4questionJuanPaulina":"Juan Medellin",
-        "5questioMonicaPaulina":"Monica Perez"};
+    // Look in unanswered questions
+    for (i = 0; i < previousResults.length; i++) {
+        if (previousResults[i].questionId == questionId){
+            return (previousResults[i].firstName + " " + previousResults[i].lastName);
+        }
+    }
 
-    return topicsList[questionId];
+    //Look in answered questions
+    for (i = 0; i < requestsResults.length; i++) {
+        if (requestsResults[i].questionId == questionId){
+            return (requestsResults[i].firstName + " " + requestsResults[i].lastName);
+        }
+    }
+
+    return "";
 }
 
 function getAnswerFromId(questionId){
-    var topicsList = {
-        "1questionPatricioPaulina": "",
-        "2questioMonicaPaulina" : "",
-        "3questionMonicaPaulina": "",
-        "4questionJuanPaulina":"You can use: gcc -o outputName fileName.cpp",
-        "5questioMonicaPaulina":"The best to to is top to bottom"};
+    // Look in unanswered questions
+    for (i = 0; i < previousResults.length; i++) {
+        if (previousResults[i].questionId == questionId){
+            return previousResults[i].answer;
+        }
+    }
 
-    return topicsList[questionId];
+    //Look in answered questions
+    for (i = 0; i < requestsResults.length; i++) {
+        if (requestsResults[i].questionId == questionId){
+            return requestsResults[i].answer;
+        }
+    }
+
+    return "";
 }
 
 function loadRequestCount(){

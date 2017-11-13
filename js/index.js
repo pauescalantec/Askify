@@ -491,6 +491,7 @@ function triggerAskQuestionModal(currentTopic, currentTopicId){
 
 function createTutorList(keywordCreate, searchFieldTutors){
     var jsonSendTopicsList;
+    $(".selected").removeClass("selected");
 
     if(keywordCreate == "trigger") {
         // Ajax call to load tutors by topic

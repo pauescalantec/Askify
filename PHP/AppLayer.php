@@ -77,6 +77,12 @@ switch ($action) {
     case "updateRanking":
         updateRanking();
     break;
+    case "sendAnswer":
+        sendAnswer();
+    break;
+    case "updateAnswer":
+        updateAnswer();
+    break;
 }
 
 function deleteSessionFunction() {
@@ -295,6 +301,30 @@ function loadTutorByTopic(){
     }
 }
 
+function loadTutorByTopicSearch(){
+    $currentTopic =  $_POST["currentTopic"];
+    $searchField =  $_POST["searchFieldTutors"];
+    $currentUser =  getSessionUser();
+
+    if (!is_null($currentUser)){
+        $loadTutorByTopicSearchResponse = dataLoadTutorByTopicSearch($currentTopic, $currentUser,$searchField);
+        
+        if ($loadTutorByTopicSearchResponse["MESSAGE"] == "SUCCESS") {
+            $response = $loadTutorByTopicSearchResponse["response"];
+            echo json_encode($response);
+        }
+    
+        else {
+            genericErrorFunction($loadTutorByTopicSearchResponse["MESSAGE"]);	
+        }
+    }
+
+    else {
+        genericErrorFunction("406");
+    }
+}
+    
+
 function searchRestTopics(){
     $uName = getSessionUser();
     $searchField = $_POST["searchField"];
@@ -364,6 +394,29 @@ function modifyQuestion(){
     }
 }
 
+function updateAnswer(){
+    $uName = getSessionUser();
+    $questionId = $_POST["questionId"];
+    $answerText = $_POST["answerText"];
+
+    if (!is_null($uName)){
+        $updateAnswerResponse = dataUpdateAnswer($questionId, $answerText);
+
+        if ($updateAnswerResponse["MESSAGE"] == "SUCCESS") {
+            $response = "Successfully added";
+            echo json_encode($response);
+        }
+
+        else {
+            genericErrorFunction($updateAnswerResponse["MESSAGE"]);
+        }
+    }
+
+    else {
+        genericErrorFunction("406");
+    }
+}
+
 function updateRanking(){
     $uName = getSessionUser();
     $questionId = $_POST["questionId"];
@@ -379,6 +432,29 @@ function updateRanking(){
 
         else {
             genericErrorFunction($updateRankingResponse["MESSAGE"]);
+        }
+    }
+
+    else {
+        genericErrorFunction("406");
+    }
+}
+
+function sendAnswer(){
+    $uName = getSessionUser();
+    $questionId = $_POST["questionId"];
+    $answerText = $_POST["answerText"];
+
+    if (!is_null($uName)){
+        $sendAnswerResponse = dataSendAnswer($questionId, $answerText);
+
+        if ($sendAnswerResponse["MESSAGE"] == "SUCCESS") {
+            $response = "Successfully added";
+            echo json_encode($response);
+        }
+
+        else {
+            genericErrorFunction($sendAnswerResponse["MESSAGE"]);
         }
     }
 
