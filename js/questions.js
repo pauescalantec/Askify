@@ -151,9 +151,6 @@ function postModifiedQuestion(){
     }, 1300);
 }
 
-function loadSidebarQuestionsCount(){
-    $("#questionsCountSidebar").text(getQuestionsNumber() == 0 ? "" : getQuestionsNumber());
-}
 
 function loadAnsweredQuestions(){
     $("#newQuestionsSidebarButton").on("click", function(){
@@ -165,8 +162,6 @@ function loadAnsweredQuestions(){
         $(".alert").alert('close');
         loadUnansweredQuestions();
     });
-
-    loadSidebarQuestionsCount();
 
     var jsonSend = {
         "action": "loadAnsweredQuestions"

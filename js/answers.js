@@ -163,9 +163,6 @@ function postModifiedAnswer(){
     }, 1300);
 }
 
-function loadSidebarRequestCount(){
-    $("#requestsCountSidebar").text(getRequestNumber() == 0 ? "" : getRequestNumber());
-}
 
 function loadAnswerRequests(){
     $("#answerRequestsSidebarButton").on("click", function(){
@@ -181,7 +178,6 @@ function loadAnswerRequests(){
         "action" : "loadAnswerRequest"
     };
     // Load request count
-    loadSidebarRequestCount();
     $.ajax({
         url: "./PHP/AppLayer.php",
         type: "POST",
@@ -355,11 +351,6 @@ function getAnswerFromId(questionId){
     }
 
     return "";
-}
-
-function loadRequestCount(){
-    $("#requestsCount").text(getRequestNumber() == 0 ? "" : getRequestNumber());
-    $("#requestsCountSidebar").text(getRequestNumber() == 0 ? "" : getRequestNumber());
 }
 
 function getPreviousAnswers(){

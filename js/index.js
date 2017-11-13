@@ -381,7 +381,7 @@ function loadAnalyticsField(analyticsSelector){
         },
         error: function (errorMS){
             // Error message
-            alert(errorMS.responseText);
+            //alert(errorMS.responseText);
         }
 
     });
@@ -400,7 +400,7 @@ function loadAnalyticsField(analyticsSelector){
         },
         error: function (errorMS){
             // Error message
-            alert(errorMS.responseText);
+            //alert(errorMS.responseText);
         }
 
     });
@@ -420,7 +420,7 @@ function loadAnalyticsField(analyticsSelector){
         },
         error: function (errorMS){
             // Error message
-            alert(errorMS.responseText);
+            //alert(errorMS.responseText);
         }
 
     });
@@ -553,19 +553,28 @@ function createTutorList(keywordCreate, searchFieldTutors){
 
             // Create tutor list by topic
             var numberTutors = listTutors.length;
+
             var tutorCounter = 0;
 
             // 3 tutors per line
             var numberRowsTutors = Math.ceil(numberTutors/3);
             var lastRowNumberTutors = numberTutors%3;
 
+
+            alert(numberRowsTutors);
+            
+            alert(lastRowNumberTutors);
+            
+            $('#chooseTutorGrid').html("");
+
             // Fill in all rows except last one
             for (i = 0; i < (numberRowsTutors-1); i++) {
+
+                alert(i);
                 var rowId = "tutorRow" + i;
                 var rowHTML = createTutorRow(rowId);
 
                 // Append row to container
-                $('#chooseTutorGrid').html("");
                 $("#chooseTutorGrid").append(rowHTML);
 
                 // Create columns - should be 3
@@ -583,14 +592,18 @@ function createTutorList(keywordCreate, searchFieldTutors){
                 $("#" + rowId).append(columnsJson.column1HTML);
                 $("#" + rowId).append(columnsJson.column2HTML);
                 $("#" + rowId).append(columnsJson.column3HTML);
+                alert(rowId);
 
                 // Fill columns with information for tutors
                 $("#" + rowCol1Id).html(helperCreateTutorCardHTML(listTutors[tutorCounter]));
+                alert(rowCol1Id);
                 tutorCounter++;
                 $("#" + rowCol2Id).html(helperCreateTutorCardHTML(listTutors[tutorCounter]));
                 tutorCounter++;
+                alert(rowCol2Id);
                 $("#" + rowCol3Id).html(helperCreateTutorCardHTML(listTutors[tutorCounter]));
                 tutorCounter++;
+                alert(rowCol3Id);
             }
 
             setTimeout(function () {
@@ -668,6 +681,7 @@ function helperCreateTutorCardHTML(tutorDataJson){
 }
 
 function createTutorRow(rowId){
+    alert("rowid" + rowId);
     var buildRowHTML = '<div class="row equal" id="' + rowId + '" name="tutorRow">';
     return buildRowHTML;
 }
