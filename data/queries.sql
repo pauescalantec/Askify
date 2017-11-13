@@ -11,5 +11,3 @@ WHERE uName = "%$uName%"
 AND tID IN (SELECT tID
              FROM Topics
              WHERE tName = "$tName")
-
-             
