@@ -75,7 +75,7 @@ function doRegister($uName,$uPass,$fName,$lName,$uEmail,$uMajor,$uGradYear){
 
 function dataLoadTutorByTopic($currentTopic){
     $conn = doDBconnection();
-    
+
     if ($conn != null){
 
         $sql = "SELECT * FROM UserTable WHERE uName IN (SELECT uName FROM HasExpertise WHERE tID = '$currentTopic')";
@@ -353,15 +353,17 @@ function doLoadHighestRank(){
 function doloadMostVisitedTopic(){
     $conn = doDBconnection();
     if($conn != NULL){
-        $sqlMostVisited = "SELECT tID
-                        FROM Questions
-                        GROUP BY tID
-                        ORDER BY COUNT(*) DESC
-                        LIMIT 1";
+        $sqlMostVisited = "SELECT tName
+                          FROM Topics
+                          WHERE tID = (SELECT tID
+                                      FROM Questions
+                                      GROUP BY tID
+                                      ORDER BY COUNT(*) DESC
+                                      LIMIT 1);";
         $result = $conn->query($sqlMostVisited);
         if($result->num_rows>0){
             while($row = $result->fetch_assoc()){
-                $response = array("tID"=>$row["tID"]);
+                $response = array("tName"=>$row["tName"]);
             }
             $conn->close();
             return array("response"=>$response, "MESSAGE"=>"SUCCESS");
@@ -381,16 +383,18 @@ function doloadMostVisitedTopicByUser(){
     $conn = doDBconnection();
     $user = $_SESSION['uName'];
     if($conn != NULL){
-        $sqlMostVisited = "SELECT tID
-                          FROM Questions
-                          WHERE uName = '$user'
-                          GROUP BY tID
-                          ORDER BY COUNT(*) DESC
-                          LIMIT 1;";
-        $result = $conn->query($sqlMostVisited);
+        $sqlMostVisitedUSER = "SELECT tName
+                              FROM Topics
+                              WHERE tID = (SELECT tID
+                                			FROM Questions
+                                			WHERE uName = '$user'
+                                			GROUP BY tID
+                                			ORDER BY COUNT(*) DESC
+                                			LIMIT 1);";
+        $result = $conn->query($sqlMostVisitedUSER);
         if($result->num_rows>0){
             while($row = $result->fetch_assoc()){
-                $response = array("tID"=>$row["tID"]);
+                $response = array("tName"=>$row["tName"]);
             }
             $conn->close();
             return array("response"=>$response, "MESSAGE"=>"SUCCESS");

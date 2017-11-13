@@ -206,7 +206,7 @@ function loadTutorByTopic(){
     }
 
     else {
-        genericErrorFunction($loadTutorByTopicResponse["MESSAGE"]);	
+        genericErrorFunction($loadTutorByTopicResponse["MESSAGE"]);
     }
 }
 
@@ -286,7 +286,6 @@ function loadMostVisitedTopicByUser(){
         genericErrorFunction($do["MESSAGE"]);
     }
 }
-
 function getFullNameFromUsername(){
     $uName = $_POST["username"];
 
@@ -300,12 +299,12 @@ function getFullNameFromUsername(){
         }
 
         else {
-            genericErrorFunction($getFullNameFromUsernameResponse["MESSAGE"]);	
+            genericErrorFunction($getFullNameFromUsernameResponse["MESSAGE"]);
         }
     }
 
     else {
-        genericErrorFunction("406");	
+        genericErrorFunction("406");
     }
 }
 
