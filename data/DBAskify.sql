@@ -21,6 +21,7 @@ Create Table Topics(
 
 Create Table Questions(
     qID INT(100) NOT NULL PRIMARY KEY,
+    tID VARCHAR(30) NOT NULL,
     uName VARCHAR(30) NOT NULL,
     qText MEDIUMTEXT NOT NULL
 );
@@ -68,9 +69,14 @@ INSERT INTO Topics VALUES
 ('react9','React','React is a JavaScript library for building user interfaces. React allows developers to create large web-applications that use data and can change over time without reloading the page. It aims primarily to provide speed, simplicity, and scalability.','react.jpg');
 
 INSERT INTO Questions VALUES
-('1','CrisTJ','Cual es el metodo mas efectivo de encriptacion?'),
-('2','CrisTJ','Que necesito para poder desarrollar en ASP.NET?'),
-('3','Pecster','Por que es mejor la implementation de lenguajes orientados a objetos?');
+('1','cpp1','CrisTJ','Cual es el metodo mas efectivo de encriptacion?'),
+('2','web7','CrisTJ','Que necesito para poder desarrollar en ASP.NET?'),
+('3','csharp3','Pecster','Por que es mejor la implementation de lenguajes orientados a objetos?'),
+('4','web7','CrisTJ','Que necesito para poder desarrollar en ASP.NET?'),
+('5','csharp3','Pecster','Por que es mejor la implementation de lenguajes orientados a objetos?'),
+('6','csharp3','Pecster','Por que es mejor la implementation de lenguajes orientados a objetos?'),
+('7','web7','Pecster','Por que es mejor la implementation de lenguajes orientados a objetos?');
+
 
 INSERT INTO Answers VALUES
 ('1','Carlitos','1','Pending','','5'),
