@@ -42,7 +42,7 @@ $(document).ready(function(){
 		$(".active").removeClass("active");
         var currentClass = $(this).attr("class");
         var navId = $(this).attr("id");
-        
+
         // Options is just a dropdown menu
         if (currentClass != "dropdown" && currentClass != "options" && currentClass != "dropdown open" && currentClass != "logout") {
             $(this).addClass("active");
@@ -68,7 +68,7 @@ $(document).ready(function(){
             error: function(errorMessage) {
                 alert("Error logging out. Try again later.");
             }
-        });  
+        });
     });
 
     $('#answersSection').on('classChange', function() {
@@ -156,13 +156,13 @@ function checkSession(){
             currentUser = jsonResponse.uName;
             // Load topics
             loadUserFullName(currentUser);
-    
+
         },
         error: function(error) {
             currentUser = "";
             window.location.replace("inicio.html");
         }
-    });     
+    });
 }
 
 function loadRequestCount(){
@@ -277,6 +277,7 @@ function createSuccessAlert(selectorId, alertMessage, alertId){
 }
 
 function loadAnalyticsField(analyticsSelector){
+    
     var visitedHTML = helperCreateAnalytics("visitedPanelHeading", "Most Visited Topic", getVisitedTopic());
 
     var favoriteHTML = helperCreateAnalytics("favoritePanelHeading", "Your Favorite Topic", getFavoriteTopic());
@@ -384,7 +385,7 @@ function getListTutorsByTopic(topicName){
 function loadTopicCards(){
     // Ajax laod topic cards
     var jsonSend = {"action": "loadTopicIndex"};
-    
+
     $.ajax({
         url: "./PHP/AppLayer.php",
         type: "POST",
@@ -398,11 +399,11 @@ function loadTopicCards(){
                 // Instead of 0 iterate through index
                 var topicCardHTML = helperCreateCardHTML(listTopics[i], (i+1));
                 var topicCounterId = "#topic" + (i+1);
-        
+
                 $(topicCounterId).html("");
                 $(topicCounterId).prepend(topicCardHTML).hide().fadeIn((i+1)*400);
             }
-        
+
             $("[name='askQuestionButton']").on("click", function() {
                 $(".alert").alert('close');
                 var identifierTopicName = "#" + this.id + "TopicName";

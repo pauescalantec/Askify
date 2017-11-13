@@ -134,14 +134,13 @@ function dataLoadTopics($uName){
     }
 }
 
-
 function dataLoadRestTopics($uName){
     $conn = doDBconnection();
-    
+
     if ($conn != null){
-        
-        $sql = "SELECT * FROM Topics WHERE tID NOT IN (SELECT tID FROM HasExpertise WHERE uName = '$uName')";		
-        
+
+        $sql = "SELECT * FROM Topics WHERE tID NOT IN (SELECT tID FROM HasExpertise WHERE uName = '$uName')";
+
         $result = $conn->query($sql);
 
         if ($result->num_rows > 0)
@@ -171,11 +170,11 @@ function dataLoadRestTopics($uName){
 
 function dataSearchRestTopics($uName, $searchField){
     $conn = doDBconnection();
-    
+
     if ($conn != null){
         $field = "%" . $searchField . "%";
-        $sql = "SELECT * FROM Topics WHERE tName LIKE '$field' AND tID NOT IN (SELECT tID FROM HasExpertise WHERE uName = '$uName')";		
-        
+        $sql = "SELECT * FROM Topics WHERE tName LIKE '$field' AND tID NOT IN (SELECT tID FROM HasExpertise WHERE uName = '$uName')";
+
         $result = $conn->query($sql);
 
         if ($result->num_rows > 0)
@@ -205,11 +204,11 @@ function dataSearchRestTopics($uName, $searchField){
 
 function dataAddTopics($uName, $topicsToAdd, $topicsToAddCount){
     $conn = doDBconnection();
-    
+
     if ($conn != null){
-        
-        $sql = "INSERT INTO HasExpertise VALUES ";	
-        
+
+        $sql = "INSERT INTO HasExpertise VALUES ";
+
         for ($x = 0; $x < $topicsToAddCount-1; $x++) {
             $tempValue = $topicsToAdd[$x];
             $sql = $sql . "('$uName','$tempValue'), ";
@@ -218,7 +217,7 @@ function dataAddTopics($uName, $topicsToAdd, $topicsToAddCount){
         $tempValue = $topicsToAdd[$topicsToAddCount-1];
         $sql = $sql . "('$uName','$tempValue');";
 
-        if (mysqli_query($conn, $sql)) { 
+        if (mysqli_query($conn, $sql)) {
             $response = array("MESSAGE"=>"SUCCESS");
             $conn->close();
             return $response;
@@ -258,4 +257,86 @@ function doLoadTopicsIndex(){
         return $resultArr;
         return array("MESSAGE"=>"500");
         }
+}
+
+function doLoadHighestRank(){
+    $conn = doDBconnection();
+    if($conn != NULL){
+        $sqlRank = "SELECT uName
+                    FROM UserTable
+                    WHERE uRating = (SELECT MAX(uRating)
+                                    FROM UserTable)
+                    LIMIT 1;";
+        $result = $conn->query($sqlRank);
+        if($result->num_rows>0){
+            while($row = $result->fetch_assoc()){
+                $response = array("uName"=>$row["uName"]);
+            }
+            $conn->close();
+            return array("response"=>$response, "MESSAGE"=>"SUCCESS");
+        }else{
+            $conn->close();
+            return array("MESSAGE"=>"406");
+        }
+    }else{
+        $conn->close();
+        return $resultArr;
+        return array("MESSAGE"=>"500");
+        }
+
+}
+
+function doloadMostVisitedTopic(){
+    $conn = doDBconnection();
+    if($conn != NULL){
+        $sqlMostVisited = "SELECT tID
+                        FROM Questions
+                        GROUP BY tID
+                        ORDER BY COUNT(*) DESC
+                        LIMIT 1";
+        $result = $conn->query($sqlMostVisited);
+        if($result->num_rows>0){
+            while($row = $result->fetch_assoc()){
+                $response = array("tID"=>$row["tID"]);
+            }
+            $conn->close();
+            return array("response"=>$response, "MESSAGE"=>"SUCCESS");
+        }else{
+            $conn->close();
+            return array("MESSAGE"=>"406");
+        }
+    }else{
+        $conn->close();
+        return $resultArr;
+        return array("MESSAGE"=>"500");
+    }
+
+}
+
+function doloadMostVisitedTopicByUser(){
+    $conn = doDBconnection();
+    $user = $_SESSION['uName'];
+    if($conn != NULL){
+        $sqlMostVisited = "SELECT tID
+                          FROM Questions
+                          WHERE uName = '$user'
+                          GROUP BY tID
+                          ORDER BY COUNT(*) DESC
+                          LIMIT 1;";
+        $result = $conn->query($sqlMostVisited);
+        if($result->num_rows>0){
+            while($row = $result->fetch_assoc()){
+                $response = array("tID"=>$row["tID"]);
+            }
+            $conn->close();
+            return array("response"=>$response, "MESSAGE"=>"SUCCESS");
+        }else{
+            $conn->close();
+            return array("MESSAGE"=>"406");
+        }
+    }else{
+        $conn->close();
+        return $resultArr;
+        return array("MESSAGE"=>"500");
+    }
 }

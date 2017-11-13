@@ -28,18 +28,26 @@ switch ($action) {
     case "checkSession":
         sessionFunction();
     break;
-    case "logOut" : 
+    case "logOut" :
         deleteSessionFunction();
     break;
     case "loadTopicIndex":
         loadTopicIndex();
     break;
+    case "loadHighestRank":
+        loadHighestRank();
+    break;
+    case "loadMostVisitedTopic":
+        loadMostVisitedTopic();
+    break;
+    case "loadMostVisitedTopicByUser":
+        loadMostVisitedTopicByUser();
 }
 
 function deleteSessionFunction() {
     session_destroy();
     echo json_encode("log out successful.");
-}	
+}
 
 function sessionFunction() {
     session_start();
@@ -47,9 +55,9 @@ function sessionFunction() {
           echo json_encode(array("uName" => $_SESSION["uName"]));
     }
     else {
-        genericErrorFunction("400");	
+        genericErrorFunction("400");
     }
-}	
+}
 
 function getSessionUser(){
     session_start();
@@ -170,12 +178,12 @@ function loadRestTopics(){
         }
 
         else {
-            genericErrorFunction($loadRestTopicsResponse["MESSAGE"]);	
+            genericErrorFunction($loadRestTopicsResponse["MESSAGE"]);
         }
     }
 
     else {
-        genericErrorFunction("406");	
+        genericErrorFunction("406");
     }
 }
 
@@ -194,12 +202,12 @@ function searchRestTopics(){
         }
 
         else {
-            genericErrorFunction($searchRestTopicsResponse["MESSAGE"]);	
+            genericErrorFunction($searchRestTopicsResponse["MESSAGE"]);
         }
     }
 
     else {
-        genericErrorFunction("406");	
+        genericErrorFunction("406");
     }
 }
 
@@ -217,15 +225,44 @@ function addTopics(){
         }
 
         else {
-            genericErrorFunction($addTopicsResponse["MESSAGE"]);	
+            genericErrorFunction($addTopicsResponse["MESSAGE"]);
         }
     }
 
     else {
-        genericErrorFunction("406");	
+        genericErrorFunction("406");
     }
 }
 
+function loadHighestRank(){
+    $do = doLoadHighestRank();
+    if($do["MESSAGE"] == "SUCCESS"){
+        $response = $do["response"];
+        echo json_encode($response);
+    }else{
+        genericErrorFunction($do["MESSAGE"]);
+    }
+}
+
+function loadMostVisitedTopic(){
+    $do = doloadMostVisitedTopic();
+    if($do["MESSAGE"] == "SUCCESS"){
+        $response = $do["response"];
+        echo json_encode($response);
+    }else{
+        genericErrorFunction($do["MESSAGE"]);
+    }
+}
+
+function loadMostVisitedTopicByUser(){
+    $do = doloadMostVisitedTopicByUser();
+    if($do["MESSAGE"] == "SUCCESS"){
+        $response = $do["response"];
+        echo json_encode($response);
+    }else{
+        genericErrorFunction($do["MESSAGE"]);
+    }
+}
 
 function genericErrorFunction($errorCode){
     switch($errorCode)

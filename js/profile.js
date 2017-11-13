@@ -46,13 +46,13 @@ function startAddTopicsSearch(){
         type: "POST",
         data: jsonData,
         dataType: "json",
-        success: function (response){  
+        success: function (response){
             $("#topicsGridList").html("");
-            
+
             for (i = 0; i < (response.length); i++) {
                 $("#topicsGridList").append(helperCreateAddTopicHTML(response[i].topicName, "media/" + response[i].topicURL, response[i].topicId));
             }
-            
+
             $("li[name='addTopicItem']").on("click", function() {
                 var chosenId = $(this).attr("id");
                 $(".alert").alert('close');
@@ -74,12 +74,12 @@ function startAddTopicsSearch(){
                 }
             });
         },
-        error: function (errorMessage){ 
+        error: function (errorMessage){
             if (errorMessage.status == "406"){
                 // No results available, populate accordingly
                 $("#topicsGridList").html("");
                 // Error message
-                $("#topicsGridList").append('<p id="noTopics" style="text-align: center; padding-top:10px; color:gray;">No topics to add</p>');  
+                $("#topicsGridList").append('<p id="noTopics" style="text-align: center; padding-top:10px; color:gray;">No topics to add</p>');
             }
         }
     });
@@ -115,23 +115,23 @@ function sendTopics(){
             success: function(response){
                 $('#sendTopicsButton').prop('disabled', true);
                 $("#sendTopicsButton").text("Adding...");
-    
+
                 setTimeout(function() {
                     $('#addTopicModal').modal('toggle');
                     $('html, body').stop().animate({
                         scrollTop: $("#top").offset().top
                     }, 600);
-    
+
                     // Create success alert
                     createSuccessAlert("#profileAlertContainer", "Successfully added topics to your profile", "addedTopicAlert");
-                }, 1300);  
+                }, 1300);
             },
             error: function (errorMS){
                 // Error message
                 setTimeout(function() {
                     createDangerAlert("#chooseTopicGrid",  "Error connecting to server. Try again later.", "serverErrorAlert");
                     $('#chooseTopicGrid').scrollTop(0);
-                }, 300);  
+                }, 300);
             }
         });
 
@@ -141,7 +141,7 @@ function sendTopics(){
         setTimeout(function() {
             createDangerAlert("#chooseTopicGrid", "Choose topics to add", "topicsNotChoseAlert");
             $('#chooseTopicGrid').scrollTop(0);
-        }, 300);  
+        }, 300);
     }
 }
 
@@ -150,7 +150,7 @@ function addTopicsClicked(){
 
     setTimeout(function() {
         $('#addTopicModal').modal('toggle');
-    }, 100);  
+    }, 100);
 }
 
 function loadRestOfTopics(){
@@ -177,7 +177,7 @@ function loadRestOfTopics(){
             for (i = 0; i < (response.length); i++) {
                 $("#topicsGridList").append(helperCreateAddTopicHTML(response[i].topicName, "media/" + response[i].topicURL, response[i].topicId));
             }
-            
+
             $("li[name='addTopicItem']").on("click", function() {
                 var chosenId = $(this).attr("id");
                 $(".alert").alert('close');
@@ -224,9 +224,9 @@ function loadProfile(){
             currentUserData = response;
             $("#userImage").html("");
             $("#userRating").html("");
-        
+
             var name = response.firstname + " <br> " + response.lastname;
-        
+
             $("#profileName").html(name);
             $("#userImage").append('<img src="' +  "media/" + response.uURL + '" class="media-object">');
             $("#userRating").html(createStarRating(response.uRating));
@@ -265,7 +265,7 @@ function loadProfile(){
             $("#topicsList").html("");
             // Error message
             $("#topicsList").append('<p id="noTopics" style="text-align: center; padding-top:15px; color:gray;">No topics associated with profile yet</p>');
-            
+
         }
     });
 }
