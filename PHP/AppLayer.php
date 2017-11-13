@@ -31,6 +31,9 @@ switch ($action) {
     case "logOut" : 
         deleteSessionFunction();
     break;
+    case "loadTopicIndex":
+        loadTopicIndex();
+    break;
 }
 
 function deleteSessionFunction() {
@@ -50,7 +53,7 @@ function sessionFunction() {
 
 function getSessionUser(){
     session_start();
-    
+
     if(isset($_SESSION["uName"])) {
         $uName = $_SESSION["uName"];
     }
@@ -112,12 +115,12 @@ function loadProfile(){
         }
 
         else {
-            genericErrorFunction($loadProfileResponse["MESSAGE"]);	
+            genericErrorFunction($loadProfileResponse["MESSAGE"]);
         }
     }
 
     else {
-        genericErrorFunction("406");	
+        genericErrorFunction("406");
     }
 }
 
@@ -134,13 +137,24 @@ function loadTopics(){
         }
 
         else {
-            genericErrorFunction($loadTopicsResponse["MESSAGE"]);	
+            genericErrorFunction($loadTopicsResponse["MESSAGE"]);
         }
     }
 
     else {
-        genericErrorFunction("406");	
+        genericErrorFunction("406");
     }
+}
+
+function loadTopicIndex(){
+    $do = doLoadTopicsIndex();
+    if($do["MESSAGE"] == "SUCCESS"){
+        $response = $do["response"];
+        echo json_encode($response);
+    }else{
+        genericErrorFunction($do["MESSAGE"]);
+    }
+
 }
 
 function loadRestTopics(){

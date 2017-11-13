@@ -329,6 +329,24 @@ function getVisitedTopic(){
 }
 
 function getTopicCards(){
+    var jsonSend = {"action": "loadTopicIndex"};
+
+    $.ajax({
+        url: "./PHP/AppLayer.php",
+        type: "POST",
+        data : jsonSend,
+        ContentType : "application/json",
+        dataType: "json",
+        success: function(response){
+            alert("FUNCIONA EL POST");
+            alert(response[6].topicName);
+        },
+        error: function (errorMS){
+            // Error message
+            alert(errorMS.responseText);
+        }
+    });
+
     return [{
                 topicName: "Python",
                 topicDescription:"An interpreted, object-oriented programming language similar to PERL, that has gained popularity because of its clear syntax and readability, it features a dynamic type system.",
@@ -580,4 +598,24 @@ function helperCreateCardHTML(topicData, idNumber){
 function helperCreateAnalytics(idField, titleField, dataField){
     var analyticsHTML = '<div id="' + idField + '" class="well" name="analyticsWells"> <h4>' + titleField + '</h4><p class="analyticsDataField">' + dataField + '</p> </div>';
     return analyticsHTML;
+}
+
+function checkSession(urlPHP){
+    var jsonData = {
+        "action" : "SESSION"
+    };
+    $.ajax({
+        url: urlPHP,
+        type: "POST",
+        data: jsonData,
+        dataType: "json",
+        success: function(jsonResponse) {
+            //$('#profileText').html('<span class="glyphicon glyphicon-user"></span> ' + jsonResponse.fName + " " + jsonResponse.lName);
+            currentUser = jsonResponse.currentUser;
+        },
+        error: function() {
+            currentUser = "";
+            window.location.replace("inicio.html");
+        }
+    });
 }

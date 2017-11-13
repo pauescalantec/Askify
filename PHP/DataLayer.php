@@ -76,11 +76,11 @@ function doRegister($uName,$uPass,$fName,$lName,$uEmail,$uMajor,$uGradYear){
 
 function dataLoadProfile($uName){
     $conn = doDBconnection();
-    
+
     if ($conn != null){
-        
-        $sql = "SELECT * FROM UserTable WHERE uName = '$uName'";		
-        
+
+        $sql = "SELECT * FROM UserTable WHERE uName = '$uName'";
+
         $result = $conn->query($sql);
 
         if ($result->num_rows > 0)
@@ -107,22 +107,18 @@ function dataLoadProfile($uName){
 
 function dataLoadTopics($uName){
     $conn = doDBconnection();
-    
     if ($conn != null){
-        
-        $sql = "SELECT * FROM Topics WHERE tID IN (SELECT tID FROM HasExpertise WHERE uName = '$uName')";		
-        
+        $sql = "SELECT *
+                FROM Topics
+                WHERE tID IN
+                            (SELECT tID
+                            FROM HasExpertise WHERE uName = '$uName')";
         $result = $conn->query($sql);
-
-        if ($result->num_rows > 0)
-        {
+        if ($result->num_rows > 0){
             $counter = 0;
-
-            while ($row = $result->fetch_assoc())
-            {
+            while ($row = $result->fetch_assoc()){
                 $response[$counter++] = array("topicId"=>$row["tID"], "topicURL"=>$row["tURL"], "topicName"=>$row["tName"]);
             }
-
             $conn->close();
             return array("response"=>$response, "MESSAGE"=>"SUCCESS");
         }
@@ -234,9 +230,33 @@ function dataAddTopics($uName, $topicsToAdd, $topicsToAddCount){
             $conn->close();
             return array("MESSAGE"=>"406");
         }
-
     }
     else{
         return array("MESSAGE"=>"500");
     }
+}
+
+function doLoadTopicsIndex(){
+    $conn = doDBconnection();
+    if($conn != NULL){
+        $sqlTopics = "SELECT *
+                      FROM Topics";
+        $result = $conn->query($sqlTopics);
+        if($result->num_rows>0){
+            $counter = 0;
+            while($row = $result->fetch_assoc()){
+                $response[$counter++] = array("topicName"=>$row["tName"],"topicDescription"=>$row["tDescription"],
+                      "topicImage"=>$row["tURL"]);
+            }
+                $conn->close();
+                return array("response"=>$response, "MESSAGE"=>"SUCCESS");
+        }else{
+            $conn->close();
+            return array("MESSAGE"=>"406");
+        }
+    }else{
+        $conn->close();
+        return $resultArr;
+        return array("MESSAGE"=>"500");
+        }
 }

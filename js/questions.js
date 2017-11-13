@@ -9,7 +9,7 @@ $(document).ready(function(){
     // Load topics
     setTimeout(function() {
         loadAnsweredQuestions();
-    }, 100);  
+    }, 100);
 
     $('#resizerModifyQuestion').on( 'change keyup keydown paste cut', 'textarea', function (event){
         $(".alert").alert('close');
@@ -28,7 +28,7 @@ $(document).ready(function(){
         if(!canClose){
             setTimeout(function() {
                 createDangerAlert("#viewNewAnswerTextArea", "Rate answer to continue", "answerNotRatedAlert");
-            }, 300);  
+            }, 300);
             return false;
         }
 
@@ -38,47 +38,47 @@ $(document).ready(function(){
                 currentAnswerRating = 0;
                 loadAnsweredQuestions();
                 return true;
-            }, 500);  
+            }, 500);
         }
     });
 
     $("#doneViewNewButton").on("click", function(){
         $(".alert").alert('close');
-        
+
         var canClose = (currentAnswerRating > 0 ? true: false );
 
         if(!canClose){
             setTimeout(function() {
                 createDangerAlert("#viewNewAnswerTextArea", "Rate answer to continue", "answerNotRatedAlert");
-            }, 300);  
+            }, 300);
         }
 
         else {
             setTimeout(function() {
                 $('#viewNewAnswerModal').modal('toggle');
-            }, 500);  
+            }, 500);
         }
     });
 });
 
 function saveModifyQuestionButtonClicked() {
     $(".alert").alert('close');
-    
+
     if(!$("#modifyQuestionText").val()){
         setTimeout(function() {
             createDangerAlert("#modifyQuestionTextArea", "Question can not be empty", "questionEmptyAlert");
-        }, 300);  
+        }, 300);
     }
 
     else if ($("#modifyQuestionText").val() == getQQuestionFromId(currentQuestionToModify)){
         setTimeout(function() {
             createDangerAlert("#modifyQuestionTextArea", "No changes made to question", "questionNotModifiedAlert");
-        }, 300);  
+        }, 300);
     }
 
     else {
         var postSuccessful = true;
-        
+
         if(postSuccessful){
             postModifiedQuestion();
         }
@@ -86,7 +86,7 @@ function saveModifyQuestionButtonClicked() {
         else {
             setTimeout(function() {
                 createDangerAlert("#modifyQuestionTextArea", "Error connecting to server. Try again later.", "questionNotPostModifiedAlert");
-            }, 300);  
+            }, 300);
         }
     }
 }
@@ -113,11 +113,11 @@ function postModifiedQuestion(){
 
         // Reload
         loadUnansweredQuestions();
-    }, 1300);  
+    }, 1300);
 }
 
 function loadSidebarQuestionsCount(){
-    $("#questionsCountSidebar").text(getQuestionsNumber() == 0 ? "" : getQuestionsNumber()); 
+    $("#questionsCountSidebar").text(getQuestionsNumber() == 0 ? "" : getQuestionsNumber());
 }
 
 function loadAnsweredQuestions(){
@@ -140,10 +140,10 @@ function loadAnsweredQuestions(){
     $("#questionsList").append('<li class="list-group-item" id="answerRequestsHeader">Questions made by you with answers <span class="label label-warning edit" id="manageAnsweredQuestions">Manage</span></li>');
 
     // Fill in all rows except last one
-    for (i = 0; i < numberRequests; i++) {    
+    for (i = 0; i < numberRequests; i++) {
         var requestHTML = helperCreateListElementRequest(listQuestions[i]);
         $("#questionsList").append(requestHTML);
-    } 
+    }
 
     $("#manageAnsweredQuestions").on("click", function(){
         if ($("#manageAnsweredQuestions").text() == "Manage") {
@@ -182,10 +182,10 @@ function loadUnansweredQuestions(){
     $("#questionsList").append('<li class="list-group-item" id="answerRequestsHeader">Questions made by you not yet answered <span class="label label-warning edit" id="manageUnansweredQuestions">Manage</span></li>');
 
     // Fill in all rows except last one
-    for (i = 0; i < numberRequests; i++) {    
+    for (i = 0; i < numberRequests; i++) {
         var requestHTML = helperCreateListElementRequest(listUnansweredQuestions[i]);
         $("#questionsList").append(requestHTML);
-    } 
+    }
 
     $("span[name=unansweredQuestionLink]").on("click", function(){
         triggerModifyQuestionModal(this.id);
@@ -195,7 +195,7 @@ function loadUnansweredQuestions(){
         var listId = $(this).parent().find("span[name=unansweredQuestionLink]").attr('id');
 
         //Delete query here
-        
+
         loadUnansweredQuestions();
     });
 
@@ -211,7 +211,7 @@ function loadUnansweredQuestions(){
         }
     });
 
-    $('[data-toggle="tooltip"]').tooltip();  
+    $('[data-toggle="tooltip"]').tooltip();
 }
 
 function triggerViewAnswerModal(questionId){
@@ -223,7 +223,7 @@ function triggerViewAnswerModal(questionId){
         $("#viewAnswerTextArea").html("");
         $("#viewAnswerTextArea").append('<h4 name="answerRequestQuestion">' + getQQuestionFromId(questionId) + '</h4>');
         $("#viewAnswerTextArea").append('<div class="well answerModal">' + getQAnswerFromId(questionId) + '</div>');
-    }, 200);  
+    }, 200);
 
     currentAnswerToView = questionId;
 }
@@ -236,10 +236,10 @@ function triggerViewNewAnswerModal(questionId){
 
     setTimeout(function() {
         var ratings = document.getElementsByClassName('rating');
-        
+
         for (var i = 0; i < ratings.length; i++) {
             var r = new SimpleStarRating(ratings[i]);
-    
+
             ratings[i].addEventListener('rate', function(e) {
                 $(".alert").alert('close');
                 currentAnswerRating = e.detail;
@@ -249,7 +249,7 @@ function triggerViewNewAnswerModal(questionId){
         $("#viewNewAnswerTextArea").html("");
         $("#viewNewAnswerTextArea").append('<h4 name="answerRateRequestQuestion">' + getQQuestionFromId(questionId) + '</h4>');
         $("#viewNewAnswerTextArea").append('<div class="well answerModal">' + getQAnswerFromId(questionId) + '</div>');
-    }, 200);  
+    }, 200);
 
     currentAnswerToView = questionId;
 }
@@ -267,7 +267,7 @@ function triggerModifyQuestionModal(questionId){
     setTimeout(function() {
         $("#modifyQuestionText").val(getQQuestionFromId(questionId));
         $('#modifyQuestionText').keyup();
-    }, 200);  
+    }, 200);
 
     currentQuestionToModify = questionId;
     currentUserToModifyQuestionTo = getQUserFromId(questionId);
@@ -394,17 +394,17 @@ function helperCreateListElementRequest(answerRequest){
     }
 
     else {
-        buildHTML = '<li class="list-group-item" name="answerRequest"><button type="button" class="close unanswered">&times;</button> ' + 
-                    '<p name="answerRequestUserHeader">' + 
-                    ' Question made to ' + answerRequest.firstName + " " + answerRequest.lastName + 
-                    '</p>' + 
-                    '<p name="answerRequestSubjectHeader"> ' + '&bull;' + 
-                    '</p>' + 
-                    ' <p name="answerRequestSubjectHeader">' + answerRequest.topic + 
-                    '</p>' + 
+        buildHTML = '<li class="list-group-item" name="answerRequest"><button type="button" class="close unanswered">&times;</button> ' +
+                    '<p name="answerRequestUserHeader">' +
+                    ' Question made to ' + answerRequest.firstName + " " + answerRequest.lastName +
+                    '</p>' +
+                    '<p name="answerRequestSubjectHeader"> ' + '&bull;' +
+                    '</p>' +
+                    ' <p name="answerRequestSubjectHeader">' + answerRequest.topic +
+                    '</p>' +
                     '<span class="label label-success edit" name="unansweredQuestionLink" id="' + answerRequest.questionId + '"data-toggle="modal" data-target="#modifyQuestionModal">Edit</span>' +
-                    '<h4 name="answerRequestQuestion">' + 
-                    '<p>' + answerRequest.question + '</p>' + 
+                    '<h4 name="answerRequestQuestion">' +
+                    '<p>' + answerRequest.question + '</p>' +
                     '</h4>';
 
         buildHTML = buildHTML + '<div class="well unanswer">' + "No answer yet" + '</div>';
