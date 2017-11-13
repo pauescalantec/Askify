@@ -9,7 +9,7 @@ $(document).ready(function(){
     // Load topics
     setTimeout(function() {
         loadAnswerRequests();
-    }, 100);  
+    }, 100);
 
     $('#resizerAnswer').on( 'change keyup keydown paste cut', 'textarea', function (event){
         $(".alert").alert('close');
@@ -32,22 +32,22 @@ $(document).ready(function(){
 
 function saveModifyAnswerButtonClicked() {
     $(".alert").alert('close');
-    
+
     if(!$("#modifyAnswerText").val()){
         setTimeout(function() {
             createDangerAlert("#modifyAnswerTextArea", "Answer can not be empty", "answerEmptyAlert");
-        }, 300);  
+        }, 300);
     }
 
     else if ($("#modifyAnswerText").val() == getAnswerFromId(currentAnswerToModify)){
         setTimeout(function() {
             createDangerAlert("#modifyAnswerTextArea", "No changes made to answer", "answerNotModifiedAlert");
-        }, 300);  
+        }, 300);
     }
 
     else {
         var postSuccessful = true;
-        
+
         if(postSuccessful){
             postModifiedAnswer();
         }
@@ -55,23 +55,23 @@ function saveModifyAnswerButtonClicked() {
         else {
             setTimeout(function() {
                 createDangerAlert("#modifyAnswerTextArea", "Error connecting to server. Try again later.", "answerNotPostModifiedAlert");
-            }, 300);  
+            }, 300);
         }
     }
 }
 
 function sendAnswerButtonClicked() {
     $(".alert").alert('close');
-    
+
     if(!$("#answerText").val()){
         setTimeout(function() {
             createDangerAlert("#answerTextArea", "Type your answer below", "answerNotTypedAlert");
-        }, 300);  
+        }, 300);
     }
 
     else {
         var postSuccessful = true;
-        
+
         if(postSuccessful){
             postAnswer();
         }
@@ -79,7 +79,7 @@ function sendAnswerButtonClicked() {
         else {
             setTimeout(function() {
                 createDangerAlert("#answerTextArea", "Error connecting to server. Try again later.", "answerNotPostedAlert");
-            }, 300);  
+            }, 300);
         }
     }
 }
@@ -106,7 +106,7 @@ function postAnswer(){
 
         // Reload
         loadAnswerRequests();
-    }, 1300);  
+    }, 1300);
 }
 
 function postModifiedAnswer(){
@@ -131,11 +131,11 @@ function postModifiedAnswer(){
 
         // Reload
         loadPreviousAnswers();
-    }, 1300);  
+    }, 1300);
 }
 
 function loadSidebarRequestCount(){
-    $("#requestsCountSidebar").text(getRequestNumber() == 0 ? "" : getRequestNumber()); 
+    $("#requestsCountSidebar").text(getRequestNumber() == 0 ? "" : getRequestNumber());
 }
 
 function loadAnswerRequests(){
@@ -148,24 +148,39 @@ function loadAnswerRequests(){
         $(".alert").alert('close');
         loadPreviousAnswers();
     });
-
+    var jsonLoadAnswRequests = {
+        "action" : "loadAnswerRequest"
+    };
     // Load request count
     loadSidebarRequestCount();
+    $.ajax({
+        url: "./PHP/AppLayer.php",
+        type: "POST",
+        data: jsonLoadAnswRequests,
+        dataType: "json",
+        success: function(jsonResponse){
 
-    var listRequests = getAnswerRequests();
-    var numberRequests = listRequests.length;
+            var listRequests = jsonResponse;
+            var numberRequests = listRequests.length;
 
-    $("#answersList").html("");
-    $("#answersList").append('<li class="list-group-item" id="answerRequestsHeader">Answer requests for you</li>');
+            $("#answersList").html("");
+            $("#answersList").append('<li class="list-group-item" id="answerRequestsHeader">Answer requests for you</li>');
 
-    // Fill in all rows except last one
-    for (i = 0; i < numberRequests; i++) {    
-        var requestHTML = helperCreateListElementRequest(listRequests[i]);
-        $("#answersList").append(requestHTML);
-    } 
+            // Fill in all rows except last one
+            for (i = 0; i < numberRequests; i++) {
+                var requestHTML = helperCreateListElementRequest(listRequests[i]);
+                $("#answersList").append(requestHTML);
+            }
 
-    $("[name=answerQuestionRequestButton").on("click", function(){
-        triggerAnswerQuestionModal(this.id);
+            $("[name=answerQuestionRequestButton").on("click", function(){
+                triggerAnswerQuestionModal(this.id);
+
+            });
+
+        },
+        error: function(error) {
+            alert(error.responseText);
+        }
     });
 }
 
@@ -182,7 +197,7 @@ function triggerModifyAnswerModal(questionId){
     setTimeout(function() {
         $("#modifyAnswerText").val(getAnswerFromId(questionId));
         $('#modifyAnswerText').keyup();
-    }, 200);  
+    }, 200);
 
     currentAnswerToModify = questionId;
     currentUserToModifyAnswerTo = getUserFromId(questionId);
@@ -204,29 +219,45 @@ function triggerAnswerQuestionModal(questionId){
 }
 
 function loadPreviousAnswers(){
-    var listRequests = getPreviousAnswers();
-    var numberRequests = listRequests.length;
 
-    $("#answersList").html("");
-    $("#answersList").append('<li class="list-group-item" id="answerRequestsHeader">Answered by you</li>');
+    var jsonLoadPreviousAnswers = {"action" : "loadPreviousAnswers"}
+    $.ajax({
+        url: "./PHP/AppLayer.php",
+        type: "POST",
+        data: jsonLoadPreviousAnswers,
+        dataType: "json",
+        success: function(jsonResponse){
 
-    // Fill in all rows except last one
-    for (i = 0; i < numberRequests; i++) {    
-        var requestHTML = helperCreateListElementPrevious(listRequests[i]);
-        $("#answersList").append(requestHTML);
-    } 
+            var listRequests = jsonResponse;
+            var numberRequests = listRequests.length;
 
-    $("span[name=previousAnswerLink]").on("click", function(){
-        triggerModifyAnswerModal(this.id);
+            $("#answersList").html("");
+            $("#answersList").append('<li class="list-group-item" id="answerRequestsHeader">Answered by you</li>');
+
+            // Fill in all rows except last one
+            for (i = 0; i < numberRequests; i++) {
+                var requestHTML = helperCreateListElementPrevious(listRequests[i]);
+                $("#answersList").append(requestHTML);
+            }
+
+            $("span[name=previousAnswerLink]").on("click", function(){
+                triggerModifyAnswerModal(this.id);
+            });
+
+            $('[data-toggle="tooltip"]').tooltip();
+        },
+        error: function(error) {
+
+            alert(error.responseText);
+
+        }
     });
-
-    $('[data-toggle="tooltip"]').tooltip();  
 }
 
 function getQuestionFromId(questionId){
     var questionsList = {
         "1questionPatricioPaulina":"Why do I have to include files in the header like #include stdlib.h and stdio.h, if I don't have them, will my code not compile?",
-        "2questioMonicaPaulina" : "What nuget packages do you recommend to use for calculating the p-value of the gamma function?", 
+        "2questioMonicaPaulina" : "What nuget packages do you recommend to use for calculating the p-value of the gamma function?",
         "3questionMonicaPaulina": "How can I make my python code into a REST API so that I can connect my web interface with my python code that I made for my compilers course?",
         "4questionJuanPaulina":"What do I have to do to compile a .cpp file in terminal in Linux?",
         "5questioMonicaPaulina":"What is the best functionality for scrollers, top to bottom or bottom to top?"};
@@ -268,36 +299,8 @@ function getAnswerFromId(questionId){
 }
 
 function loadRequestCount(){
-    $("#requestsCount").text(getRequestNumber() == 0 ? "" : getRequestNumber()); 
-    $("#requestsCountSidebar").text(getRequestNumber() == 0 ? "" : getRequestNumber()); 
-}
-
-function getAnswerRequests(){
-    return [{
-        firstName: "Patricio",
-        lastName:"Sanchez",
-        username: "patpat",
-        userImage:"Media/userImage.jpg",
-        questionId: "1questionPatricioPaulina",
-        question: "Why do I have to include files in the header like #include stdlib.h and stdio.h, if I don't have them, will my code not compile?",
-        topic: "C++"},
-    {
-        firstName: "Monica",
-        lastName:"Perez",
-        username: "monmon",
-        userImage:"Media/userImage.jpg",
-        questionId: "2questioMonicaPaulina",
-        question: "What nuget packages do you recommend to use for calculating the p-value of the gamma function?",
-        topic: "C#"},
-    {
-        firstName: "Monica",
-        lastName:"Perez",
-        username: "monmon",
-        userImage:"Media/userImage.jpg",
-        questionId: "3questionMonicaPaulina",
-        question: "How can I make my python code into a REST API so that I can connect my web interface with my python code that I made for my compilers course?",
-        topic: "Python"}
-    ];
+    $("#requestsCount").text(getRequestNumber() == 0 ? "" : getRequestNumber());
+    $("#requestsCountSidebar").text(getRequestNumber() == 0 ? "" : getRequestNumber());
 }
 
 function getPreviousAnswers(){
@@ -327,10 +330,10 @@ function helperCreateListElementRequest(answerRequest){
 
 function helperCreateListElementPrevious(answerRequest){
     var buildHTML = '<li class="list-group-item" name="answerRequest"> <p name="answerRequestUserHeader">Question by ' + answerRequest.firstName + " " + answerRequest.lastName + '</p> <p name="answerRequestSubjectHeader">&bull;</p> <p name="answerRequestSubjectHeader">' + answerRequest.topic + '</p><a class="answersLink"> <h4 name="answerRequestQuestion">' + answerRequest.question + '</h4></a>';
-    buildHTML = buildHTML + '<div class="well previousAnswer">' + 
-                            '<p class="showAnswer">' + answerRequest.answer + 
+    buildHTML = buildHTML + '<div class="well previousAnswer">' +
+                            '<p class="showAnswer">' + answerRequest.answer +
                             '<span class="label label-success edit" name="previousAnswerLink" id="' + answerRequest.questionId + '"data-toggle="modal" data-target="#modifyAnswerModal">Edit</span>' +
-                            '</p>' + 
+                            '</p>' +
                             '</div>';
     return buildHTML;
 }

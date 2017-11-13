@@ -109,10 +109,10 @@ function dataGetQuestionCount(){
 
 function dataGetAnswersCount(){
     $connection = doDBconnection();
-    
+
     if ($connection != null){
         $sql = "SELECT COUNT(*) as total
-                FROM Answers";	
+                FROM Answers";
 
         $result = $connection->query($sql);
 
@@ -142,7 +142,7 @@ function dataGetAnswersCount(){
 
 function dataPostQuestion($uName, $question, $tutor, $topic, $questionId, $answerId) {
     $conn = doDBconnection();
-    
+
     if ($conn != null){
 
         $sql1 = "INSERT INTO Questions VALUES ('$questionId','$topic','$uName','$question')";
@@ -498,6 +498,98 @@ function doloadMostVisitedTopicByUser(){
     }else{
         $conn->close();
         return $resultArr;
+        return array("MESSAGE"=>"500");
+    }
+}
+
+function doLoadAnswerRequest($uName){
+    $conn = doDBconnection();
+    if ($conn != null){
+        $sql = "SELECT Answers.aText as answersText,
+                           Questions.qId as questionID,
+                           Questions.qText as questionText,
+                           Answers.aStatus as answerStatus,
+                           Topics.tName as topicsName,
+                           UserTable.fName as firstName,
+                           UserTable.lName as lastName,
+                           UserTable.uName as userName,
+                           UserTable.uURL as userURL
+                    FROM Questions, Answers, Topics, UserTable
+                    WHERE (Questions.qID = Answers.qID
+                        AND Topics.tID = Questions.tID
+                        AND UserTable.uName = Questions.uName
+                        AND Answers.uName = '$uName'
+                        AND Answers.aStatus = 'N')";
+        $result = $conn->query($sql);
+        if ($result->num_rows > 0){
+                $counter = 0;
+
+                while ($row = $result->fetch_assoc()){
+                    $response[$counter++] =
+                    array("firstname"=>$row["firstName"],
+                    "lastname"=>$row["lastName"],
+                    "username"=>$row["userName"],
+                    "userImage"=>$row["userURL"],
+                    "questionId"=>$row["questionID"],
+                    "answer"=>$row["answersText"],
+                    "question"=>$row["questionText"],
+                    "topic"=>$row["topicsName"]);
+                }
+            $conn->close();
+            return array("response"=>$response, "MESSAGE"=>"SUCCESS");
+        }else{
+            $conn->close();
+            return array("MESSAGE"=>"406");
+        }
+
+    }
+    else{
+        return array("MESSAGE"=>"500");
+    }
+}
+
+function doLoadPreviousAnswers($uName){
+    $conn = doDBconnection();
+    if ($conn != null){
+        $sql = "SELECT Answers.aText as answersText,
+                           Questions.qId as questionID,
+                           Questions.qText as questionText,
+                           Answers.aStatus as answerStatus,
+                           Topics.tName as topicsName,
+                           UserTable.fName as firstName,
+                           UserTable.lName as lastName,
+                           UserTable.uName as userName,
+                           UserTable.uURL as userURL
+                    FROM Questions, Answers, Topics, UserTable
+                    WHERE (Questions.qID = Answers.qID
+                        AND Topics.tID = Questions.tID
+                        AND UserTable.uName = Questions.uName
+                        AND Answers.uName = '$uName'
+                        AND (Answers.aStatus = 'R'
+                            OR Answers.aStatus = 'A'))";
+        $result = $conn->query($sql);
+        if ($result->num_rows > 0){
+                $counter = 0;
+
+                while ($row = $result->fetch_assoc()){
+                    $response[$counter++] =
+                    array("firstname"=>$row["firstName"],
+                    "lastname"=>$row["lastName"],
+                    "username"=>$row["userName"],
+                    "userImage"=>$row["userURL"],
+                    "questionId"=>$row["questionID"],
+                    "answer"=>$row["answersText"],
+                    "question"=>$row["questionText"],
+                    "topic"=>$row["topicsName"]);
+                }
+            $conn->close();
+            return array("response"=>$response, "MESSAGE"=>"SUCCESS");
+        }else{
+            $conn->close();
+            return array("MESSAGE"=>"406");
+        }
+    }
+    else{
         return array("MESSAGE"=>"500");
     }
 }
