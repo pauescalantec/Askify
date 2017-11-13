@@ -24,7 +24,8 @@ function doLogin($uName,$uPass){
         AND   uPass = '$uPass'";
 
         $result = $conn->query($sqlLogin);
-        if($result->num_rows>0){
+
+        if($result->num_rows> 0){
             while($row = $result->fetch_assoc()){
                 $response = array("uName"=>$row["uName"]);
             }
@@ -172,6 +173,40 @@ function dataLoadTutorByTopic($currentTopic, $currentUser){
     if ($conn != null){
 
         $sql = "SELECT * FROM UserTable WHERE uName != '$currentUser' AND uName IN (SELECT uName FROM HasExpertise WHERE tID = '$currentTopic')";
+
+        $result = $conn->query($sql);
+
+        if ($result->num_rows > 0)
+        {
+            $counter = 0;
+
+            while ($row = $result->fetch_assoc())
+            {
+                $response[$counter++] = array("firstName"=>$row["fName"], "lastName"=>$row["lName"], "major"=>$row["uMajor"], "gradYear"=>$row["uGradYear"], "username"=>$row["uName"], "uRating"=>$row["uRating"], "uURL"=>$row["uURL"]);
+            }
+            $conn->close();
+            return array("response"=>$response, "MESSAGE"=>"SUCCESS");
+        }
+
+        else
+        {
+            $conn->close();
+            return array("MESSAGE"=>"406");
+        }
+
+    }
+    else{
+        return array("MESSAGE"=>"500");
+    }
+}
+
+function dataLoadTutorByTopicSearch($currentTopic, $currentUser, $searchField){
+    $conn = doDBconnection();
+
+    if ($conn != null){
+        $field = "%" . $searchField . "%";
+
+        $sql = "SELECT * FROM UserTable WHERE (uName LIKE '$field' or fName LIKE '$field' or lName LIKE '$field') AND uName != '$currentUser' AND uName IN (SELECT uName FROM HasExpertise WHERE tID = '$currentTopic')";
 
         $result = $conn->query($sql);
 

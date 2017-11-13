@@ -26,7 +26,12 @@ function validateLog(){
         window.location.href = "index.html";
       },
       error: function (errorMS){
-        alert("Please make sure your credentials are correct " + errorMS.statusText);
+        $(".alert").alert('close');
+
+        setTimeout(function() {
+            createDangerAlert("#login", "Invalid credentials, try again", "loginInvalidAlert");
+        }, 300);
+        
       }
     });
   }
@@ -34,3 +39,7 @@ function validateLog(){
     text = "Please make sure your credentials are correct";
   }
  }
+
+ function createDangerAlert(selectorId, alertMessage, alertId){
+  $(selectorId).prepend('<div class="alert alert-danger alert-dismissable fade in" id=" ' + alertId + '" style="padding: 15px; margin:10px 10px"> <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>' + alertMessage +'</div>');
+}
