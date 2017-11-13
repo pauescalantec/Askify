@@ -16,8 +16,37 @@ switch ($action) {
     break;
     case "loadTopics":
         loadTopics();
-break;
+    break;
+    case "loadRestTopics":
+        loadRestTopics();
+    break;
+    case "addTopics":
+        addTopics();
+    break;
+    case "loadSearchRestTopics":
+        searchRestTopics();
+    case "checkSession":
+        sessionFunction();
+    break;
+    case "logOut" : 
+        deleteSessionFunction();
+    break;
 }
+
+function deleteSessionFunction() {
+    session_destroy();
+    echo json_encode("log out successful.");
+}	
+
+function sessionFunction() {
+    session_start();
+    if( isset($_SESSION["uName"])) {
+          echo json_encode(array("uName" => $_SESSION["uName"]));
+    }
+    else {
+        genericErrorFunction("400");	
+    }
+}	
 
 function getSessionUser(){
     session_start();
@@ -72,7 +101,6 @@ function Login(){
 
 function loadProfile(){
     $uName = getSessionUser();
-    $uName = $_POST["username"];
 
     if (!is_null($uName)){
 
@@ -95,7 +123,6 @@ function loadProfile(){
 
 function loadTopics(){
     $uName = getSessionUser();
-    $uName = $_POST["username"];
 
     if (!is_null($uName)){
 
@@ -115,6 +142,76 @@ function loadTopics(){
         genericErrorFunction("406");	
     }
 }
+
+function loadRestTopics(){
+    $uName = getSessionUser();
+
+    if (!is_null($uName)){
+
+        $loadRestTopicsResponse = dataLoadRestTopics($uName);
+
+        if ($loadRestTopicsResponse["MESSAGE"] == "SUCCESS") {
+            $response = $loadRestTopicsResponse["response"];
+            echo json_encode($response);
+        }
+
+        else {
+            genericErrorFunction($loadRestTopicsResponse["MESSAGE"]);	
+        }
+    }
+
+    else {
+        genericErrorFunction("406");	
+    }
+}
+
+
+function searchRestTopics(){
+    $uName = getSessionUser();
+    $searchField = $_POST["searchField"];
+
+    if (!is_null($uName)){
+
+        $searchRestTopicsResponse = dataSearchRestTopics($uName, $searchField);
+
+        if ($searchRestTopicsResponse["MESSAGE"] == "SUCCESS") {
+            $response = $searchRestTopicsResponse["response"];
+            echo json_encode($response);
+        }
+
+        else {
+            genericErrorFunction($searchRestTopicsResponse["MESSAGE"]);	
+        }
+    }
+
+    else {
+        genericErrorFunction("406");	
+    }
+}
+
+function addTopics(){
+    $uName = getSessionUser();
+    $topicsToAdd = $_POST["topicsList"];
+    $topicsToAddCount = $_POST["topicsCount"];
+
+    if (!is_null($uName)){
+        $addTopicsResponse = dataAddTopics($uName, $topicsToAdd, $topicsToAddCount);
+
+        if ($addTopicsResponse["MESSAGE"] == "SUCCESS") {
+            $response = "Successfully added";
+            echo json_encode($response);
+        }
+
+        else {
+            genericErrorFunction($addTopicsResponse["MESSAGE"]);	
+        }
+    }
+
+    else {
+        genericErrorFunction("406");	
+    }
+}
+
 
 function genericErrorFunction($errorCode){
     switch($errorCode)
