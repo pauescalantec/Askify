@@ -25,6 +25,7 @@ switch ($action) {
     break;
     case "loadSearchRestTopics":
         searchRestTopics();
+    break;
     case "checkSession":
         sessionFunction();
     break;
@@ -33,6 +34,12 @@ switch ($action) {
     break;
     case "loadTopicIndex":
         loadTopicIndex();
+    break;
+    case "loadTutorByTopic" :
+        loadTutorByTopic();
+    break;
+    case "getFullNameFromUsername":
+        getFullNameFromUsername();
     break;
 }
 
@@ -179,6 +186,21 @@ function loadRestTopics(){
     }
 }
 
+function loadTutorByTopic(){
+    $currentTopic =  $_POST["currentTopic"];
+
+    $loadTutorByTopicResponse = dataLoadTutorByTopic($currentTopic);
+
+    if ($loadTutorByTopicResponse["MESSAGE"] == "SUCCESS") {
+        $response = $loadTutorByTopicResponse["response"];
+        echo json_encode($response);
+    }
+
+    else {
+        genericErrorFunction($loadTutorByTopicResponse["MESSAGE"]);	
+    }
+}
+
 
 function searchRestTopics(){
     $uName = getSessionUser();
@@ -218,6 +240,28 @@ function addTopics(){
 
         else {
             genericErrorFunction($addTopicsResponse["MESSAGE"]);	
+        }
+    }
+
+    else {
+        genericErrorFunction("406");	
+    }
+}
+
+function getFullNameFromUsername(){
+    $uName = $_POST["username"];
+
+    if (!is_null($uName)){
+
+        $getFullNameFromUsernameResponse = dataGetFullNameFromUsername($uName);
+
+        if ($getFullNameFromUsernameResponse["MESSAGE"] == "SUCCESS") {
+            $response = $getFullNameFromUsernameResponse["response"];
+            echo json_encode($response);
+        }
+
+        else {
+            genericErrorFunction($getFullNameFromUsernameResponse["MESSAGE"]);	
         }
     }
 

@@ -1,4 +1,5 @@
 var currentTopic = "";
+currentTopicId = "";
 var currentUser = "";
 var selectedTutor = "";
 var currentWidthAnalytics = 0;
@@ -200,10 +201,11 @@ function postQuestionToTutor(){
     var questionTextPost = $("#questionText").val();
     var selectedTutorPost = selectedTutor;
     var selectedTopicPost = currentTopic;
-
+    var selectedTopicIdPost = currentTopicId;
 
     // After successful posting
     currentTopic = "";
+    currentTopicId = "";
     selectedTutor = "";
 
     // Goodbye modal
@@ -252,17 +254,38 @@ function chosenTutorButtonClicked(){
     // Tutor is chosen show next modal
     else {
         setTimeout(function() {
-            // Fade out from tutor list
-            $("#chooseTutorArea").fadeOut( 30, function() {
-                $("#chosenTutorButton").fadeOut( 5, function() {
-                    $("#sendQuestionButton").hide().fadeIn(100);
-                });
 
-                $("#modalInstruction").html(currentUser + " asks " + getFullNameFromUsername(selectedTutor) + " about <strong>" + currentTopic + " </strong><hr />");
-                $("#questionTextArea").hide().fadeIn(120);
-                $("#backToTutors").hide().fadeIn(100);
-                $(this).hide();
-              });
+            //ajaxCall to get username full name
+            var jsonSend = {
+                "username" : selectedTutor,
+                "action": "getFullNameFromUsername"
+            };
+            
+            $.ajax({
+                url: "./PHP/AppLayer.php",
+                type: "POST",
+                data : jsonSend,
+                ContentType : "application/json",
+                dataType: "json",
+                success: function(response){
+                    // Fade out from tutor list
+                    $("#chooseTutorArea").fadeOut( 30, function() {
+                        $("#chosenTutorButton").fadeOut( 5, function() {
+                            $("#sendQuestionButton").hide().fadeIn(100);
+                        });
+        
+                        $("#modalInstruction").html(currentUser + " asks " + response.fullName + " about <strong>" + currentTopic + " </strong><hr />");
+                        $("#questionTextArea").hide().fadeIn(120);
+                        $("#backToTutors").hide().fadeIn(100);
+                        $(this).hide();
+                    });
+                },
+                error: function (errorMS){
+                    // Error message
+                    alert(errorMS.responseText);
+                }
+            });
+
 
         }, 100);
     }
@@ -336,51 +359,6 @@ function getQuestionsNumber(){
     return 2;
 }
 
-function getListTutorsByTopic(topicName){
-    // use topicName for query
-    return [{
-                firstName: "Paulina",
-                lastName:"Escalante",
-                username: "paupau",
-                userImage:"Media/userImage.jpg",
-                userCareer: "Computer Science",
-                userGraduationDate: "December 2018",
-                userRating: "4.0"},
-            {
-                firstName: "Patricio",
-                lastName:"Sanchez",
-                username: "patpat",
-                userImage:"Media/userImage.jpg",
-                userCareer: "Computer Science",
-                userGraduationDate: "May 2018",
-                userRating: "4.3"},
-            {
-                firstName: "Juan",
-                lastName:"Medellin",
-                username: "juajua",
-                userImage:"Media/userImage.jpg",
-                userCareer: "Robotics",
-                userGraduationDate: "May 2014",
-                userRating: "2.7"},
-            {
-                firstName: "Javier",
-                lastName:"Guajardo",
-                username: "javjav",
-                userImage:"Media/userImage.jpg",
-                userCareer: "Computer Science",
-                userGraduationDate: "May 2016",
-                userRating: "4.7"},
-            {
-                firstName: "Monica",
-                lastName:"Perez",
-                username: "monmon",
-                userImage:"Media/userImage.jpg",
-                userCareer: "Information Technology",
-                userGraduationDate: "May 2019",
-                userRating: "3.7"}
-            ];
-}
-
 function loadTopicCards(){
     // Ajax laod topic cards
     var jsonSend = {"action": "loadTopicIndex"};
@@ -396,7 +374,7 @@ function loadTopicCards(){
 
             for (i = 0; i < (listTopics.length); i++) {
                 // Instead of 0 iterate through index
-                var topicCardHTML = helperCreateCardHTML(listTopics[i], (i+1));
+                var topicCardHTML = helperCreateCardHTML(listTopics[i]);
                 var topicCounterId = "#topic" + (i+1);
         
                 $(topicCounterId).html("");
@@ -405,9 +383,10 @@ function loadTopicCards(){
         
             $("[name='askQuestionButton']").on("click", function() {
                 $(".alert").alert('close');
-                var identifierTopicName = "#" + this.id + "TopicName";
-                currentTopic = $(identifierTopicName).text();
-                triggerAskQuestionModal(currentTopic);
+                var identifierTopicName = $(this).attr("id");
+                currentTopic = $("#" + identifierTopicName + "TopicName").text();
+                currentTopicId = identifierTopicName;
+                triggerAskQuestionModal(currentTopic, currentTopicId);
             });
         },
         error: function (errorMS){
@@ -428,7 +407,7 @@ function createStarRating(userRating){
     return buildStarHTML;
 }
 
-function triggerAskQuestionModal(currentTopic){
+function triggerAskQuestionModal(currentTopic, currentTopicId){
     // Create title instruction
     $("#chooseModalTitle").html("");
     $("#chooseModalTitle").prepend("<p class='introQuestion' id='modalInstruction'>Choose a tutor to ask about <strong>" + currentTopic + " </strong></p>");
@@ -437,109 +416,138 @@ function triggerAskQuestionModal(currentTopic){
     selectedTutor = "";
 
     createTutorList();
+}
 
-    $("[name='tutorCard']").on("click", function() {
-        $(".alert").alert('close');
-        var identifierUsername = this.id;
+function createTutorList(){
+    // Ajax call to load tutors by topic
+    var jsonSendTopicsList = {
+        "currentTopic" : currentTopicId,
+        "action": "loadTutorByTopic"
+    };
+    
+    $.ajax({
+        url: "./PHP/AppLayer.php",
+        type: "POST",
+        data : jsonSendTopicsList,
+        ContentType : "application/json",
+        dataType: "json",
+        success: function(response){
+            $('#chooseTutorGrid').html("");
+            var listTutors = response;
 
-        // Another tutor was selected
-        if (selectedTutor != ""){
-            //Remove previous tutor selection
-            $("#" + selectedTutor).removeClass("selected");
-            $("#" + selectedTutor).addClass("unselected");
-            $("#" + selectedTutor).css("background-color", "transparent");
-        }
+            // Create tutor list by topic
+            var numberTutors = listTutors.length;
+            var tutorCounter = 0;
 
-        if (selectedTutor == identifierUsername){
-            $("#" + identifierUsername).css("background-color", "transparent");
-            $("#" + identifierUsername).removeClass("selected");
-            $("#" + identifierUsername).addClass("unselected");
-            selectedTutor = "";
-        }
+            // 3 tutors per line
+            var numberRowsTutors = Math.ceil(numberTutors/3);
+            var lastRowNumberTutors = numberTutors%3;
 
-        else {
+            // Fill in all rows except last one
+            for (i = 0; i < (numberRowsTutors-1); i++) {
+                var rowId = "tutorRow" + i;
+                var rowHTML = createTutorRow(rowId);
+
+                // Append row to container
+                $('#chooseTutorGrid').html("");
+                $("#chooseTutorGrid").append(rowHTML);
+
+                // Create columns - should be 3
+                var rowCol1Id = rowId + "tutorCol1";
+                var rowCol2Id = rowId + "tutorCol2";
+                var rowCol3Id = rowId + "tutorCol3";
+
+                var columnsJson = {
+                    column1HTML: '<div class="col-sm-4" id="' + rowCol1Id + '"></div>',
+                    column2HTML: '<div class="col-sm-4" id="' + rowCol2Id + '"></div>',
+                    column3HTML: '<div class="col-sm-4" id="' + rowCol3Id + '"></div>'
+                };
+
+                // Append columns to row
+                $("#" + rowId).append(columnsJson.column1HTML);
+                $("#" + rowId).append(columnsJson.column2HTML);
+                $("#" + rowId).append(columnsJson.column3HTML);
+
+                // Fill columns with information for tutors
+                $("#" + rowCol1Id).html(helperCreateTutorCardHTML(listTutors[tutorCounter]));
+                tutorCounter++;
+                $("#" + rowCol2Id).html(helperCreateTutorCardHTML(listTutors[tutorCounter]));
+                tutorCounter++;
+                $("#" + rowCol3Id).html(helperCreateTutorCardHTML(listTutors[tutorCounter]));
+                tutorCounter++;
+            }
+
             setTimeout(function () {
-                $("#" + identifierUsername).css("background-color", "rgba(52, 152, 219, 0.937)");
+                $('#chooseTutorGrid').scrollTop(0);
+            }, 200);
 
-                // new tutor
-                $("#" + identifierUsername).removeClass("unselected");
-                $("#" + identifierUsername).addClass("selected");
-                selectedTutor = identifierUsername;
-            }, 50);
+            // FIll in last row
+            if((lastRowNumberTutors != 0) || (numberTutors == 3)) {
+                var lastRowId = "tutorRow" + (numberRowsTutors+1);
+                var lastRowHTML = createTutorRow(lastRowId);
+
+                // Append row to container
+                $("#chooseTutorGrid").append(lastRowHTML);
+
+                for (i = 1; i <= (lastRowNumberTutors == 0 ? numberTutors : lastRowNumberTutors); i++) {
+                    var rowColId = lastRowId + "tutorCol" + i;
+                    var columnHTML = '<div class="col-sm-4" id="' + rowColId + '" name="tutorColumn"></div>';
+
+                    // Append columns to row
+                    $("#" + lastRowId).append(columnHTML);
+                    $("#" + rowColId).html(helperCreateTutorCardHTML(listTutors[tutorCounter]));
+                    tutorCounter++;
+                }
+            }
+
+            $("[name='tutorCard']").on("click", function() {
+                $(".alert").alert('close');
+                var identifierUsername = $(this).attr("id");
+
+                // Another tutor was selected
+                if (selectedTutor != ""){
+                    //Remove previous tutor selection
+                    $("#" + selectedTutor).removeClass("selected");
+                    $("#" + selectedTutor).addClass("unselected");
+                    $("#" + selectedTutor).css("background-color", "transparent");
+                }
+
+                if (selectedTutor == identifierUsername){
+                    $("#" + identifierUsername).css("background-color", "transparent");
+                    $("#" + selectedTutor).css("color", "black");
+                    $("#" + identifierUsername).removeClass("selected");
+                    $("#" + identifierUsername).addClass("unselected");
+                    selectedTutor = "";
+                }
+
+                else {
+                    setTimeout(function () {
+                        $("#" + identifierUsername).css("background-color", "rgba(52, 152, 219, 0.937)");
+                        // new tutor
+                        $("#" + identifierUsername).removeClass("unselected");
+                        $("#" + identifierUsername).addClass("selected");
+                        selectedTutor = identifierUsername;
+                    }, 50);
+                }
+            });
+        },
+        error: function (errorMS){
+            if (errorMS.status == "406"){
+                // No comments available, populate accordingly
+                $("#commentSection").html("");  
+                $('#commentSection').append('<p id="noComments" style="text-align: center; padding-top:20px; color:gray;">No comments added yet...</p>');    
+            }
+
+            else {
+                // No tutors found
+                alert(errorMS.responseText);
+            }
         }
     });
 }
 
-function createTutorList(){
-    // Create tutor list by topic
-    var listTutors = getListTutorsByTopic(currentTopic);
-    var numberTutors = listTutors.length;
-    var tutorCounter = 0;
-
-    // 3 tutors per line
-    var numberRowsTutors = Math.ceil(numberTutors/3);
-    var lastRowNumberTutors = numberTutors%3;
-
-    // Fill in all rows except last one
-    for (i = 0; i < (numberRowsTutors-1); i++) {
-        var rowId = "tutorRow" + i;
-        var rowHTML = createTutorRow(rowId);
-
-        // Append row to container
-        $('#chooseTutorGrid').html("");
-        $("#chooseTutorGrid").append(rowHTML);
-
-        // Create columns - should be 3
-        var rowCol1Id = rowId + "tutorCol1";
-        var rowCol2Id = rowId + "tutorCol2";
-        var rowCol3Id = rowId + "tutorCol3";
-
-        var columnsJson = {
-            column1HTML: '<div class="col-sm-4" id="' + rowCol1Id + '"></div>',
-            column2HTML: '<div class="col-sm-4" id="' + rowCol2Id + '"></div>',
-            column3HTML: '<div class="col-sm-4" id="' + rowCol3Id + '"></div>'
-        };
-
-        // Append columns to row
-        $("#" + rowId).append(columnsJson.column1HTML);
-        $("#" + rowId).append(columnsJson.column2HTML);
-        $("#" + rowId).append(columnsJson.column3HTML);
-
-        // Fill columns with information for tutors
-        $("#" + rowCol1Id).html(helperCreateTutorCardHTML(listTutors[tutorCounter]));
-        tutorCounter++;
-        $("#" + rowCol2Id).html(helperCreateTutorCardHTML(listTutors[tutorCounter]));
-        tutorCounter++;
-        $("#" + rowCol3Id).html(helperCreateTutorCardHTML(listTutors[tutorCounter]));
-        tutorCounter++;
-    }
-
-    setTimeout(function () {
-        $('#chooseTutorGrid').scrollTop(0);
-    }, 200);
-
-    // FIll in last row
-    if((lastRowNumberTutors != 0) || (numberTutors == 3)) {
-        var lastRowId = "tutorRow" + (numberRowsTutors+1);
-        var lastRowHTML = createTutorRow(lastRowId);
-
-        // Append row to container
-        $("#chooseTutorGrid").append(lastRowHTML);
-
-        for (i = 1; i <= (lastRowNumberTutors == 0 ? numberTutors : lastRowNumberTutors); i++) {
-            var rowColId = lastRowId + "tutorCol" + i;
-            var columnHTML = '<div class="col-sm-4" id="' + rowColId + '" name="tutorColumn"></div>';
-
-            // Append columns to row
-            $("#" + lastRowId).append(columnHTML);
-            $("#" + rowColId).html(helperCreateTutorCardHTML(listTutors[tutorCounter]));
-            tutorCounter++;
-        }
-    }
-}
-
 function helperCreateTutorCardHTML(tutorDataJson){
-    var tutorCardHTML = '<div class="card" name="tutorCard" id="' + tutorDataJson.username + '"> <div class="card-body"> <img class="card-img-top" name="tutorImage" src="' + tutorDataJson.userImage + '" alt=""> <h5 class="card-title" name="tutorNameHeading"> '+ tutorDataJson.firstName + " " + tutorDataJson.lastName + '</h5> <p name="starRating">' + createStarRating(tutorDataJson.userRating) + '</p>  <p name="numberRating">(' + tutorDataJson.userRating + '/5.0)</p><p class="card-text" name="tutorCardDescription">' + tutorDataJson.userCareer  + '</p></div></div>';
+    var tutorCardHTML = '<div class="card" name="tutorCard" id="' + tutorDataJson.username + '"> <div class="card-body"> <img class="card-img-top" name="tutorImage" src="' + 'media/' + tutorDataJson.uURL + '" alt=""> <h5 class="card-title" name="tutorNameHeading"> '+ tutorDataJson.firstName + " " + tutorDataJson.lastName + '</h5> <p name="starRating">' + createStarRating(tutorDataJson.uRating) + '</p>  <p name="numberRating">(' + tutorDataJson.uRating + '/5.0)</p><p class="card-text" name="tutorCardDescription">' + tutorDataJson.major  + '</p></div></div>';
     return tutorCardHTML;
 }
 
@@ -548,8 +556,8 @@ function createTutorRow(rowId){
     return buildRowHTML;
 }
 
-function helperCreateCardHTML(topicData, idNumber){
-    var buildHTML = '<div class="well"> <div class="card"> <div class="card-body"> <img class="card-img-top" src="' + "media/" + topicData.topicImage + '" alt=""> <h4 class="card-title" id="askTopic'+ idNumber +'TopicName">' + topicData.topicName + '</h4> <p class="card-text">' + topicData.topicDescription + '</p> <button id="askTopic' + idNumber + '"class="flat-butt flat-info-butt flat-inner-butt flat-info-inner-butt" data-toggle="modal" name="askQuestionButton" data-target="#chooseTutorModal">Ask Question</button> </div> </div> </div>';
+function helperCreateCardHTML(topicData){
+    var buildHTML = '<div class="well"> <div class="card"> <div class="card-body"> <img class="card-img-top" src="' + "media/" + topicData.topicImage + '" alt=""> <h4 class="card-title" id="'+ topicData.topicId +'TopicName">' + topicData.topicName + '</h4> <p class="card-text">' + topicData.topicDescription + '</p> <button id="' + topicData.topicId + '" class="flat-butt flat-info-butt flat-inner-butt flat-info-inner-butt" data-toggle="modal" name="askQuestionButton" data-target="#chooseTutorModal">Ask Question</button> </div> </div> </div>';
     return buildHTML;
 }
 
