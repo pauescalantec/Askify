@@ -28,6 +28,7 @@ function doLogin($uName,$uPass){
             while($row = $result->fetch_assoc()){
                 $response = array("uName"=>$row["uName"]);
             }
+            session_start();
             $_SESSION['is_open'] = "TRUE";
             $_SESSION['uName'] = $uName;
             $conn->close();
@@ -56,8 +57,6 @@ function doRegister($uName,$uPass,$fName,$lName,$uEmail,$uMajor,$uGradYear){
             VALUES  ('$uName', '$uPass', '$fName', '$lName','$uEmail','$uMajor','$uGradYear','$rate','$url')";
             $qResult = $conn->query($sqlLogin);
             if($qResult === TRUE){
-                $_SESSION['is_open'] = "TRUE";
-                $_SESSION['uName'] = $uName;
                 $conn->close();
                 return array("status" => "Work");
             }else{

@@ -223,11 +223,13 @@ function loadProfile(){
             // Load profile
             currentUserData = response;
             $("#userImage").html("");
+            $("#userRating").html("");
         
             var name = response.firstname + " <br> " + response.lastname;
         
             $("#profileName").html(name);
             $("#userImage").append('<img src="' +  "media/" + response.uURL + '" class="media-object">');
+            $("#userRating").html(createStarRating(response.uRating));
             $("#username").text(response.username);
             $("#email").text(response.email);
             $("#major").text(response.major);
