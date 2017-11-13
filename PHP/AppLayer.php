@@ -25,6 +25,7 @@ switch ($action) {
     break;
     case "loadSearchRestTopics":
         searchRestTopics();
+    break;
     case "checkSession":
         sessionFunction();
     break;
@@ -34,6 +35,7 @@ switch ($action) {
     case "loadTopicIndex":
         loadTopicIndex();
     break;
+<<<<<<< HEAD
     case "loadHighestRank":
         loadHighestRank();
     break;
@@ -42,6 +44,14 @@ switch ($action) {
     break;
     case "loadMostVisitedTopicByUser":
         loadMostVisitedTopicByUser();
+=======
+    case "loadTutorByTopic" :
+        loadTutorByTopic();
+    break;
+    case "getFullNameFromUsername":
+        getFullNameFromUsername();
+    break;
+>>>>>>> 3866ea39a60644da616ab9528a5293a6551d150e
 }
 
 function deleteSessionFunction() {
@@ -187,6 +197,21 @@ function loadRestTopics(){
     }
 }
 
+function loadTutorByTopic(){
+    $currentTopic =  $_POST["currentTopic"];
+
+    $loadTutorByTopicResponse = dataLoadTutorByTopic($currentTopic);
+
+    if ($loadTutorByTopicResponse["MESSAGE"] == "SUCCESS") {
+        $response = $loadTutorByTopicResponse["response"];
+        echo json_encode($response);
+    }
+
+    else {
+        genericErrorFunction($loadTutorByTopicResponse["MESSAGE"]);	
+    }
+}
+
 
 function searchRestTopics(){
     $uName = getSessionUser();
@@ -244,6 +269,7 @@ function loadHighestRank(){
     }
 }
 
+<<<<<<< HEAD
 function loadMostVisitedTopic(){
     $do = doloadMostVisitedTopic();
     if($do["MESSAGE"] == "SUCCESS"){
@@ -263,6 +289,30 @@ function loadMostVisitedTopicByUser(){
         genericErrorFunction($do["MESSAGE"]);
     }
 }
+=======
+function getFullNameFromUsername(){
+    $uName = $_POST["username"];
+
+    if (!is_null($uName)){
+
+        $getFullNameFromUsernameResponse = dataGetFullNameFromUsername($uName);
+
+        if ($getFullNameFromUsernameResponse["MESSAGE"] == "SUCCESS") {
+            $response = $getFullNameFromUsernameResponse["response"];
+            echo json_encode($response);
+        }
+
+        else {
+            genericErrorFunction($getFullNameFromUsernameResponse["MESSAGE"]);	
+        }
+    }
+
+    else {
+        genericErrorFunction("406");	
+    }
+}
+
+>>>>>>> 3866ea39a60644da616ab9528a5293a6551d150e
 
 function genericErrorFunction($errorCode){
     switch($errorCode)

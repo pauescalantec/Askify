@@ -94,7 +94,8 @@ function sendTopics(){
     listItems.each(function(idx, li) {
         var item = $(li);
         if(item.hasClass("selected")) {
-            topicsSelected.push(item.attr("id"));
+            var itemId = item.attr("id");
+            topicsSelected.push(itemId.substring(3));
         }
     });
 
@@ -276,6 +277,6 @@ function helperCreateTopicHTML(topicName, topicURL, topicId){
 }
 
 function helperCreateAddTopicHTML(topicName, topicURL, topicId){
-    var buildHTML = '<li class="list-group-item" name="addTopicItem" id="' + topicId + '"> <div class="media"> <div class="media-left media-middle"> <img src="' + topicURL + '" class="media-object topic" style="width:60px"> </div> <div class="media-body"> <h4 class="media-heading topic">' + topicName + '</h4> </div> </div> </li>';
+    var buildHTML = '<li class="list-group-item" name="addTopicItem" id="Add' + topicId + '"> <div class="media"> <div class="media-left media-middle"> <img src="' + topicURL + '" class="media-object topic" style="width:60px"> </div> <div class="media-body"> <h4 class="media-heading topic">' + topicName + '</h4> </div> </div> </li>';
     return buildHTML;
 }

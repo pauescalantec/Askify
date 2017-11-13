@@ -73,6 +73,39 @@ function doRegister($uName,$uPass,$fName,$lName,$uEmail,$uMajor,$uGradYear){
     }
 }
 
+function dataLoadTutorByTopic($currentTopic){
+    $conn = doDBconnection();
+    
+    if ($conn != null){
+
+        $sql = "SELECT * FROM UserTable WHERE uName IN (SELECT uName FROM HasExpertise WHERE tID = '$currentTopic')";
+
+        $result = $conn->query($sql);
+
+        if ($result->num_rows > 0)
+        {
+            $counter = 0;
+
+            while ($row = $result->fetch_assoc())
+            {
+                $response[$counter++] = array("firstName"=>$row["fName"], "lastName"=>$row["lName"], "major"=>$row["uMajor"], "gradYear"=>$row["uGradYear"], "username"=>$row["uName"], "uRating"=>$row["uRating"], "uURL"=>$row["uURL"]);
+            }
+            $conn->close();
+            return array("response"=>$response, "MESSAGE"=>"SUCCESS");
+        }
+
+        else
+        {
+            $conn->close();
+            return array("MESSAGE"=>"406");
+        }
+
+    }
+    else{
+        return array("MESSAGE"=>"500");
+    }
+}
+
 function dataLoadProfile($uName){
     $conn = doDBconnection();
 
@@ -168,6 +201,37 @@ function dataLoadRestTopics($uName){
     }
 }
 
+function dataGetFullNameFromUsername($uName){
+    $conn = doDBconnection();
+
+    if ($conn != null){
+
+        $sql = "SELECT fName, lName FROM UserTable WHERE uName = '$uName'";
+
+        $result = $conn->query($sql);
+
+        if ($result->num_rows > 0)
+        {
+            while ($row = $result->fetch_assoc())
+            {
+                $response = array("fullName"=>($row["fName"] . " " . $row["lName"]));
+            }
+            $conn->close();
+            return array("response"=>$response, "MESSAGE"=>"SUCCESS");
+        }
+
+        else
+        {
+            $conn->close();
+            return array("MESSAGE"=>"406");
+        }
+
+    }
+    else{
+        return array("MESSAGE"=>"500");
+    }
+}
+
 function dataSearchRestTopics($uName, $searchField){
     $conn = doDBconnection();
 
@@ -244,7 +308,7 @@ function doLoadTopicsIndex(){
             $counter = 0;
             while($row = $result->fetch_assoc()){
                 $response[$counter++] = array("topicName"=>$row["tName"],"topicDescription"=>$row["tDescription"],
-                      "topicImage"=>$row["tURL"]);
+                      "topicImage"=>$row["tURL"], "topicId"=>$row["tID"]);
             }
                 $conn->close();
                 return array("response"=>$response, "MESSAGE"=>"SUCCESS");
