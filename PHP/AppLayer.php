@@ -17,19 +17,9 @@ switch ($action) {
     case "loadTopics":
         loadTopics();
     break;
-    case "session"
-}
-
-function sessionFunction() {
-	session_start();
-	if( isset($_SESSION["currentUser"]) && isset($_SESSION["fName"]) && isset($_SESSION["lName"])){
-	    echo json_encode(array("currentUser" => $_SESSION["currentUser"],
-                                "fName" => $_SESSION["fName"],
-                                "lName" => $_SESSION["lName"]));
-	}
-	else {
-		genericErrorFunction("400");
-	}
+    case "loadTopicIndex":
+        loadTopicIndex();
+    break;
 }
 
 function getSessionUser(){
@@ -127,6 +117,17 @@ function loadTopics(){
     else {
         genericErrorFunction("406");
     }
+}
+
+function loadTopicIndex(){
+    $do = doLoadTopicsIndex();
+    if($do["MESSAGE"] == "SUCCESS"){
+        $response = $do["response"];
+        echo json_encode($response);
+    }else{
+        genericErrorFunction($do["MESSAGE"]);
+    }
+
 }
 
 function genericErrorFunction($errorCode){
