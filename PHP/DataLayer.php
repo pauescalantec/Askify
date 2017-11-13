@@ -95,6 +95,7 @@ function dataLoadProfile($uName){
 
         else
         {
+            $conn->close();
             return array("MESSAGE"=>"406");
         }
 
@@ -121,7 +122,112 @@ function dataLoadTopics($uName){
             $conn->close();
             return array("response"=>$response, "MESSAGE"=>"SUCCESS");
         }
-        else{
+
+        else
+        {
+            $conn->close();
+            return array("MESSAGE"=>"406");
+        }
+
+    }
+    else{
+        return array("MESSAGE"=>"500");
+    }
+}
+
+
+function dataLoadRestTopics($uName){
+    $conn = doDBconnection();
+    
+    if ($conn != null){
+        
+        $sql = "SELECT * FROM Topics WHERE tID NOT IN (SELECT tID FROM HasExpertise WHERE uName = '$uName')";		
+        
+        $result = $conn->query($sql);
+
+        if ($result->num_rows > 0)
+        {
+            $counter = 0;
+
+            while ($row = $result->fetch_assoc())
+            {
+                $response[$counter++] = array("topicId"=>$row["tID"], "topicURL"=>$row["tURL"], "topicName"=>$row["tName"]);
+            }
+
+            $conn->close();
+            return array("response"=>$response, "MESSAGE"=>"SUCCESS");
+        }
+
+        else
+        {
+            $conn->close();
+            return array("MESSAGE"=>"406");
+        }
+
+    }
+    else{
+        return array("MESSAGE"=>"500");
+    }
+}
+
+function dataSearchRestTopics($uName, $searchField){
+    $conn = doDBconnection();
+    
+    if ($conn != null){
+        $field = "%" . $searchField . "%";
+        $sql = "SELECT * FROM Topics WHERE tName LIKE '$field' AND tID NOT IN (SELECT tID FROM HasExpertise WHERE uName = '$uName')";		
+        
+        $result = $conn->query($sql);
+
+        if ($result->num_rows > 0)
+        {
+            $counter = 0;
+
+            while ($row = $result->fetch_assoc())
+            {
+                $response[$counter++] = array("topicId"=>$row["tID"], "topicURL"=>$row["tURL"], "topicName"=>$row["tName"]);
+            }
+
+            $conn->close();
+            return array("response"=>$response, "MESSAGE"=>"SUCCESS");
+        }
+
+        else
+        {
+            $conn->close();
+            return array("MESSAGE"=>"406");
+        }
+
+    }
+    else{
+        return array("MESSAGE"=>"500");
+    }
+}
+
+function dataAddTopics($uName, $topicsToAdd, $topicsToAddCount){
+    $conn = doDBconnection();
+    
+    if ($conn != null){
+        
+        $sql = "INSERT INTO HasExpertise VALUES ";	
+        
+        for ($x = 0; $x < $topicsToAddCount-1; $x++) {
+            $tempValue = $topicsToAdd[$x];
+            $sql = $sql . "('$uName','$tempValue'), ";
+        }
+
+        $tempValue = $topicsToAdd[$topicsToAddCount-1];
+        $sql = $sql . "('$uName','$tempValue');";
+
+        if (mysqli_query($conn, $sql)) { 
+            $response = array("MESSAGE"=>"SUCCESS");
+            $conn->close();
+            return $response;
+        }
+
+        else
+        {
+            $conn->close();
             return array("MESSAGE"=>"406");
         }
     }
@@ -139,7 +245,7 @@ function doLoadTopicsIndex(){
         if($result->num_rows>0){
             $counter = 0;
             while($row = $result->fetch_assoc()){
-                $response[$counter++] = array("topicName"=>$row["tName"],                                           "topicDescription"=>$row["tDescription"],
+                $response[$counter++] = array("topicName"=>$row["tName"],"topicDescription"=>$row["tDescription"],
                       "topicImage"=>$row["tURL"]);
             }
                 $conn->close();

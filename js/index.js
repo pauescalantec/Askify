@@ -35,19 +35,40 @@ $(window).on('resize', function() {
 $(document).ready(function(){
     $(window).resize();
 
+    checkSession();
+
     // Menu control
     $("#navbarHome li").on("click", function(){
 		$(".active").removeClass("active");
         var currentClass = $(this).attr("class");
-
+        var navId = $(this).attr("id");
+        
         // Options is just a dropdown menu
-        if (currentClass != "dropdown" && currentClass != "options" && currentClass != "dropdown open") {
+        if (currentClass != "dropdown" && currentClass != "options" && currentClass != "dropdown open" && currentClass != "logout") {
             $(this).addClass("active");
 
             $(".selectedSection").removeClass("selectedSection").addClass("notSelectedSection");
 
             $("#" + currentClass + "Section").addClass("selectedSection").removeClass("notSelectedSection").trigger('classChange');
         }
+    });
+
+    $("#logoutButton").on("click", function(event){
+        var jsonData = {
+            "action" : "logOut"
+        };
+        $.ajax({
+            url: "./PHP/AppLayer.php",
+            type: "POST",
+            data: jsonData,
+            dataType: "json",
+            success: function(jsonResponse) {
+                window.location.replace("inicio.html");
+            },
+            error: function(errorMessage) {
+                alert("Error logging out. Try again later.");
+            }
+        });  
     });
 
     $('#answersSection').on('classChange', function() {
@@ -117,12 +138,32 @@ $(document).ready(function(){
     // Load Analytics feed
     loadAnalyticsField("#analyticsFeed");
 
-    // Load topics
-    loadUserFullName();
-
     // Load request count
     loadRequestCount();
 });
+
+function checkSession(){
+    var jsonData = {
+        "action" : "checkSession"
+    };
+
+    $.ajax({
+        url: "./PHP/AppLayer.php",
+        type: "POST",
+        data: jsonData,
+        dataType: "json",
+        success: function(jsonResponse) {
+            currentUser = jsonResponse.uName;
+            // Load topics
+            loadUserFullName(currentUser);
+    
+        },
+        error: function() {
+            currentUser = "";
+            window.location.replace("inicio.html");
+        }
+    });     
+}
 
 function loadRequestCount(){
     $("#requestsCount").text(getRequestNumber() == 0 ? "" : getRequestNumber());
@@ -258,8 +299,7 @@ function activateAffixListener(selectorId){
    });
 }
 
-function loadUserFullName(){
-    currentUser = getCurrentUser();
+function loadUserFullName(currentUser){
     // Add to profile section
     $("#navbarItemDropdown").html('<span id="navbarItemProfile" class="glyphicon glyphicon-user"></span> ' + currentUser);
 }
@@ -286,10 +326,6 @@ function getFullNameFromUsername(username){
 
 function getVisitedTopic(){
     return "Python";
-}
-
-function getCurrentUser(){
-    return "Paulina";
 }
 
 function getTopicCards(){
