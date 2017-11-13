@@ -104,10 +104,17 @@ SELECT Answers.aText as answersText,
                 AND Answers.uName = '$uName'
                 AND (Answers.aStatus = 'R' OR Answers.aStatus = 'A'));
 
---count the amount of answer request 
+--count the amount of answer request for a user
 SELECT COUNT(aID)
 FROM Answers
 WHERE aStatus = 'N'
 AND uName = (SELECT uName
              FROM UserTable
-             WHERE uName = "CrisTJ");
+             WHERE uName = "$uName");
+
+--count the amount of new answered questions
+SELECT COUNT(aID)
+FROM Answers, Questions
+WHERE aStatus = 'A'
+	AND Questions.qID = Answers.qID
+    AND Questions.uName = "$uName";

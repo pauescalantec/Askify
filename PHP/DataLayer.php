@@ -628,3 +628,58 @@ function doLoadPreviousAnswers($uName){
         return array("MESSAGE"=>"500");
     }
 }
+
+function doloadCountRequest($uName){
+    $conn = doDBconnection();
+    if($conn != NULL){
+        $sqlCountRequest = "SELECT COUNT(aID) as cont
+                            FROM Answers
+                            WHERE aStatus = 'N'
+                            AND uName = (SELECT uName
+                                        FROM UserTable
+                                        WHERE uName = '$uName')";
+
+        $result = $conn->query($sqlCountRequest);
+        if($result->num_rows>0){
+            while($row = $result->fetch_assoc()){
+                $response = array("aID"=>$row["cont"]);
+            }
+            $conn->close();
+            return array("response"=>$response, "MESSAGE"=>"SUCCESS");
+        }else{
+            $conn->close();
+            return array("MESSAGE"=>"406");
+        }
+    }else{
+        $conn->close();
+        return $resultArr;
+        return array("MESSAGE"=>"500");
+    }
+}
+
+function doloadCountAnswers($uName){
+    $conn = doDBconnection();
+    if($conn != NULL){
+        $sqlCountRequest = "SELECT COUNT(aID) as cont
+                            FROM Answers, Questions
+                            WHERE aStatus = 'A'
+        	                    AND Questions.qID = Answers.qID
+                                AND Questions.uName = '$uName';";
+
+        $result = $conn->query($sqlCountRequest);
+        if($result->num_rows>0){
+            while($row = $result->fetch_assoc()){
+                $response = array("aID"=>$row["cont"]);
+            }
+            $conn->close();
+            return array("response"=>$response, "MESSAGE"=>"SUCCESS");
+        }else{
+            $conn->close();
+            return array("MESSAGE"=>"406");
+        }
+    }else{
+        $conn->close();
+        return $resultArr;
+        return array("MESSAGE"=>"500");
+    }
+}

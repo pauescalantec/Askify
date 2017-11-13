@@ -62,6 +62,12 @@ switch ($action) {
     case "loadTutorByTopicSearch":
         loadTutorByTopicSearch();
     break;
+    case "loadCountRequest":
+        loadCountRequest();
+    break;
+    case "loadCountAnswers":
+        loadCountAnswers();
+    break;
 }
 
 function deleteSessionFunction() {
@@ -236,33 +242,6 @@ function loadTutorByTopic(){
     }
 }
 
-<<<<<<< HEAD
-=======
-function loadTutorByTopicSearch(){
-    $currentTopic =  $_POST["currentTopic"];
-    $searchField =  $_POST["searchFieldTutors"];
-    $currentUser =  getSessionUser();
-
-    if (!is_null($currentUser)){
-        $loadTutorByTopicSearchResponse = dataLoadTutorByTopicSearch($currentTopic, $currentUser,$searchField);
-
-        if ($loadTutorByTopicSearchResponse["MESSAGE"] == "SUCCESS") {
-            $response = $loadTutorByTopicSearchResponse["response"];
-            echo json_encode($response);
-        }
-
-        else {
-            genericErrorFunction($loadTutorByTopicSearchResponse["MESSAGE"]);
-        }
-    }
-
-    else {
-        genericErrorFunction("406");
-    }
-}
-
-
->>>>>>> 398bd72b5dbfb807cdbbe5c5178a22039d10b552
 function searchRestTopics(){
     $uName = getSessionUser();
     $searchField = $_POST["searchField"];
@@ -441,6 +420,28 @@ function loadPreviousAnswers(){
         else {
             genericErrorFunction("406");
         }
+}
+
+function loadCountRequest(){
+    $uName = getSessionUser();
+    $do = doloadCountRequest($uName);
+    if($do["MESSAGE"] == "SUCCESS"){
+        $response = $do["response"];
+        echo json_encode($response);
+    }else{
+        genericErrorFunction($do["MESSAGE"]);
+    }
+}
+
+function loadCountAnswers(){
+    $uName = getSessionUser();
+    $do = doloadCountAnswers($uName);
+    if($do["MESSAGE"] == "SUCCESS"){
+        $response = $do["response"];
+        echo json_encode($response);
+    }else{
+        genericErrorFunction($do["MESSAGE"]);
+    }
 }
 
 function genericErrorFunction($errorCode){

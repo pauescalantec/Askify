@@ -220,7 +220,7 @@ function triggerAnswerQuestionModal(questionId){
 
 function loadPreviousAnswers(){
 
-    var jsonLoadPreviousAnswers = {"action" : "loadPreviousAnswers"}
+    var jsonLoadPreviousAnswers = {"action" : "loadPreviousAnswers"};
     $.ajax({
         url: "./PHP/AppLayer.php",
         type: "POST",
