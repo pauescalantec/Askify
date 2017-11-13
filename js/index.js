@@ -161,7 +161,7 @@ function checkSession(){
         },
         error: function(error) {
             currentUser = "";
-            window.location.replace("inicio.html");
+            //window.location.replace("inicio.html");
         }
     });
 }

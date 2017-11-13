@@ -35,7 +35,6 @@ switch ($action) {
     case "loadTopicIndex":
         loadTopicIndex();
     break;
-<<<<<<< HEAD
     case "loadHighestRank":
         loadHighestRank();
     break;
@@ -44,14 +43,13 @@ switch ($action) {
     break;
     case "loadMostVisitedTopicByUser":
         loadMostVisitedTopicByUser();
-=======
+    break;
     case "loadTutorByTopic" :
         loadTutorByTopic();
     break;
     case "getFullNameFromUsername":
         getFullNameFromUsername();
     break;
->>>>>>> 3866ea39a60644da616ab9528a5293a6551d150e
 }
 
 function deleteSessionFunction() {
@@ -269,7 +267,6 @@ function loadHighestRank(){
     }
 }
 
-<<<<<<< HEAD
 function loadMostVisitedTopic(){
     $do = doloadMostVisitedTopic();
     if($do["MESSAGE"] == "SUCCESS"){
@@ -289,7 +286,7 @@ function loadMostVisitedTopicByUser(){
         genericErrorFunction($do["MESSAGE"]);
     }
 }
-=======
+
 function getFullNameFromUsername(){
     $uName = $_POST["username"];
 
@@ -312,7 +309,6 @@ function getFullNameFromUsername(){
     }
 }
 
->>>>>>> 3866ea39a60644da616ab9528a5293a6551d150e
 
 function genericErrorFunction($errorCode){
     switch($errorCode)
