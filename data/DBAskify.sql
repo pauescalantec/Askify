@@ -76,7 +76,7 @@ INSERT INTO Questions VALUES
 ('PecsterCrisTJ5','sql6','Pecster','What is the command for dropping tables?');
 
 INSERT INTO Answers VALUES
-('PecsterCrisTJ1','Pecster','CrisTJCarlitos1','R','You can use several libraries for this on c++, I would do hashing','5'),
+('PecsterCrisTJ1','Pecster','CrisTJPecster1','R','You can use several libraries for this on c++, I would do hashing','5'),
 ('PecsterCrisTJ2','Pecster','CrisTJPecster2','N','','-1'),
 ('CarlitosPecster3','Carlitos','PecsterCarlitos3','N','','-1'),
 ('NatsPecster4','Nats','PecsterNats4','A','You can use Flask to run a server','-1'),
@@ -95,8 +95,6 @@ INSERT INTO HasExpertise VALUES
 ('Pecster','cpp1'),
 ('Pecster','csharp3'),
 ('Pecster','web7'),
-('Pecster','php8'),
-('Pecster','react9'),
 ('Carlitos','cpp1'),
 ('Carlitos','ux2'),
 ('Carlitos','csharp3'),

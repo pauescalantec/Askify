@@ -23,7 +23,21 @@ function valRegister(){
          window.location.href = "login.html";
        },
        error: function (errorMS){
-         alert("Sorry, registration was not succecful  " + errorMS.statusText);
+        $(".alert").alert('close');
+
+        $('html, body').stop().animate({
+            scrollTop: $("#top").offset().top
+        }, 600);
+        
+        setTimeout(function() {
+            createDangerAlert("#registerContainer", "Registration Unsuccessful", "registerInvalidAlert");
+        }, 400);
+                
        }
      });
    }
+
+   function createDangerAlert(selectorId, alertMessage, alertId){
+    $(selectorId).prepend('<div class="alert alert-danger alert-dismissable fade in" id=" ' + alertId + '" style="padding: 15px; margin:10px 10px;"> <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>' + alertMessage +'</div>');
+  }
+  

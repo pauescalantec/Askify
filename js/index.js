@@ -1,5 +1,5 @@
 var currentTopic = "";
-currentTopicId = "";
+var currentTopicId = "";
 var currentUser = "";
 var selectedTutor = "";
 var selectedTutorName = "";
@@ -34,115 +34,8 @@ $(window).on('resize', function() {
 
 });
 
-$(document).ready(function(){
-    $(window).resize();
-
+$(document).ready(function(){        
     checkSession();
-
-    // Menu control
-    $("#navbarHome li").on("click", function(){
-		$(".active").removeClass("active");
-        var currentClass = $(this).attr("class");
-        var navId = $(this).attr("id");
-
-        // Options is just a dropdown menu
-        if (currentClass != "dropdown" && currentClass != "options" && currentClass != "dropdown open" && currentClass != "logout") {
-            $(this).addClass("active");
-
-            $(".selectedSection").removeClass("selectedSection").addClass("notSelectedSection");
-
-            $("#" + currentClass + "Section").addClass("selectedSection").removeClass("notSelectedSection").trigger('classChange');
-        }
-    });
-
-    $("#logoutButton").on("click", function(event){
-        var jsonData = {
-            "action" : "logOut"
-        };
-        $.ajax({
-            url: "./PHP/AppLayer.php",
-            type: "POST",
-            data: jsonData,
-            dataType: "json",
-            success: function(jsonResponse) {
-                window.location.replace("inicio.html");
-            },
-            error: function(errorMessage) {
-                alert("Error logging out. Try again later.");
-            }
-        });
-    });
-
-    $('#answersSection').on('classChange', function() {
-        $('#answersContent').load('answers.html');
-    });
-
-    $('#questionsSection').on('classChange', function() {
-        $('#questionsContent').load('questions.html');
-    });
-
-    $('#profileSection').on('classChange', function() {
-        $('#profileContent').load('profile.html');
-    });
-
-    $('#homeSection').on('classChange', function() {
-        // Load topics
-        loadTopicCards();
-        loadRequestCount();
-        loadAnalyticsField("#analyticsFeed");
-    });
-
-    $("#questionTextArea").hide();
-    $("#backToTutors").hide();
-    $("#sendQuestionButton").hide();
-    $("#chosenTutorButton").show();
-    $('#cancelQuestion').prop('disabled', false);
-    $('#sendQuestionButton').prop('disabled', false);
-    $('#backToTutors').prop('disabled', false);
-    $("#sendQuestionButton").text("Send Question");
-
-    $("#chosenTutorButton").on("click", function(){
-        chosenTutorButtonClicked();
-    });
-
-    $("#backToTutors").on("click", function(){
-        backToTutorsButtonClicked();
-    });
-
-    $("#sendQuestionButton").on("click", function(){
-        sendQuestionButtonClicked();
-    });
-
-    $('#chooseTutorModal').on('hidden.bs.modal', function () {
-        selectedTutor = "";
-        selectedTutorName = "";
-        $('#sendQuestionButton').prop('disabled', false);
-        $('#backToTutors').prop('disabled', false);
-        $('#cancelQuestion').prop('disabled', false);
-        $("#sendQuestionButton").text("Send Question");
-        $("#questionText").val("");
-        $("#questionTextArea").hide();
-        $("#backToTutors").hide();
-        $("#sendQuestionButton").hide();
-        $("#chooseTutorArea").show();
-        $("#chosenTutorButton").show();
-    });
-
-    $('#resizer').on( 'change keyup keydown paste cut', 'textarea', function (event){
-        $(".alert").alert('close');
-        $(this).height(0).height(this.scrollHeight-12);
-    }).find( 'textarea' ).change();
-
-    activateAffixListener("#analyticsFeed");
-
-    // Load topics
-    loadTopicCards();
-
-    // Load Analytics feed
-    loadAnalyticsField("#analyticsFeed");
-
-    // Load request count
-    loadRequestCount();
 });
 
 function checkSession(){
@@ -160,12 +53,134 @@ function checkSession(){
             // Load topics
             loadUserFullName(currentUser);
 
+            $(window).resize();
+
+            // Menu control
+            $("#navbarHome li").on("click", function(){
+                $(".active").removeClass("active");
+                var currentClass = $(this).attr("class");
+                var navId = $(this).attr("id");
+        
+                // Options is just a dropdown menu
+                if (currentClass != "dropdown" && currentClass != "options" && currentClass != "dropdown open" && currentClass != "logout") {
+                    $(this).addClass("active");
+        
+                    $(".selectedSection").removeClass("selectedSection").addClass("notSelectedSection");
+        
+                    $("#" + currentClass + "Section").addClass("selectedSection").removeClass("notSelectedSection").trigger('classChange');
+                }
+            });
+        
+            $("#logoutButton").on("click", function(event){
+                var jsonData = {
+                    "action" : "logOut"
+                };
+                $.ajax({
+                    url: "./PHP/AppLayer.php",
+                    type: "POST",
+                    data: jsonData,
+                    dataType: "json",
+                    success: function(jsonResponse) {
+                        window.location.replace("inicio.html");
+                    },
+                    error: function(errorMessage) {
+                        alert("Error logging out. Try again later.");
+                    }
+                });
+            });
+        
+            $('#answersSection').on('classChange', function() {
+                $('#answersContent').load('answers.html');
+            });
+        
+            $('#questionsSection').on('classChange', function() {
+                $('#questionsContent').load('questions.html');
+            });
+        
+            $('#profileSection').on('classChange', function() {
+                $('#profileContent').load('profile.html');
+            });
+        
+            $('#homeSection').on('classChange', function() {
+                // Load topics
+                loadTopicCards();
+                loadRequestCount();
+                loadAnalyticsField("#analyticsFeed");
+            });
+        
+            $("#questionTextArea").hide();
+            $("#backToTutors").hide();
+            $("#sendQuestionButton").hide();
+            $("#chosenTutorButton").show();
+            $('#cancelQuestion').prop('disabled', false);
+            $('#sendQuestionButton').prop('disabled', false);
+            $('#backToTutors').prop('disabled', false);
+            $("#sendQuestionButton").text("Send Question");
+        
+            $("#chosenTutorButton").on("click", function(){
+                chosenTutorButtonClicked();
+            });
+        
+            $("#backToTutors").on("click", function(){
+                backToTutorsButtonClicked();
+            });
+        
+            $("#sendQuestionButton").on("click", function(){
+                sendQuestionButtonClicked();
+            });
+        
+            $('#chooseTutorModal').on('hidden.bs.modal', function () {
+                selectedTutor = "";
+                selectedTutorName = "";
+                $('#sendQuestionButton').prop('disabled', false);
+                $('#backToTutors').prop('disabled', false);
+                $('#cancelQuestion').prop('disabled', false);
+                $("#sendQuestionButton").text("Send Question");
+                $("#questionText").val("");
+                $("#questionTextArea").hide();
+                $("#backToTutors").hide();
+                $("#sendQuestionButton").hide();
+                $("#chooseTutorArea").show();
+                $("#chosenTutorButton").show();
+            });
+        
+            $('#resizer').on( 'change keyup keydown paste cut', 'textarea', function (event){
+                $(".alert").alert('close');
+                $(this).height(0).height(this.scrollHeight-12);
+            }).find( 'textarea' ).change();
+        
+            activateAffixListener("#analyticsFeed");
+        
+            // Load topics
+            loadTopicCards();
+        
+            // Load Analytics feed
+            loadAnalyticsField("#analyticsFeed");
+        
+            // Load request count
+            loadRequestCount();
+
+            $("#searchFieldTutors").keyup(function(event) {
+                if (event.keyCode === 13) {
+                    startAddTutorsSearch();
+                }
+            });
+        
+            $("#startSearchTutors").click(function( event ) {
+                startAddTutorsSearch();
+            });
+
         },
         error: function(error) {
             currentUser = "";
             window.location.replace("inicio.html");
         }
     });
+}
+
+function startAddTutorsSearch(){
+    var searchFieldTextTutors = $("#searchFieldTutors").val();
+    createTutorList("search", searchFieldTextTutors);
 }
 
 function loadRequestCount(){
@@ -377,9 +392,6 @@ function loadAnalyticsField(analyticsSelector){
         }
 
     });
-
-
-
 }
 
 function activateAffixListener(selectorId){
@@ -474,15 +486,27 @@ function triggerAskQuestionModal(currentTopic, currentTopicId){
     selectedTutor = "";
     selectedTutorName = "";
 
-    createTutorList();
+    createTutorList("trigger", "");
 }
 
-function createTutorList(){
-    // Ajax call to load tutors by topic
-    var jsonSendTopicsList = {
-        "currentTopic" : currentTopicId,
-        "action": "loadTutorByTopic"
-    };
+function createTutorList(keywordCreate, searchFieldTutors){
+    var jsonSendTopicsList;
+
+    if(keywordCreate == "trigger") {
+        // Ajax call to load tutors by topic
+        jsonSendTopicsList = {
+            "currentTopic" : currentTopicId,
+            "action": "loadTutorByTopic"
+        };
+    }
+
+    else {
+        jsonSendTopicsList = {
+            "searchFieldTutors" : searchFieldTutors,
+            "currentTopic" : currentTopicId,
+            "action": "loadTutorByTopicSearch"
+        };
+    }
 
     $.ajax({
         url: "./PHP/AppLayer.php",
