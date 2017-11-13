@@ -89,6 +89,19 @@ switch ($action) {
     case "updateAnswer":
         updateAnswer();
     break;
+    case "getCookie":
+        getCookie();
+    break;
+}
+
+function getCookie(){
+    if( isset($_COOKIE["cookieuName"])) {
+        $response = array('savedUser' => $_COOKIE["cookieuName"]);
+        echo json_encode($response);
+    }
+    else {
+        genericErrorFunction("400");	
+    }
 }
 
 function deleteSessionFunction() {

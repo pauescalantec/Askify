@@ -2,6 +2,8 @@ $("#idWhiteButtLogin").on('click', function(){
   validateLog();
 });
 
+getCookieData();
+
 function validateLog(){
   //validation of credentials
   var valUsername = $('#usernameInput').val();
@@ -42,4 +44,20 @@ function validateLog(){
 
  function createDangerAlert(selectorId, alertMessage, alertId){
   $(selectorId).prepend('<div class="alert alert-danger alert-dismissable fade in" id=" ' + alertId + '" style="padding: 15px; margin:10px 10px"> <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>' + alertMessage +'</div>');
+}
+
+function getCookieData(){
+  var jsonData = { 
+      "action" : "getCookie"
+  };
+  // PHP cookie service
+  $.ajax({
+      url: "./PHP/AppLayer.php",
+      type: "POST",
+      data: jsonData,
+      dataType: "json",
+      success: function (jsonResponse){
+          $("#usernameInput").val(jsonResponse.savedUser);    
+      }
+  });
 }
