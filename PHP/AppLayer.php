@@ -62,6 +62,12 @@ switch ($action) {
     case "loadTutorByTopicSearch":
         loadTutorByTopicSearch();
     break;
+    case "loadCountRequest":
+        loadCountRequest();
+    break;
+    case "loadCountAnswers":
+        loadCountAnswers();
+    break;
     case "loadUnansweredQuestions":
         loadUnansweredQuestions();
     break;
@@ -617,6 +623,28 @@ function loadPreviousAnswers(){
         else {
             genericErrorFunction("406");
         }
+}
+
+function loadCountRequest(){
+    $uName = getSessionUser();
+    $do = doloadCountRequest($uName);
+    if($do["MESSAGE"] == "SUCCESS"){
+        $response = $do["response"];
+        echo json_encode($response);
+    }else{
+        genericErrorFunction($do["MESSAGE"]);
+    }
+}
+
+function loadCountAnswers(){
+    $uName = getSessionUser();
+    $do = doloadCountAnswers($uName);
+    if($do["MESSAGE"] == "SUCCESS"){
+        $response = $do["response"];
+        echo json_encode($response);
+    }else{
+        genericErrorFunction($do["MESSAGE"]);
+    }
 }
 
 function genericErrorFunction($errorCode){
