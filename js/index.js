@@ -277,7 +277,7 @@ function chosenTutorButtonClicked(){
                 "username" : selectedTutor,
                 "action": "getFullNameFromUsername"
             };
-            
+
             $.ajax({
                 url: "./PHP/AppLayer.php",
                 type: "POST",
@@ -291,7 +291,7 @@ function chosenTutorButtonClicked(){
                         $("#chosenTutorButton").fadeOut( 5, function() {
                             $("#sendQuestionButton").hide().fadeIn(100);
                         });
-        
+
                         $("#modalInstruction").html(currentUser + " asks " + response.fullName + " about <strong>" + currentTopic + " </strong><hr />");
                         $("#questionTextArea").hide().fadeIn(120);
                         $("#backToTutors").hide().fadeIn(100);
@@ -318,17 +318,68 @@ function createSuccessAlert(selectorId, alertMessage, alertId){
 }
 
 function loadAnalyticsField(analyticsSelector){
-    
-    var visitedHTML = helperCreateAnalytics("visitedPanelHeading", "Most Visited Topic", getVisitedTopic());
-
-    var favoriteHTML = helperCreateAnalytics("favoritePanelHeading", "Your Favorite Topic", getFavoriteTopic());
-
-    var highestHTML = helperCreateAnalytics("highestPanelHeading", "Highest Ranked Tutor", getHighestTutor());
-
     $(analyticsSelector).html("");
-    $(analyticsSelector).append(visitedHTML).hide().fadeIn(300);
-    $(analyticsSelector).append(favoriteHTML).hide().fadeIn(300);
-    $(analyticsSelector).append(highestHTML).hide().fadeIn(300);
+
+    var jsonFaveTopic = {"action":"loadMostVisitedTopic"};
+    $.ajax({
+        url: "./PHP/AppLayer.php",
+        type: "POST",
+        data : jsonFaveTopic,
+        ContentType : "application/json",
+        dataType: "json",
+        success: function(response){
+
+            var visitedHTML = helperCreateAnalytics("visitedPanelHeading", "Most Visited Topic", response.tName);
+            $(analyticsSelector).append(visitedHTML).hide().fadeIn(300);
+        },
+        error: function (errorMS){
+            // Error message
+            alert(errorMS.responseText);
+        }
+
+    });
+
+    var jsonUSERFaveTopic = {"action":"loadMostVisitedTopicByUser"};
+    $.ajax({
+        url: "./PHP/AppLayer.php",
+        type: "POST",
+        data : jsonUSERFaveTopic,
+        ContentType : "application/json",
+        dataType: "json",
+        success: function(response){
+
+            var favoriteHTML = helperCreateAnalytics("favoritePanelHeading", "Your Favorite Topic", response.tName);
+            $(analyticsSelector).append(favoriteHTML).hide().fadeIn(300);
+        },
+        error: function (errorMS){
+            // Error message
+            alert(errorMS.responseText);
+        }
+
+    });
+
+    var jsonHighestRank = {"action": "loadHighestRank"};
+    $.ajax({
+        url: "./PHP/AppLayer.php",
+        type: "POST",
+        data : jsonHighestRank,
+        ContentType : "application/json",
+        dataType: "json",
+        success: function(response){
+
+            var highestHTML = helperCreateAnalytics("highestPanelHeading", "Highest Ranked Tutor", response.uName) ;
+            $(analyticsSelector).append(highestHTML).hide().fadeIn(300);
+
+        },
+        error: function (errorMS){
+            // Error message
+            alert(errorMS.responseText);
+        }
+
+    });
+
+
+
 }
 
 function activateAffixListener(selectorId){
@@ -346,14 +397,6 @@ function loadUserFullName(currentUser){
     $("#navbarItemDropdown").html('<span id="navbarItemProfile" class="glyphicon glyphicon-user"></span> ' + currentUser);
 }
 
-function getFavoriteTopic(){
-    return "C++";
-}
-
-function getHighestTutor(){
-    return "Cristina Jimenez";
-}
-
 function getFullNameFromUsername(username){
     var userFullName = {
         "paupau" : "Paulina Escalante",
@@ -364,10 +407,6 @@ function getFullNameFromUsername(username){
     };
 
     return userFullName[username];
-}
-
-function getVisitedTopic(){
-    return "Python";
 }
 
 function getRequestNumber(){
@@ -444,7 +483,7 @@ function createTutorList(){
         "currentTopic" : currentTopicId,
         "action": "loadTutorByTopic"
     };
-    
+
     $.ajax({
         url: "./PHP/AppLayer.php",
         type: "POST",
@@ -554,8 +593,8 @@ function createTutorList(){
         error: function (errorMS){
             if (errorMS.status == "406"){
                 // No comments available, populate accordingly
-                $("#commentSection").html("");  
-                $('#commentSection').append('<p id="noComments" style="text-align: center; padding-top:20px; color:gray;">No comments added yet...</p>');    
+                $("#commentSection").html("");
+                $('#commentSection').append('<p id="noComments" style="text-align: center; padding-top:20px; color:gray;">No comments added yet...</p>');
             }
 
             else {
