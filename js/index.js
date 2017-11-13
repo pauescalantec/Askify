@@ -2,6 +2,7 @@ var currentTopic = "";
 currentTopicId = "";
 var currentUser = "";
 var selectedTutor = "";
+var selectedTutorName = "";
 var currentWidthAnalytics = 0;
 
 $(window).on('resize', function() {
@@ -113,7 +114,8 @@ $(document).ready(function(){
     });
 
     $('#chooseTutorModal').on('hidden.bs.modal', function () {
-        var selectedTutor = "";
+        selectedTutor = "";
+        selectedTutorName = "";
         $('#sendQuestionButton').prop('disabled', false);
         $('#backToTutors').prop('disabled', false);
         $('#cancelQuestion').prop('disabled', false);
@@ -161,7 +163,7 @@ function checkSession(){
         },
         error: function(error) {
             currentUser = "";
-            //window.location.replace("inicio.html");
+            window.location.replace("inicio.html");
         }
     });
 }
@@ -182,24 +184,37 @@ function sendQuestionButtonClicked(){
 
     // Question and topic validated
     else {
-        var postSuccessful = true;
-
-        if(postSuccessful){
-            postQuestionToTutor();
-        }
-
-        else {
-            setTimeout(function() {
-                createDangerAlert("#questionTextArea", "Error connecting to server. Try again later.", "questionNotPostedAlert");
-            }, 300);
-        }
-
+        //Aax call to post question
+        var jsonSend = {
+            "tutor" : selectedTutor,
+            "topic" : currentTopicId,
+            "question" : $("#questionText").val(),
+            "action": "postQuestion"
+        };
+        
+        $.ajax({
+            url: "./PHP/AppLayer.php",
+            type: "POST",
+            data : jsonSend,
+            ContentType : "application/json",
+            dataType: "json",
+            success: function(response){
+                postQuestionToTutor();
+            },
+            error: function (errorMS){
+                // Error message
+                setTimeout(function() {
+                    createDangerAlert("#questionTextArea", "Error connecting to server. Try again later.", "questionNotPostedAlert");
+                }, 300);
+            }
+        });
     }
 }
 
 function postQuestionToTutor(){
     var questionTextPost = $("#questionText").val();
     var selectedTutorPost = selectedTutor;
+    var selectedTutorPostName = selectedTutorName;
     var selectedTopicPost = currentTopic;
     var selectedTopicIdPost = currentTopicId;
 
@@ -207,6 +222,7 @@ function postQuestionToTutor(){
     currentTopic = "";
     currentTopicId = "";
     selectedTutor = "";
+    selectedTutorName = "";
 
     // Goodbye modal
     $('#sendQuestionButton').prop('disabled', true);
@@ -223,13 +239,14 @@ function postQuestionToTutor(){
         //$(window).scrollTop(0);
 
         // Create success alert
-        createSuccessAlert("#homeAlertContainer", "You asked a question about <strong>" +  selectedTopicPost + "</strong> to <strong>" + getFullNameFromUsername(selectedTutorPost) + "</strong>", "questionPostedAlert");
+        createSuccessAlert("#homeAlertContainer", "You asked a question about <strong>" +  selectedTopicPost + "</strong> to <strong>" + selectedTutorPostName + "</strong>", "questionPostedAlert");
     }, 1300);
 
 }
 
 function backToTutorsButtonClicked(){
     var selectedTutor = "";
+    var selectedTutorName = "";
     $('#cancelQuestion').prop('disabled', false);
     $('#sendQuestionButton').prop('disabled', false);
     $('#backToTutors').prop('disabled', false);
@@ -268,6 +285,7 @@ function chosenTutorButtonClicked(){
                 ContentType : "application/json",
                 dataType: "json",
                 success: function(response){
+                    selectedTutorName = response.fullName;
                     // Fade out from tutor list
                     $("#chooseTutorArea").fadeOut( 30, function() {
                         $("#chosenTutorButton").fadeOut( 5, function() {
@@ -415,6 +433,7 @@ function triggerAskQuestionModal(currentTopic, currentTopicId){
     $("#questionText").val("");
     $("#questionText").height('auto');
     selectedTutor = "";
+    selectedTutorName = "";
 
     createTutorList();
 }

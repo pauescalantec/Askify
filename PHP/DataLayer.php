@@ -73,12 +73,105 @@ function doRegister($uName,$uPass,$fName,$lName,$uEmail,$uMajor,$uGradYear){
     }
 }
 
-function dataLoadTutorByTopic($currentTopic){
+function dataGetQuestionCount(){
+
+    $connection = doDBconnection();
+
+    if ($connection != null){
+
+        $sql = "SELECT COUNT(*) as total FROM Questions";
+
+        $result = $connection->query($sql);
+
+        if ($result->num_rows > 0)
+        {
+            $counter = 0;
+
+            while ($row = $result->fetch_assoc())
+            {
+                $response = array("count"=>$row["total"]);
+            }
+
+            $connection->close();
+            return $response;
+        }
+
+        else
+        {
+            $connection->close();
+            return array("count"=>"-1");
+        }
+    }
+    else{
+        return array("count"=>"-1");
+    }
+}
+
+function dataGetAnswersCount(){
+    $connection = doDBconnection();
+    
+    if ($connection != null){
+        $sql = "SELECT COUNT(*) as total
+                FROM Answers";	
+
+        $result = $connection->query($sql);
+
+        if ($result->num_rows > 0)
+        {
+            $counter = 0;
+
+            while ($row = $result->fetch_assoc())
+            {
+                $response = array("count"=>$row["total"]);
+            }
+
+            $connection->close();
+            return $response;
+        }
+
+        else
+        {
+            $connection->close();
+            return array("count"=>"-1");
+        }
+    }
+    else{
+        return array("count"=>"-1");
+    }
+}
+
+function dataPostQuestion($uName, $question, $tutor, $topic, $questionId, $answerId) {
     $conn = doDBconnection();
     
     if ($conn != null){
 
-        $sql = "SELECT * FROM UserTable WHERE uName IN (SELECT uName FROM HasExpertise WHERE tID = '$currentTopic')";
+        $sql1 = "INSERT INTO Questions VALUES ('$questionId','$topic','$uName','$question')";
+
+        $sql2 = "INSERT INTO Answers VALUES ('$answerId','$tutor','$questionId','N','','-1')";
+
+        if (mysqli_query($conn, $sql1) and mysqli_query($conn, $sql2) ) {
+            $response = array("MESSAGE"=>"SUCCESS");
+            $conn->close();
+            return $response;
+        }
+
+        else
+        {
+            $conn->close();
+            return array("MESSAGE"=>"406");
+        }
+    }
+    else{
+        return array("MESSAGE"=>"500");
+    }
+}
+
+function dataLoadTutorByTopic($currentTopic, $currentUser){
+    $conn = doDBconnection();
+    
+    if ($conn != null){
+
+        $sql = "SELECT * FROM UserTable WHERE uName != '$currentUser' AND uName IN (SELECT uName FROM HasExpertise WHERE tID = '$currentTopic')";
 
         $result = $conn->query($sql);
 

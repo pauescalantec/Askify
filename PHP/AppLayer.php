@@ -50,6 +50,9 @@ switch ($action) {
     case "getFullNameFromUsername":
         getFullNameFromUsername();
     break;
+    case "postQuestion":
+        postQuestion();
+    break;
 }
 
 function deleteSessionFunction() {
@@ -197,16 +200,23 @@ function loadRestTopics(){
 
 function loadTutorByTopic(){
     $currentTopic =  $_POST["currentTopic"];
-
-    $loadTutorByTopicResponse = dataLoadTutorByTopic($currentTopic);
-
-    if ($loadTutorByTopicResponse["MESSAGE"] == "SUCCESS") {
-        $response = $loadTutorByTopicResponse["response"];
-        echo json_encode($response);
+    $currentUser =  getSessionUser();
+    if (!is_null($currentUser)){
+        
+        $loadTutorByTopicResponse = dataLoadTutorByTopic($currentTopic, $currentUser);
+        
+        if ($loadTutorByTopicResponse["MESSAGE"] == "SUCCESS") {
+            $response = $loadTutorByTopicResponse["response"];
+            echo json_encode($response);
+        }
+    
+        else {
+            genericErrorFunction($loadTutorByTopicResponse["MESSAGE"]);	
+        }
     }
 
     else {
-        genericErrorFunction($loadTutorByTopicResponse["MESSAGE"]);	
+        genericErrorFunction("406");
     }
 }
 
@@ -255,6 +265,46 @@ function addTopics(){
     else {
         genericErrorFunction("406");
     }
+}
+
+function postQuestion(){
+
+    $uName = getSessionUser();
+    $question = $_POST["question"];
+    $tutor = $_POST["tutor"];
+    $topic = $_POST["topic"];
+
+    $questionsCount = dataGetQuestionCount();
+    $answersCount = dataGetAnswersCount();
+
+    if ($questionsCount >= 0 and $answersCount >=0) {
+
+        $questionId = $uName . $tutor . ($questionsCount["count"]+1);
+        $answerId = $tutor . $uName . ($answersCount["count"]+1);
+
+    
+        if (!is_null($uName)){
+            $postQuestionResponse = dataPostQuestion($uName, $question, $tutor, $topic, $questionId, $answerId);
+    
+            if ($postQuestionResponse["MESSAGE"] == "SUCCESS") {
+                $response = "Successfully added";
+                echo json_encode($response);
+            }
+    
+            else {
+                genericErrorFunction($postQuestionResponse["MESSAGE"]);
+            }
+        }
+    
+        else {
+            genericErrorFunction("406");
+        }
+    }
+
+    else {
+        genericErrorFunction("409");
+    }
+
 }
 
 function loadHighestRank(){

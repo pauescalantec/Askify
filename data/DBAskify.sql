@@ -20,16 +20,16 @@ Create Table Topics(
 );
 
 Create Table Questions(
-    qID INT(100) NOT NULL PRIMARY KEY,
+    qID VARCHAR(30)NOT NULL PRIMARY KEY,
     tID VARCHAR(30) NOT NULL,
     uName VARCHAR(30) NOT NULL,
     qText MEDIUMTEXT NOT NULL
 );
 
 Create Table Answers(
-    aID INT(100) NOT NULL PRIMARY KEY,
+    aID VARCHAR(30) NOT NULL PRIMARY KEY,
     uName VARCHAR(30) NOT NULL,
-    qID INT(100) NOT NULL,
+    qID VARCHAR(30) NOT NULL,
     aStatus VARCHAR(15) NOT NULL,
     aText MEDIUMTEXT NOT NULL,
     aRating FLOAT(1)
@@ -69,19 +69,18 @@ INSERT INTO Topics VALUES
 ('react9','React','React is a JavaScript library for building user interfaces. React allows developers to create large web-applications that use data and can change over time without reloading the page. It aims primarily to provide speed, simplicity, and scalability.','react.jpg');
 
 INSERT INTO Questions VALUES
-('1','cpp1','CrisTJ','Cual es el metodo mas efectivo de encriptacion?'),
-('2','web7','CrisTJ','Que necesito para poder desarrollar en ASP.NET?'),
-('3','csharp3','Pecster','Por que es mejor la implementation de lenguajes orientados a objetos?'),
-('4','web7','CrisTJ','Que necesito para poder desarrollar en ASP.NET?'),
-('5','csharp3','Pecster','Por que es mejor la implementation de lenguajes orientados a objetos?'),
-('6','csharp3','Pecster','Por que es mejor la implementation de lenguajes orientados a objetos?'),
-('7','web7','Pecster','Por que es mejor la implementation de lenguajes orientados a objetos?');
-
+('CrisTJPecster1','cpp1','CrisTJ','What is the best method for encrypting passwords?'),
+('CrisTJPecster2','web7','CrisTJ','What do I need to use ASP.NET?'),
+('PecsterCarlitos3','csharp3','Pecster','Why is it better to use Object Oriented Programming?'),
+('PecsterNats4','python5','Pecster','What can I use to run a Python server?'),
+('PecsterCrisTJ5','sql6','Pecster','What is the command for dropping tables?');
 
 INSERT INTO Answers VALUES
-('1','Carlitos','1','Pending','','5'),
-('2','Pecster','2','Pending','','5'),
-('3','Carlitos','3','Pending','','5');
+('PecsterCrisTJ1','Pecster','CrisTJCarlitos1','R','You can use several libraries for this on c++, I would do hashing','5'),
+('PecsterCrisTJ2','Pecster','CrisTJPecster2','N','','-1'),
+('CarlitosPecster3','Carlitos','PecsterCarlitos3','N','','-1'),
+('NatsPecster4','Nats','PecsterNats4','A','You can use Flask to run a server','-1'),
+('CrisTJPecster5','CrisTJ','PecsterCrisTJ5','R','You can use the DROP TABLE tablename command','4');
 
 INSERT INTO Comments values
 ('1','1','CrisTJ','Puede ser tu favorita, y no necesariamente la mejor...'),
