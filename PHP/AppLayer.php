@@ -53,6 +53,12 @@ switch ($action) {
     case "postQuestion":
         postQuestion();
     break;
+    case "loadAnswerRequest":
+        loadAnswerRequest();
+    break;
+    case "loadPreviousAnswers":
+        loadPreviousAnswers();
+    break;
     case "loadTutorByTopicSearch":
         loadTutorByTopicSearch();
     break;
@@ -271,16 +277,16 @@ function loadTutorByTopic(){
     $currentTopic =  $_POST["currentTopic"];
     $currentUser =  getSessionUser();
     if (!is_null($currentUser)){
-        
+
         $loadTutorByTopicResponse = dataLoadTutorByTopic($currentTopic, $currentUser);
-        
+
         if ($loadTutorByTopicResponse["MESSAGE"] == "SUCCESS") {
             $response = $loadTutorByTopicResponse["response"];
             echo json_encode($response);
         }
-    
+
         else {
-            genericErrorFunction($loadTutorByTopicResponse["MESSAGE"]);	
+            genericErrorFunction($loadTutorByTopicResponse["MESSAGE"]);
         }
     }
 
@@ -289,6 +295,8 @@ function loadTutorByTopic(){
     }
 }
 
+<<<<<<< HEAD
+=======
 function loadTutorByTopicSearch(){
     $currentTopic =  $_POST["currentTopic"];
     $searchField =  $_POST["searchFieldTutors"];
@@ -296,14 +304,14 @@ function loadTutorByTopicSearch(){
 
     if (!is_null($currentUser)){
         $loadTutorByTopicSearchResponse = dataLoadTutorByTopicSearch($currentTopic, $currentUser,$searchField);
-        
+
         if ($loadTutorByTopicSearchResponse["MESSAGE"] == "SUCCESS") {
             $response = $loadTutorByTopicSearchResponse["response"];
             echo json_encode($response);
         }
-    
+
         else {
-            genericErrorFunction($loadTutorByTopicSearchResponse["MESSAGE"]);	
+            genericErrorFunction($loadTutorByTopicSearchResponse["MESSAGE"]);
         }
     }
 
@@ -313,6 +321,7 @@ function loadTutorByTopicSearch(){
 }
 
 
+>>>>>>> 398bd72b5dbfb807cdbbe5c5178a22039d10b552
 function searchRestTopics(){
     $uName = getSessionUser();
     $searchField = $_POST["searchField"];
@@ -442,20 +451,20 @@ function postQuestion(){
         $questionId = $uName . $tutor . ($questionsCount["count"]+1);
         $answerId = $tutor . $uName . ($answersCount["count"]+1);
 
-    
+
         if (!is_null($uName)){
             $postQuestionResponse = dataPostQuestion($uName, $question, $tutor, $topic, $questionId, $answerId);
-    
+
             if ($postQuestionResponse["MESSAGE"] == "SUCCESS") {
                 $response = "Successfully added";
                 echo json_encode($response);
             }
-    
+
             else {
                 genericErrorFunction($postQuestionResponse["MESSAGE"]);
             }
         }
-    
+
         else {
             genericErrorFunction("406");
         }
@@ -496,6 +505,7 @@ function loadMostVisitedTopicByUser(){
         genericErrorFunction($do["MESSAGE"]);
     }
 }
+
 function getFullNameFromUsername(){
     $uName = $_POST["username"];
 
@@ -518,6 +528,47 @@ function getFullNameFromUsername(){
     }
 }
 
+function loadAnswerRequest(){
+    $uName = getSessionUser();
+        if (!is_null($uName)){
+
+            $loadAnswersResponse = doLoadAnswerRequest($uName);
+
+            if ($loadAnswersResponse["MESSAGE"] == "SUCCESS") {
+                $response = $loadAnswersResponse["response"];
+                echo json_encode($response);
+            }
+
+            else {
+                genericErrorFunction($loadAnswersResponse["MESSAGE"]);
+            }
+        }
+
+        else {
+            genericErrorFunction("406");
+        }
+}
+
+function loadPreviousAnswers(){
+    $uName = getSessionUser();
+        if (!is_null($uName)){
+
+            $loadAnswersResponse = doLoadPreviousAnswers($uName);
+
+            if ($loadAnswersResponse["MESSAGE"] == "SUCCESS") {
+                $response = $loadAnswersResponse["response"];
+                echo json_encode($response);
+            }
+
+            else {
+                genericErrorFunction($loadAnswersResponse["MESSAGE"]);
+            }
+        }
+
+        else {
+            genericErrorFunction("406");
+        }
+}
 
 function genericErrorFunction($errorCode){
     switch($errorCode)
