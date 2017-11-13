@@ -515,6 +515,7 @@ function triggerAskQuestionModal(currentTopic, currentTopicId){
     $("#chooseModalTitle").prepend("<p class='introQuestion' id='modalInstruction'>Choose a tutor to ask about <strong>" + currentTopic + " </strong></p>");
     $("#questionText").val("");
     $("#questionText").height('auto');
+    $("#searchFieldTutors").val("");
     selectedTutor = "";
     selectedTutorName = "";
 
