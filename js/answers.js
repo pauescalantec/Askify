@@ -204,7 +204,10 @@ function loadAnswerRequests(){
 
         },
         error: function(error) {
-            alert(error.responseText);
+            if(error.status == "406"){
+                $("#answersList").html("");
+                $("#answersList").append('<p id="noTopics" style="text-align: center; padding-top:10px; color:gray;">No questions to view</p>');
+            }
         }
     });
 }
@@ -274,9 +277,10 @@ function loadPreviousAnswers(){
             $('[data-toggle="tooltip"]').tooltip();
         },
         error: function(error) {
-
-            alert(error.responseText);
-
+            if(error.status == "406"){
+                $("#answersList").html("");
+                $("#answersList").append('<p id="noTopics" style="text-align: center; padding-top:10px; color:gray;">No questions to view</p>');
+            }
         }
     });
 }
