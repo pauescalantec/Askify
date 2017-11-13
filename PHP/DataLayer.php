@@ -200,6 +200,73 @@ function dataLoadTutorByTopic($currentTopic, $currentUser){
     }
 }
 
+function dataLoadUnansweredQuestions($uName){
+    $conn = doDBconnection();
+    
+    if ($conn != null){
+
+        $sql = "SELECT Questions.qText as question, Questions.qID as questionId, Answers.uName as username, Answers.aStatus as status, Answers.aRating as rating, Answers.aText as answer, UserTable.fName as fName, UserTable.lName as lName, Topics.tName as topic FROM Questions, Answers, UserTable, Topics WHERE (Questions.uName = '$uName' AND Questions.qId = Answers.qId AND Answers.aStatus = 'N' AND Answers.uName = UserTable.uName AND Topics.tID = Questions.tID)";
+
+        $result = $conn->query($sql);
+
+        if ($result->num_rows > 0)
+        {
+            $counter = 0;
+
+            while ($row = $result->fetch_assoc())
+            {
+                $response[$counter++] = array("username"=>$row["username"], "question"=>$row["question"], "questionId"=>$row["questionId"], "status"=>$row["status"], "rating"=>$row["rating"], "answer"=>$row["answer"], "firstName"=>$row["fName"], "lastName"=>$row["lName"], "topic"=>$row["topic"]);
+            }
+            $conn->close();
+            return array("response"=>$response, "MESSAGE"=>"SUCCESS");
+        }
+
+        else
+        {
+            $conn->close();
+            return array("MESSAGE"=>"406");
+        }
+
+    }
+    else{
+        return array("MESSAGE"=>"500");
+    }
+}
+
+function dataLoadAnsweredQuestions($uName){
+    $conn = doDBconnection();
+    
+    if ($conn != null){
+
+        $sql = "SELECT Questions.qText as question, Questions.qID as questionId, Answers.uName as username, Answers.aStatus as status, Answers.aRating as rating, Answers.aText as answer, UserTable.fName as fName, UserTable.lName as lName, Topics.tName as topic FROM Questions, Answers, UserTable, Topics WHERE (Questions.uName = '$uName' AND Questions.qId = Answers.qId AND (Answers.aStatus = 'R' OR Answers.aStatus = 'A') AND Answers.uName = UserTable.uName AND Topics.tID = Questions.tID)
+        ORDER BY (Answers.aStatus = 'A') DESC, Answers.aStatus";
+
+        $result = $conn->query($sql);
+
+        if ($result->num_rows > 0)
+        {
+            $counter = 0;
+
+            while ($row = $result->fetch_assoc())
+            {
+                $response[$counter++] = array("username"=>$row["username"], "question"=>$row["question"], "questionId"=>$row["questionId"], "status"=>$row["status"], "rating"=>$row["rating"], "answer"=>$row["answer"], "firstName"=>$row["fName"], "lastName"=>$row["lName"], "topic"=>$row["topic"]);
+            }
+            $conn->close();
+            return array("response"=>$response, "MESSAGE"=>"SUCCESS");
+        }
+
+        else
+        {
+            $conn->close();
+            return array("MESSAGE"=>"406");
+        }
+
+    }
+    else{
+        return array("MESSAGE"=>"500");
+    }
+}
+
 function dataLoadTutorByTopicSearch($currentTopic, $currentUser, $searchField){
     $conn = doDBconnection();
 
@@ -420,6 +487,97 @@ function dataAddTopics($uName, $topicsToAdd, $topicsToAddCount){
             $conn->close();
             return array("MESSAGE"=>"406");
         }
+    }
+    else{
+        return array("MESSAGE"=>"500");
+    }
+}
+
+function dataModifyQuestion($questionId, $questionText){
+    $conn = doDBconnection();
+
+    if ($conn != null){
+
+        $sql = "UPDATE Questions SET qText = '$questionText' WHERE qID = '$questionId'";
+
+        if (mysqli_query($conn, $sql)) {
+            $response = array("MESSAGE"=>"SUCCESS");
+            $conn->close();
+            return $response;
+        }
+
+        else
+        {
+            $conn->close();
+            return array("MESSAGE"=>"406");
+        }
+    }
+    else{
+        return array("MESSAGE"=>"500");
+    }
+}
+
+function dataUpdateRanking($questionId, $rating){
+    $conn = doDBconnection();
+
+    if ($conn != null){
+
+        $sql = "UPDATE Answers SET aRating = '$rating', aStatus = 'R' WHERE qID = '$questionId'";
+
+        if (mysqli_query($conn, $sql)) {
+            $response = array("MESSAGE"=>"SUCCESS");
+            $conn->close();
+            return $response;
+        }
+
+        else
+        {
+            $conn->close();
+            return array("MESSAGE"=>"406");
+        }
+    }
+    else{
+        return array("MESSAGE"=>"500");
+    }
+}
+
+function dataDeleteQuestion($questionId){
+    $conn = doDBconnection();
+
+    if ($conn != null){
+
+        $sql1 = "DELETE FROM Questions WHERE qID = '$questionId'";
+
+        $answerIDSql = "SELECT aID FROM Answers WHERE qID = '$questionId'";
+        $result = $conn->query($answerIDSql);
+        
+        if ($result->num_rows > 0)
+        {
+            while ($row = $result->fetch_assoc())
+            {
+                $response = array("answerId"=>$row["aID"]);
+            }
+
+            $answerId = $response["answerId"];
+            $sql2 = "DELETE FROM Answers WHERE aID = '$answerId'";
+        
+            if (mysqli_query($conn, $sql1) && mysqli_query($conn, $sql2)) {
+                $response = array("MESSAGE"=>"SUCCESS");
+                $conn->close();
+                return $response;
+            }
+    
+            else
+            {
+                $conn->close();
+                return array("MESSAGE"=>"406");
+            }
+        }
+
+        else {
+            return array("MESSAGE"=>"500");
+        }
+
     }
     else{
         return array("MESSAGE"=>"500");

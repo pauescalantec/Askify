@@ -5,6 +5,9 @@ var currentAnswerToView = "";
 var currentAnswerRating = 0;
 var ratingInstance;
 
+var unansweredResults = [];
+var answeredResults = [];
+
 $(document).ready(function(){
     // Load topics
     setTimeout(function() {
@@ -33,12 +36,32 @@ $(document).ready(function(){
         }
 
         else {
-            setTimeout(function() {
-                $(".container-rating").html("");
-                currentAnswerRating = 0;
-                loadAnsweredQuestions();
-                return true;
-            }, 500);
+            // Update status of answer
+            //ajax to update ranking
+            var jsonSend = {
+                "questionId" : currentAnswerToView,
+                "rating" : currentAnswerRating,
+                "action": "updateRanking"
+            };
+            
+            $.ajax({
+                url: "./PHP/AppLayer.php",
+                type: "POST",
+                data : jsonSend,
+                ContentType : "application/json",
+                dataType: "json",
+                success: function(response){
+                    setTimeout(function() {
+                        $(".container-rating").html("");
+                        currentAnswerRating = 0;
+                        loadAnsweredQuestions();
+                        return true;
+                    }, 500);
+                },
+                error: function (errorMS){
+                    // Error message
+                }
+            });
         }
     });
 
@@ -77,17 +100,29 @@ function saveModifyQuestionButtonClicked() {
     }
 
     else {
-        var postSuccessful = true;
-
-        if(postSuccessful){
-            postModifiedQuestion();
-        }
-
-        else {
-            setTimeout(function() {
-                createDangerAlert("#modifyQuestionTextArea", "Error connecting to server. Try again later.", "questionNotPostModifiedAlert");
-            }, 300);
-        }
+        // Ajax call to edit question
+        var jsonSend = {
+            "questionId" : currentQuestionToModify,
+            "questionText" : $("#modifyQuestionText").val(),
+            "action": "modifyQuestion"
+        };
+        
+        $.ajax({
+            url: "./PHP/AppLayer.php",
+            type: "POST",
+            data : jsonSend,
+            ContentType : "application/json",
+            dataType: "json",
+            success: function(response){
+                postModifiedQuestion();
+            },
+            error: function (errorMS){
+                // Error message
+                setTimeout(function() {
+                    createDangerAlert("#modifyQuestionTextArea", "Error connecting to server. Try again later.", "questionNotPostModifiedAlert");
+                }, 300);
+            }
+        });
     }
 }
 
@@ -133,85 +168,163 @@ function loadAnsweredQuestions(){
 
     loadSidebarQuestionsCount();
 
-    var listQuestions = getAnsweredQuestions();
-    var numberRequests = listQuestions.length;
+    var jsonSend = {
+        "action": "loadAnsweredQuestions"
+    };
 
-    $("#questionsList").html("");
-    $("#questionsList").append('<li class="list-group-item" id="answerRequestsHeader">Questions made by you with answers <span class="label label-warning edit" id="manageAnsweredQuestions">Manage</span></li>');
+    //Ajax to load answered
+    $.ajax({
+        url: "./PHP/AppLayer.php",
+        type: "POST",
+        data : jsonSend,
+        ContentType : "application/json",
+        dataType: "json",
+        success: function(response){        
+            var listQuestions = response;
+            answeredResults = response;
+            var numberRequests = listQuestions.length;
 
-    // Fill in all rows except last one
-    for (i = 0; i < numberRequests; i++) {
-        var requestHTML = helperCreateListElementRequest(listQuestions[i]);
-        $("#questionsList").append(requestHTML);
-    }
+            $("#questionsList").html("");
+            $("#questionsList").append('<li class="list-group-item" id="answerRequestsHeader">Questions made by you with answers <span class="label label-warning edit" id="manageAnsweredQuestions">Manage</span></li>');
 
-    $("#manageAnsweredQuestions").on("click", function(){
-        if ($("#manageAnsweredQuestions").text() == "Manage") {
-            $(".close.answered").show();
-            $("#manageAnsweredQuestions").text("Done");
+            // Fill in all rows except last one
+            for (i = 0; i < numberRequests; i++) {
+                var requestHTML = helperCreateListElementRequest(listQuestions[i]);
+                $("#questionsList").append(requestHTML);
+            }
+
+            $("#manageAnsweredQuestions").on("click", function(){
+                if ($("#manageAnsweredQuestions").text() == "Manage") {
+                    $(".close.answered").show();
+                    $("#manageAnsweredQuestions").text("Done");
+                }
+
+                else {
+                    $(".close.answered").hide();
+                    $("#manageAnsweredQuestions").text("Manage");
+                }
+            });
+
+            $(".close.answered").on("click", function(){
+                var listId = $(this).parent().find("a[name=answerListItem]").attr('id');
+
+                //Delete query here
+                // Ajax call to edit question
+                var jsonSend = {
+                    "questionId" : listId,
+                    "action": "deleteQuestion"
+                };
+                
+                $.ajax({
+                    url: "./PHP/AppLayer.php",
+                    type: "POST",
+                    data : jsonSend,
+                    ContentType : "application/json",
+                    dataType: "json",
+                    success: function(response){
+                        loadAnsweredQuestions();
+                    },
+                    error: function (errorMS){
+                        // Error message
+                    }
+                });
+            });
+
+            $(".answeredQuestionLink").on("click", function(){
+                triggerViewAnswerModal(this.id);
+            });
+
+            $(".newAnsweredQuestionLink").on("click", function(){
+                triggerViewNewAnswerModal(this.id);
+            });
+        },
+        error: function (errorMS){
+            // Error message
+            if(errorMS.status == "406"){
+                $("#questionsList").html("");
+                $("#questionsList").append('<p id="noTopics" style="text-align: center; padding-top:10px; color:gray;">No questions to view</p>');
+            }
         }
-
-        else {
-            $(".close.answered").hide();
-            $("#manageAnsweredQuestions").text("Manage");
-        }
-    });
-
-    $(".close.answered").on("click", function(){
-        var listId = $(this).parent().find("a[name=answerListItem]").attr('id');
-
-        //Delete query here
-
-        loadAnsweredQuestions();
-    });
-
-    $(".answeredQuestionLink").on("click", function(){
-        triggerViewAnswerModal(this.id);
-    });
-
-    $(".newAnsweredQuestionLink").on("click", function(){
-        triggerViewNewAnswerModal(this.id);
     });
 }
 
 function loadUnansweredQuestions(){
-    var listUnansweredQuestions = getUnansweredQuestions();
-    var numberRequests = listUnansweredQuestions.length;
+    // Ajax call to get unanswered questions
+    var jsonSend = {
+        "action": "loadUnansweredQuestions"
+    };
+    
+    $.ajax({
+        url: "./PHP/AppLayer.php",
+        type: "POST",
+        data : jsonSend,
+        ContentType : "application/json",
+        dataType: "json",
+        success: function(response){
+            var listUnansweredQuestions = response;
+            unansweredResults = response;
 
-    $("#questionsList").html("");
-    $("#questionsList").append('<li class="list-group-item" id="answerRequestsHeader">Questions made by you not yet answered <span class="label label-warning edit" id="manageUnansweredQuestions">Manage</span></li>');
+            var numberRequests = listUnansweredQuestions.length;
+            
+            $("#questionsList").html("");
+            $("#questionsList").append('<li class="list-group-item" id="answerRequestsHeader">Questions made by you not yet answered <span class="label label-warning edit" id="manageUnansweredQuestions">Manage</span></li>');
+        
+            // Fill in all rows except last one
+            for (i = 0; i < numberRequests; i++) {
+                var requestHTML = helperCreateListElementRequest(listUnansweredQuestions[i]);
+                $("#questionsList").append(requestHTML);
+            }
+        
+            $("span[name=unansweredQuestionLink]").on("click", function(){
+                triggerModifyQuestionModal(this.id);
+            });
+        
+            $(".close.unanswered").on("click", function(){
+                var listId = $(this).parent().find("span[name=unansweredQuestionLink]").attr('id');
+        
+                var jsonSend = {
+                    "questionId" : listId,
+                    "action": "deleteQuestion"
+                };
+  
+                $.ajax({
+                    url: "./PHP/AppLayer.php",
+                    type: "POST",
+                    data : jsonSend,
+                    ContentType : "application/json",
+                    dataType: "json",
+                    success: function(response){
+                        //Delete query here
+                        loadUnansweredQuestions();
+                    },
+                    error: function (errorMS){
+                        // Error message
+                    }
+                });
 
-    // Fill in all rows except last one
-    for (i = 0; i < numberRequests; i++) {
-        var requestHTML = helperCreateListElementRequest(listUnansweredQuestions[i]);
-        $("#questionsList").append(requestHTML);
-    }
-
-    $("span[name=unansweredQuestionLink]").on("click", function(){
-        triggerModifyQuestionModal(this.id);
-    });
-
-    $(".close.unanswered").on("click", function(){
-        var listId = $(this).parent().find("span[name=unansweredQuestionLink]").attr('id');
-
-        //Delete query here
-
-        loadUnansweredQuestions();
-    });
-
-    $("#manageUnansweredQuestions").on("click", function(){
-        if ($("#manageUnansweredQuestions").text() == "Manage") {
-            $(".close.unanswered").show();
-            $("#manageUnansweredQuestions").text("Done");
+            });
+        
+            $("#manageUnansweredQuestions").on("click", function(){
+                if ($("#manageUnansweredQuestions").text() == "Manage") {
+                    $(".close.unanswered").show();
+                    $("#manageUnansweredQuestions").text("Done");
+                }
+        
+                else {
+                    $(".close.unanswered").hide();
+                    $("#manageUnansweredQuestions").text("Manage");
+                }
+            });
+        
+            $('[data-toggle="tooltip"]').tooltip();
+        },
+        error: function (errorMS){
+            if(errorMS.status == "406"){
+                $("#questionsList").html("");
+                $("#questionsList").append('<p id="noTopics" style="text-align: center; padding-top:10px; color:gray;">No questions to view</p>');
+            }
         }
-
-        else {
-            $(".close.unanswered").hide();
-            $("#manageUnansweredQuestions").text("Manage");
-        }
     });
-
-    $('[data-toggle="tooltip"]').tooltip();
 }
 
 function triggerViewAnswerModal(questionId){
@@ -275,47 +388,76 @@ function triggerModifyQuestionModal(questionId){
 }
 
 function getQQuestionFromId(questionId){
-    var questionsList = {
-        "8questionPaulinaJuan": "How do I make an update to my table and validate that it was a success?",
-        "12questionPaulinaPatricio" : "How can I host a web application?",
-        "9questioPaulinaMonica": "What is the best language to make a compiler with? Is it Python?",
-        "10questionPaulinaJavier":"Why do we need a data and an application layer?",
-        "11questionPaulinaJavier":"How do you get the parameters of a POST request?"};
+    // Look in unanswered questions
+    for (i = 0; i < unansweredResults.length; i++) {
+        if (unansweredResults[i].questionId == questionId){
+            return unansweredResults[i].question;
+        }
+    }
 
-    return questionsList[questionId];
+    //Look in answered questions
+    for (i = 0; i < answeredResults.length; i++) {
+        if (answeredResults[i].questionId == questionId){
+            return answeredResults[i].question;
+        }
+    }
+
+    return "";
 }
 
 function getQTopicFromId(questionId){
-    var topicsList = {
-        "8questionPaulinaJuan": "SQL",
-        "12questionPaulinaPatricio" : "Web Development",
-        "9questioPaulinaMonica": "Python",
-        "10questionPaulinaJavier":"PHP",
-        "11questionPaulinaJavier":"PHP"};
-
-    return topicsList[questionId];
+        // Look in unanswered questions
+        for (i = 0; i < unansweredResults.length; i++) {
+            if (unansweredResults[i].questionId == questionId){
+                return unansweredResults[i].topic;
+            }
+        }
+    
+        //Look in answered questions
+        for (i = 0; i < answeredResults.length; i++) {
+            if (answeredResults[i].questionId == questionId){
+                return answeredResults[i].topic;
+            }
+        }
+    
+        return "";
 }
 
 function getQUserFromId(questionId){
-    var topicsList = {
-        "8questionPaulinaJuan": "Juan Medellin",
-        "12questionPaulinaPatricio" : "Patricio Sanchez",
-        "9questioPaulinaMonica": "Monica Perez",
-        "10questionPaulinaJavier":"Javier Guajardo",
-        "11questionPaulinaJavier":"Javier Guajardo"};
 
-    return topicsList[questionId];
+        // Look in unanswered questions
+        for (i = 0; i < unansweredResults.length; i++) {
+            if (unansweredResults[i].questionId == questionId){
+                return (unansweredResults[i].firstName + " " + unansweredResults[i].lastName);
+            }
+        }
+    
+        //Look in answered questions
+        for (i = 0; i < answeredResults.length; i++) {
+            if (answeredResults[i].questionId == questionId){
+                return (answeredResults[i].firstName + " " + answeredResults[i].lastName);
+            }
+        }
+    
+        return "";
 }
 
 function getQAnswerFromId(questionId){
-    var topicsList = {
-        "8questionPaulinaJuan": "Use an UPDATE keyword on the table you want to modify and to validate use a SELECT from table WHERE value is what you expect, you can do this way or any other way",
-        "12questionPaulinaPatricio" : "You can use Apache on your terminal, use a Node npm install http-server and use this command to run a localhost, or you can download Mamp",
-        "9questioPaulinaMonica": "Definitely Python, using plyflex and bison, really easy to make with Python",
-        "10questionPaulinaJavier":"",
-        "11questionPaulinaJavier":""};
+    // Look in unanswered questions
+    for (i = 0; i < unansweredResults.length; i++) {
+        if (unansweredResults[i].questionId == questionId){
+            return unansweredResults[i].answer;
+        }
+    }
 
-    return topicsList[questionId];
+    //Look in answered questions
+    for (i = 0; i < answeredResults.length; i++) {
+        if (answeredResults[i].questionId == questionId){
+            return answeredResults[i].answer;
+        }
+    }
+
+    return "";
 }
 
 function getAnsweredQuestions(){
@@ -353,32 +495,6 @@ function getAnsweredQuestions(){
         question: "What is the best language to make a compiler with? Is it Python?",
         topic: "Python"}
     ];
-}
-
-function getUnansweredQuestions(){
-    return [{
-            firstName: "Javier",
-            lastName:"Guajardo",
-            username: "juajua",
-            userImage:"Media/userImage.jpg",
-            questionId: "10questionPaulinaJavier",
-            status: "N",
-            rating: "-1",
-            answer: "",
-            question: "Why do we need a data and an application layer?",
-            topic: "PHP"},
-        {
-            firstName: "Javier",
-            lastName:"Guajardo",
-            username: "juajua",
-            userImage:"Media/userImage.jpg",
-            questionId: "11questionPaulinaJavier",
-            status: "N",
-            rating: "-1",
-            answer: "",
-            question: "How do you get the parameters of a POST request?",
-            topic: "PHP"}
-        ];
 }
 
 function helperCreateListElementRequest(answerRequest){
